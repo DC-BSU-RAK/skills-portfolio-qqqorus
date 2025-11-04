@@ -64,14 +64,21 @@ class MathQuiz:
     def load_images(self):
         # backgrounds for easy mode (2 story images and 1 quiz background)
         self.easy_bg = [] # a list to store all images for the story
-        for num in range(1, 3):
-            img_path = f".img/easy/easy{num}.png" # imports the image files
+        for i in range(1, 3):
+            img_path = f".img/easy/easy{i}.png" # imports the image files
             img = ImageTk.PhotoImage(Image.open(img_path)) # opens each image
             self.easy_bg.append(img) # appends the images in the list
 
         # this is for the quiz background (easy mode)
         easy_quiz_path = "./img/easy/easyquizbg.png"
         self.easy_quiz_bg = ImageTk.PhotoImage(Image.open(easy_quiz_path))
+
+        # backgrounds for moderate mode (17 story images and 1 quiz background)
+        self.moderate_bg = []
+        for i in range(1, 18): # mod1.png to mod17.png
+            img_path = f".img/moderate/mod{i}.png"
+            img = ImageTk.PhotoImage(Image.open(img_path))
+            self.moderate_bg.append(img)
 
 class GIFPlayer:
     def __init__(self, gif_path, label, width=None, height=None):
