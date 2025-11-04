@@ -3,14 +3,22 @@ from tkinter import *
 from PIL import Image, ImageTk, ImageSequence
 
 def __init__(self, root):
-    # Create main window
+    # create main window
     self.root = root
     self.root.title('Maths Quiz')
     self.root.geometry('750x600')
     self.root.iconbitmap(r'.\img\logo.ico')
     self.root.resizable(0,0)
     self.root['bg'] = '#000000'
-
+    
+    self.center_window()
+    
+    # game variables
+        # score, hearts, mode, current question, correct answer, choices, 
+        # attempts, question number, total questions, time limit, timer for moderate mode,
+        # timer for hard mode, time remaining (for both mod and hard), is timer running, 
+        # story progress, quiz finished, play gif
+    
 # a function to center the tkinter window when it opens
 def center_window(window):
     window.update()  # Force window to update and calculate actual size
