@@ -2,6 +2,15 @@ import os
 from tkinter import *
 from PIL import Image, ImageTk, ImageSequence
 
+def __init__(self, root):
+    # Create main window
+    self.root = root
+    self.root.title('Maths Quiz')
+    self.root.geometry('750x600')
+    self.root.iconbitmap(r'.\img\logo.ico')
+    self.root.resizable(0,0)
+    self.root['bg'] = '#000000'
+
 # a function to center the tkinter window when it opens
 def center_window(window):
     window.update()  # Force window to update and calculate actual size
@@ -58,16 +67,11 @@ class GIFPlayer:
             self.current_frame = (self.current_frame + 1) % len(self.frames)
             self.label.after(100, self.animate)  # Adjust speed as needed
 
+
 def switch_frame(frame):
     frame.tkraise()
 
-# Create main window
-root = Tk()
-root.title('Maths Quiz')
-root.geometry('750x600')
-root.iconbitmap(r'.\img\logo.ico')
-root.resizable(0,0)
-root['bg'] = '#000000'
+
 
 # Center the window
 center_window(root)
@@ -150,6 +154,9 @@ def on_closing():
     root.destroy()
 
 switch_frame(main_menu)
+
+
+
 
 root.protocol("WM_DELETE_WINDOW", on_closing)
 root.mainloop()
