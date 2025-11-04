@@ -21,7 +21,24 @@ def __init__(self, root):
         # attempts, question number, total questions, time limit, timer for moderate mode,
         # timer for hard mode, time remaining (for both mod and hard), is timer running, 
         # story progress, quiz finished, play gif
-    
+    self.score = 0
+    self.hearts = 3
+    self.current_mode = None
+    self.current_ques = None
+    self.correct_ans = None
+    self.choices = []
+    self.attempts = 0
+    self.ques_num = 0
+    self.total_ques = 10
+    self.time_limit = 10
+    self.hardmode_total_time = 90
+    self.time_remaining = self.time_limit
+    self.hardmode_time_remaining = self.hardmode_total_time
+    self.timer_running = False
+    self.hardmode_timer_running = False
+    self.story_progress = 0
+    self.quiz_completed = False
+    self.gif_playing = False
     
 # a function to center the tkinter window when it opens
 def center_window(window):
