@@ -49,15 +49,15 @@ def __init__(self, root):
     # will create a function to load the main menu
     
 # a function to center the tkinter window when it opens
-def center_window(window):
-    window.update()  # Force window to update and calculate actual size
-    screen_width = window.winfo_screenwidth()
-    screen_height = window.winfo_screenheight()
-    window_width = window.winfo_width()
-    window_height = window.winfo_height()
+def center_window(self):
+    self.root.update()  # Force window to update and calculate actual size
+    screen_width = self.root.winfo_screenwidth()
+    screen_height = self.root.winfo_screenheight()
+    window_width = self.root.winfo_width()
+    window_height = self.root.winfo_height()
     x = (screen_width - window_width) // 2
     y = (screen_height - window_height) // 3
-    window.geometry(f"+{x}+{y}")
+    self.root.geometry(f"+{x}+{y}")
 
 class GIFPlayer:
     def __init__(self, gif_path, label, width=None, height=None):
