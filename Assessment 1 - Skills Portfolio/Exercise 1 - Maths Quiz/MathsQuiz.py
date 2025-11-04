@@ -1,13 +1,16 @@
 import os
 from tkinter import *
 from PIL import Image, ImageTk, ImageSequence
+from tkinter import ttk, messagebox
+import random
+import time
 
 def __init__(self, root):
     # create main window
     self.root = root
     self.root.title('Maths Quiz')
     self.root.geometry('750x600')
-    self.root.iconbitmap(r'.\img\logo.ico')
+    self.root.iconbitmap(r'.\img\logo.ico') # icon for the app
     self.root.resizable(0,0)
     self.root['bg'] = '#000000'
     
@@ -18,6 +21,7 @@ def __init__(self, root):
         # attempts, question number, total questions, time limit, timer for moderate mode,
         # timer for hard mode, time remaining (for both mod and hard), is timer running, 
         # story progress, quiz finished, play gif
+    
     
 # a function to center the tkinter window when it opens
 def center_window(window):
