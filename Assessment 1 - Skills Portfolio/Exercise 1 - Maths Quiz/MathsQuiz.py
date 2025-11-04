@@ -60,7 +60,14 @@ class MathQuiz:
         y = (screen_height - window_height) // 3
         self.root.geometry(f"+{x}+{y}")
 
-    #
+    # a function to load all background and feedback images to be used for each mode
+    def load_images(self):
+        # backgrounds for easy mode (2 story images and 1 quiz background)
+        self.easy_bg = [] # a list to store all images
+        for num in range(1, 3):
+            img_path = f".img/easy/easy{num}.png" # imports the image files
+            img = ImageTk.PhotoImage(Image.open(img_path)) # opens each image
+            self.easy_bg.append(img) # appends the images in the list
 
 class GIFPlayer:
     def __init__(self, gif_path, label, width=None, height=None):
