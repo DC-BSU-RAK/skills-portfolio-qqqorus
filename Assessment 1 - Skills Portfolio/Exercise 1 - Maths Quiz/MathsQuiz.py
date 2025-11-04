@@ -44,6 +44,10 @@ def __init__(self, root):
     self.container = Frame(self.root, bg='#000000')
     self.container.place(x=0, y=0, relwidth=1, relhight=1)
     
+    # will define a function to load the images (for frames)
+    
+    # will create a function to load the main menu
+    
 # a function to center the tkinter window when it opens
 def center_window(window):
     window.update()  # Force window to update and calculate actual size
