@@ -5,59 +5,62 @@ from tkinter import ttk, messagebox
 import random
 import time
 
-def __init__(self, root):
-    # create main window
-    self.root = root
-    self.root.title('Maths Quiz')
-    self.root.geometry('750x600')
-    self.root.iconbitmap(r'.\img\logo.ico') # icon for the app
-    self.root.resizable(0,0)
-    self.root['bg'] = '#000000'
-    
-    self.center_window()
-    
-    # game variables
-        # score, hearts, mode, current question, correct answer, choices, 
-        # attempts, question number, total questions, time limit, timer for moderate mode,
-        # timer for hard mode, time remaining (for both mod and hard), is timer running, 
-        # story progress, quiz finished, play gif
-    self.score = 0 # set the score to 0
-    self.hearts = 3 # set the number of hearts to 3 (full hearts)
-    self.current_mode = None # set the current mode to none
-    self.current_ques = None # question is none
-    self.correct_ans = None # no correct answer set as default
-    self.choices = [] # will store the choices here later on
-    self.attempts = 0 # set to 0, will count when the quiz starts
-    self.ques_num = 0 # set to 0, will increment when the quiz starts
-    self.total_ques = 10 # all quiz modes have 10 questions max
-    self.time_limit = 10 # 10 seconds for each question in moderate mode
-    self.hardmode_total_time = 90 # 1min and 30secs timer for the whole hardmode quiz
-    self.time_remaining = self.time_limit
-    self.hardmode_time_remaining = self.hardmode_total_time
-    self.timer_running = False 
-    self.hardmode_timer_running = False
-    self.story_progress = 0 # story progress will increase when the game starts based on frames
-    self.quiz_completed = False
-    self.gif_playing = False
-    
-    # container for all frames
-    self.container = Frame(self.root, bg='#000000')
-    self.container.place(x=0, y=0, relwidth=1, relhight=1)
-    
-    # will define a function to load the images (for frames)
-    
-    # will create a function to load the main menu
-    
-# a function to center the tkinter window when it opens
-def center_window(self):
-    self.root.update()  # Force window to update and calculate actual size
-    screen_width = self.root.winfo_screenwidth()
-    screen_height = self.root.winfo_screenheight()
-    window_width = self.root.winfo_width()
-    window_height = self.root.winfo_height()
-    x = (screen_width - window_width) // 2
-    y = (screen_height - window_height) // 3
-    self.root.geometry(f"+{x}+{y}")
+class MathQuiz:
+    def __init__(self, root):
+        # create main window
+        self.root = root
+        self.root.title('Maths Quiz')
+        self.root.geometry('750x600')
+        self.root.iconbitmap(r'.\img\logo.ico') # icon for the app
+        self.root.resizable(0,0)
+        self.root['bg'] = '#000000'
+        
+        self.center_window()
+        
+        # game variables
+            # score, hearts, mode, current question, correct answer, choices, 
+            # attempts, question number, total questions, time limit, timer for moderate mode,
+            # timer for hard mode, time remaining (for both mod and hard), is timer running, 
+            # story progress, quiz finished, play gif
+        self.score = 0 # set the score to 0
+        self.hearts = 3 # set the number of hearts to 3 (full hearts)
+        self.current_mode = None # set the current mode to none
+        self.current_ques = None # question is none
+        self.correct_ans = None # no correct answer set as default
+        self.choices = [] # will store the choices here later on
+        self.attempts = 0 # set to 0, will count when the quiz starts
+        self.ques_num = 0 # set to 0, will increment when the quiz starts
+        self.total_ques = 10 # all quiz modes have 10 questions max
+        self.time_limit = 10 # 10 seconds for each question in moderate mode
+        self.hardmode_total_time = 90 # 1min and 30secs timer for the whole hardmode quiz
+        self.time_remaining = self.time_limit
+        self.hardmode_time_remaining = self.hardmode_total_time
+        self.timer_running = False 
+        self.hardmode_timer_running = False
+        self.story_progress = 0 # story progress will increase when the game starts based on frames
+        self.quiz_completed = False
+        self.gif_playing = False
+        
+        # container for all frames
+        self.container = Frame(self.root, bg='#000000')
+        self.container.place(x=0, y=0, relwidth=1, relhight=1)
+        
+        # will define a function to load the images (for frames)
+        
+        # will create a function to load the main menu
+        
+    # a function to center the tkinter window when it opens
+    def center_window(self):
+        self.root.update()  # Force window to update and calculate actual size
+        screen_width = self.root.winfo_screenwidth()
+        screen_height = self.root.winfo_screenheight()
+        window_width = self.root.winfo_width()
+        window_height = self.root.winfo_height()
+        x = (screen_width - window_width) // 2
+        y = (screen_height - window_height) // 3
+        self.root.geometry(f"+{x}+{y}")
+
+    #
 
 class GIFPlayer:
     def __init__(self, gif_path, label, width=None, height=None):
