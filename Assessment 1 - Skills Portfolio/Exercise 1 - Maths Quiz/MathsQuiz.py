@@ -21,22 +21,22 @@ def __init__(self, root):
         # attempts, question number, total questions, time limit, timer for moderate mode,
         # timer for hard mode, time remaining (for both mod and hard), is timer running, 
         # story progress, quiz finished, play gif
-    self.score = 0
-    self.hearts = 3
-    self.current_mode = None
-    self.current_ques = None
-    self.correct_ans = None
-    self.choices = []
-    self.attempts = 0
-    self.ques_num = 0
-    self.total_ques = 10
-    self.time_limit = 10
-    self.hardmode_total_time = 90
+    self.score = 0 # set the score to 0
+    self.hearts = 3 # set the number of hearts to 3 (full hearts)
+    self.current_mode = None # set the current mode to none
+    self.current_ques = None # question is none
+    self.correct_ans = None # no correct answer set as default
+    self.choices = [] # will store the choices here later on
+    self.attempts = 0 # set to 0, will count when the quiz starts
+    self.ques_num = 0 # set to 0, will increment when the quiz starts
+    self.total_ques = 10 # all quiz modes have 10 questions max
+    self.time_limit = 10 # 10 seconds for each question in moderate mode
+    self.hardmode_total_time = 90 # 1min and 30secs timer for the whole hardmode quiz
     self.time_remaining = self.time_limit
     self.hardmode_time_remaining = self.hardmode_total_time
-    self.timer_running = False
+    self.timer_running = False 
     self.hardmode_timer_running = False
-    self.story_progress = 0
+    self.story_progress = 0 # story progress will increase when the game starts based on frames
     self.quiz_completed = False
     self.gif_playing = False
     
