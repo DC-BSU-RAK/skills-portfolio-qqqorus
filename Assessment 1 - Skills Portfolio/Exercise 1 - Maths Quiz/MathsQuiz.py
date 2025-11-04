@@ -40,6 +40,10 @@ def __init__(self, root):
     self.quiz_completed = False
     self.gif_playing = False
     
+    # container for all frames
+    self.container = Frame(self.root, bg='#000000')
+    self.container.place(x=0, y=0, relwidth=1, relhight=1)
+    
 # a function to center the tkinter window when it opens
 def center_window(window):
     window.update()  # Force window to update and calculate actual size
@@ -99,15 +103,6 @@ class GIFPlayer:
 
 def switch_frame(frame):
     frame.tkraise()
-
-
-
-# Center the window
-center_window(root)
-
-# container for all frames
-container = Frame(root, bg='#000000')
-container.place(x=0, y=0, relwidth=1, relheight=1)
 
 # FRAME 1 (title frame)
 main_menu = Frame(container, bg='#000000')
