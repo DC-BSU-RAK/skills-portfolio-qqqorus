@@ -45,7 +45,8 @@ class MathQuiz:
         self.container = Frame(self.root, bg='#000000')
         self.container.place(x=0, y=0, relwidth=1, relhight=1)
         
-        # will define a function to load the images (for frames)
+        # call the function to load images
+        self.load_images()
         
         # will create a function to load the main menu
         
@@ -101,6 +102,8 @@ class MathQuiz:
         for type in feedback_types:
             img_path = f'./img/feedback/{type}.png' # uses 'type' instead of a random letter bc the file name is referred to based on the type
             self.feedback_imgs[type] = ImageTk.PhotoImage(Image.open(img_path)) # image appending with the type
+
+
 
 class GIFPlayer:
     def __init__(self, gif_path, label, width=None, height=None):
