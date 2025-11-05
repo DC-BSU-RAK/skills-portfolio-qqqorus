@@ -103,10 +103,10 @@ class MathQuiz:
             img_path = f'./img/feedback/{type}.png' # uses 'type' instead of a random letter bc the file name is referred to based on the type
             self.feedback_imgs[type] = ImageTk.PhotoImage(Image.open(img_path)) # image appending with the type
 
-        # creating the main_menu with gif background
-        def main_menu_loader(self):
-            for widget in self.container.winfo_children():
-                widget.destroy() # this function creates a clear container
+    # creating the main_menu with gif background
+    def main_menu_loader(self):
+        for widget in self.container.winfo_children():
+            widget.destroy() # this function creates a clear container
 
         # creating frame for main menu
         self.main_menu = Frame(self.container, bg='#000000')
@@ -116,7 +116,9 @@ class MathQuiz:
         self.gif_label = Label(self.main_menu, bg='#000000')
         self.gif_label.place(x=0, y=0, relwidth=1, relheight=1)
         
+        # will create function to load and play the gif bg
         
+        # putting the buttons for mode selection here
         
 class GIFPlayer:
     def __init__(self, gif_path, label, width=None, height=None):
