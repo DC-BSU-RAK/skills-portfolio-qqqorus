@@ -91,6 +91,10 @@ class MathQuiz:
             img = ImageTk.PhotoImage(Image.open(img_path))
             self.hard_bg.append(img)
         
+        # hard quiz bg
+        hard_quiz_path = './img/hard/hardquizbg.png'
+        self.hard_quiz_bg = ImageTk.PhotoImage(Image.open(hard_quiz_path))
+        
         
 
 class GIFPlayer:
