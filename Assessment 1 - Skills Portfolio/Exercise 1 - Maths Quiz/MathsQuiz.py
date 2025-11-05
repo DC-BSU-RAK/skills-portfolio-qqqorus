@@ -95,7 +95,12 @@ class MathQuiz:
         hard_quiz_path = './img/hard/hardquizbg.png'
         self.hard_quiz_bg = ImageTk.PhotoImage(Image.open(hard_quiz_path))
         
-        
+        # feedback images (correct, incorrect, try, no speech)
+        self.feedback_imgs = {} # dictionary to store the images
+        feedback_types = ['correct', 'incorrect', 'nospeech', 'try']
+        for type in feedback_types:
+            img_path = f'./img/feedback/{type}.png' # uses 'type' instead of a random letter bc the file name is referred to based on the type
+            self.feedback_imgs[type] = ImageTk.PhotoImage(Image.open(img_path)) # image appending with the type
 
 class GIFPlayer:
     def __init__(self, gif_path, label, width=None, height=None):
