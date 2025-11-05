@@ -148,26 +148,7 @@ class MathQuiz:
     def stop_gif(self):
         self.gif_playing = False # break the loop bc it's set to 'False'
 
-class GIFPlayer:
-    def __init__(self, gif_path, label, width=None, height=None):
-        self.gif_path = gif_path
-        self.label = label
-        self.frames = []
-        self.width = width
-        self.height = height
-        self.load_gif()
-        self.current_frame = 0
-        self.playing = False
-        
-    def stop(self):
-        self.playing = False
-        
-    def animate(self):
-        if self.playing and self.frames:
-            self.label.config(image=self.frames[self.current_frame])
-            self.current_frame = (self.current_frame + 1) % len(self.frames)
-            self.label.after(100, self.animate)  # Adjust speed as needed
-
+    
 
 def switch_frame(frame):
     frame.tkraise()
