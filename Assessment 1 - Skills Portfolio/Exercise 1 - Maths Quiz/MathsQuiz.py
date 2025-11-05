@@ -112,6 +112,11 @@ class MathQuiz:
         self.main_menu = Frame(self.container, bg='#000000')
         self.main_menu.place(x=0, y=0, relwidth=1, relheight=1)
         
+        # creating the gif background label
+        self.gif_label = Label(self.main_menu, bg='#000000')
+        self.gif_label.place(x=0, y=0, relwidth=1, relheight=1)
+        
+        
         
 class GIFPlayer:
     def __init__(self, gif_path, label, width=None, height=None):
@@ -161,10 +166,6 @@ class GIFPlayer:
 
 def switch_frame(frame):
     frame.tkraise()
-
-# Create a label for the GIF background
-gif_label = Label(main_menu, bg='#000000')
-gif_label.pack()
 
 # Create and start the GIF player
 gif_player = GIFPlayer('./gifs/title.gif', gif_label, width=600, height=750)
