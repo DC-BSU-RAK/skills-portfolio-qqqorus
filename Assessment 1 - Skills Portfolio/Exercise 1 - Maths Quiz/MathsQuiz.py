@@ -174,7 +174,29 @@ class MathQuiz:
                         command=lambda: [placeholder])
         hard_btn.place(x=468, y=384)
 
-    
+    # will set the bg image on a frame
+    def set_background_img(self, frame, image):
+        if image is not None:
+            bg_label = Label(frame, image=image, bg='#000000')
+            bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+            bg_label.image = image
+            return bg_label
+
+    def start_story(self, mode):
+        # stop gif animation
+        self.stop_gif()
+        
+        # placeholder for stopping running timers
+        
+        self.current_mode = mode
+        self.score = 0
+        self.hearts = 3
+        self.question_number = 0
+        self.story_progress = 0
+        self.quiz_completed = False
+        self.hardmode_time_remaining = self.hardmode_total_time
+        
+        
 
 def switch_frame(frame):
     frame.tkraise()
