@@ -135,10 +135,18 @@ class MathQuiz:
         # [placeholder for animate gif function call]
 
     # animate the gif frames
-    def animate_gif():
+    def animate_gif(self):
+        if (hasattr(self, 'gif_frames') and self.gif_frames and # checks if the object has a 'gif_frames' attr (list) & if the list is not empty
+            hasattr(self, 'gif_playing') and self.gif_playing and # checks if the object has a 'gif_playing' attr (animation control) and if it's set to 'True'
+            hasattr(self, 'gif_label') and self.gif_label.winfo_exists()): # checks if the object has 'gif_label' attr (display widget) and if it still exists in the window
+            
+            self.gif_label.config(image=self.gif_frames[self.current_gif_frame]) # updates the gif_label widget to show the current frame
+            self.current_gif_frame = (self.current_gif_frame + 1) % len(self.gif_frames) # calculates the next frame index using modulo
+            self.root.after(100, self.animate_gif) # creates the loop so the gif will run repeatedly
         
     # stops the gif animation
-    def stop_gif():
+    def stop_gif(self):
+        self.gif_playing = False # break the loop bc it's set to 'False'
 
 class GIFPlayer:
     def __init__(self, gif_path, label, width=None, height=None):
