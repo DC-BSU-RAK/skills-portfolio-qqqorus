@@ -148,7 +148,31 @@ class MathQuiz:
     def stop_gif(self):
         self.gif_playing = False # break the loop bc it's set to 'False'
 
-    
+    # create mode selection buttons that will be placed on the GIF bg
+    def create_mode_buttons(self):
+        # easy button
+        easy_btn = Button(self.main_menu, text='Easy',
+                 bg='#c0c0c0',
+                 font=('Lucida Console', 15),
+                 padx=46, pady=3,
+                 command=lambda: [placeholder])
+        easy_btn.place(x=125, y=384)
+
+        # moderate button
+        med_btn = Button(self.main_menu, text='Moderate',
+                        bg='#c0c0c0',
+                        font=('Lucida Console', 15),
+                        padx=21, pady=3,
+                        command=lambda: [placeholder])
+        med_btn.place(x=298, y=384)
+
+        # hard button
+        hard_btn = Button(self.main_menu, text='Hard',
+                        bg='#c0c0c0',
+                        font=('Lucida Console', 15),
+                        padx=46, pady=3,
+                        command=lambda: [placeholder])
+        hard_btn.place(x=468, y=384)
 
 def switch_frame(frame):
     frame.tkraise()
@@ -156,28 +180,6 @@ def switch_frame(frame):
 # Create and start the GIF player
 gif_player = GIFPlayer('./gifs/title.gif', gif_label, width=600, height=750)
 gif_player.play()
-
-# button display for all modes
-easybtn = Button(main_menu, text='Easy',
-                 bg='#c0c0c0',
-                 font=('Lucida Console', 15),
-                 padx=46, pady=3,
-                 command=lambda: switch_frame(easymode))
-easybtn.place(x=125, y=384)
-
-medbtn = Button(main_menu, text='Moderate',
-                 bg='#c0c0c0',
-                font=('Lucida Console', 15),
-                padx=21, pady=3,
-                command=lambda: switch_frame(modmode))
-medbtn.place(x=298, y=384)
-
-hardbtn = Button(main_menu, text='Hard',
-                 bg='#c0c0c0',
-                font=('Lucida Console', 15),
-                padx=46, pady=3,
-                command=lambda: switch_frame(hardmode))
-hardbtn.place(x=468, y=384)
 
 # EASY MODE FRAME
 easymode = Frame(container, bg='#000000')
