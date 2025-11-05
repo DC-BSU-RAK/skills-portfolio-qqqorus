@@ -84,6 +84,13 @@ class MathQuiz:
         mod_quiz_path = './img/moderate/modquizbg.png'
         self.moderate_quiz_bg = ImageTk.PhotoImage(Image.open(mod_quiz_path))
         
+        # hard mode bgs
+        self.hard_bg = []
+        for i in range(1, 4):
+            img_path = f'./img/hard/hard{i}.png'
+            img = ImageTk.PhotoImage(Image.open(img_path))
+            self.hard_bg.append(img)
+        
         
 
 class GIFPlayer:
