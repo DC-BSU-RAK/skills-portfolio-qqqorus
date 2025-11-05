@@ -132,7 +132,7 @@ class MathQuiz:
                 self.gif_frames.append(photo) # adds current frame to the list
         
         self.current_gif_frame = 0 # counter to keep track of what frame is being currently displayed
-        # [placeholder for animate gif function call]
+        self.animate_gif()
 
     # animate the gif frames
     def animate_gif(self):
@@ -174,12 +174,10 @@ class MathQuiz:
                         command=lambda: [placeholder])
         hard_btn.place(x=468, y=384)
 
+    
+
 def switch_frame(frame):
     frame.tkraise()
-
-# Create and start the GIF player
-gif_player = GIFPlayer('./gifs/title.gif', gif_label, width=600, height=750)
-gif_player.play()
 
 # EASY MODE FRAME
 easymode = Frame(container, bg='#000000')
