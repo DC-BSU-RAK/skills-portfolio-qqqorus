@@ -134,6 +134,12 @@ class MathQuiz:
         self.current_gif_frame = 0 # counter to keep track of what frame is being currently displayed
         # [placeholder for animate gif function call]
 
+    # animate the gif frames
+    def animate_gif():
+        
+    # stops the gif animation
+    def stop_gif():
+
 class GIFPlayer:
     def __init__(self, gif_path, label, width=None, height=None):
         self.gif_path = gif_path
