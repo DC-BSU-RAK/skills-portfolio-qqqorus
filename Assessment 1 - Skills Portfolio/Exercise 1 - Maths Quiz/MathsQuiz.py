@@ -120,6 +120,20 @@ class MathQuiz:
         
         # putting the buttons for mode selection here
         
+    # function to load and play the main menu bg gif
+    def load_and_play_gif(self):
+        current_dir = os.path.dirname(os.path.abspath(__file__)) # gets the absolute path of this python file
+        gif_path = os.path.join(current_dir, 'gifs', 'title.gif') # combines the current dir path with the 'gifs' folder and 'title.gif' filename
+    
+        self.gif_frames = [] # empty list to store all individual frames of the gif
+        with Image.open(gif_path) as img: # opening the gif file and using with statement to ensure the file is closed after use
+            for frame in ImageSequence.Iterator(img): # loop through each frame in the gif file
+                photo = ImageTk.PhotoImage(frame.copy()) # creating a copy with 'frame.copy()' to avoid modifying the original frame
+                self.gif_frames.append(photo) # adds current frame to the list
+        
+        self.current_gif_frame = 0 # counter to keep track of what frame is being currently displayed
+        # [placeholder for animate gif function call]
+
 class GIFPlayer:
     def __init__(self, gif_path, label, width=None, height=None):
         self.gif_path = gif_path
@@ -130,31 +144,6 @@ class GIFPlayer:
         self.load_gif()
         self.current_frame = 0
         self.playing = False
-        
-    def load_gif(self):
-        try:
-            # Get the absolute path to the GIF
-            current_dir = os.path.dirname(os.path.abspath(__file__))
-            gif_absolute_path = os.path.join(current_dir, 'gifs', 'title.gif')
-            
-            with Image.open(gif_absolute_path) as img:
-                for frame in ImageSequence.Iterator(img):
-                    photo = ImageTk.PhotoImage(frame.copy())
-                    self.frames.append(photo)
-        except FileNotFoundError:
-            print(f"Error: GIF file not found at {gif_absolute_path}")
-            # Create a fallback image
-            fallback_image = Image.new('RGB', (300, 200), color='lightblue')
-            self.frames = [ImageTk.PhotoImage(fallback_image)]
-        except Exception as e:
-            print(f"Error loading GIF: {e}")
-            # Create a fallback image
-            fallback_image = Image.new('RGB', (300, 200), color='lightgray')
-            self.frames = [ImageTk.PhotoImage(fallback_image)]
-                
-    def play(self):
-        self.playing = True
-        self.animate()
         
     def stop(self):
         self.playing = False
