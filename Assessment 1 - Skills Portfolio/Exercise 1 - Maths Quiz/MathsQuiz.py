@@ -108,6 +108,11 @@ class MathQuiz:
             for widget in self.container.winfo_children():
                 widget.destroy() # this function creates a clear container
 
+        # creating frame for main menu
+        self.main_menu = Frame(self.container, bg='#000000')
+        self.main_menu.place(x=0, y=0, relwidth=1, relheight=1)
+        
+        
 class GIFPlayer:
     def __init__(self, gif_path, label, width=None, height=None):
         self.gif_path = gif_path
@@ -156,10 +161,6 @@ class GIFPlayer:
 
 def switch_frame(frame):
     frame.tkraise()
-
-# FRAME 1 (title frame)
-main_menu = Frame(container, bg='#000000')
-main_menu.place(x=0, y=0, relwidth=1, relheight=1)
 
 # Create a label for the GIF background
 gif_label = Label(main_menu, bg='#000000')
