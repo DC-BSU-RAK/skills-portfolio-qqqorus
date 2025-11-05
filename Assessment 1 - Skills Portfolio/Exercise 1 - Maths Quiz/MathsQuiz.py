@@ -80,6 +80,12 @@ class MathQuiz:
             img = ImageTk.PhotoImage(Image.open(img_path))
             self.moderate_bg.append(img)
 
+        # quiz background for moderate mode
+        mod_quiz_path = './img/moderate/modquizbg.png'
+        self.moderate_quiz_bg = ImageTk.PhotoImage(Image.open(mod_quiz_path))
+        
+        
+
 class GIFPlayer:
     def __init__(self, gif_path, label, width=None, height=None):
         self.gif_path = gif_path
