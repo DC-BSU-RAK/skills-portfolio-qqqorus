@@ -233,6 +233,10 @@ class MathQuiz:
             17: # start mod quiz part 3,
             18: lambda: # go back to main menu
         }
+       
+        action = story_actions.get(self.story_progress)
+        if action:
+            action()
         
     def show_hard_story(self):
         self.story_progress += 1
@@ -279,7 +283,26 @@ class MathQuiz:
         # create quiz screen
         # generate question function
     
+    def start_moderate_quiz_part1(self): # janitor's closet bg
+        self.total_ques = 3
+        self.ques_num = 0
+        self.quiz_completed = False
+        # create quiz screen
+        # generate question function
 
+    def start_moderate_quiz_part2(self): # principal's office bg
+        self.total_ques = 3
+        self.ques_num = 0
+        self.quiz_completed = False
+        # create quiz screen
+        # generate question function
+    
+    def start_moderate_quiz_part3(self): # security room bg
+        self.total_ques = 4 # 10 questions in total for moderate mode
+        self.ques_num = 0
+        self.quiz_completed = False
+        # create quiz screen
+        # generate question function
 
 
 
