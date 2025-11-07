@@ -234,6 +234,19 @@ class MathQuiz:
             18: lambda: # go back to main menu
         }
         
+    def show_hard_story(self):
+        self.story_progress += 1
+        
+        if self.story_progress == 1: 
+            # start hard quiz
+        elif self.story_progress == 2:
+            if self.quiz_completed:
+                # go back to main menu
+            else:
+                # start hard quiz
+    
+    
+    
 def switch_frame(frame):
     frame.tkraise()
 
