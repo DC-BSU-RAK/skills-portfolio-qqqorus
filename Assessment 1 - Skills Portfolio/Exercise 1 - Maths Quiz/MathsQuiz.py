@@ -186,7 +186,7 @@ class MathQuiz:
         # stop gif animation
         self.stop_gif()
         
-        # placeholder for stopping running timers
+        self.stop_all_timers()
         
         self.current_mode = mode
         self.score = 0
@@ -197,14 +197,14 @@ class MathQuiz:
         self.hardmode_time_remaining = self.hardmode_total_time
         
         if mode == 'easy':
-            # show easy story
+            self.show_easy_story() # proceed to easy mode story
         elif mode == 'moderate':
-            # show mod story
+            self.show_moderate_story # proceed to moderate mode story
         else:
-            # show hard story
+            self.show_hard_story() # proceed to hard mode story
     
     # stops all timers that are running
-    def stop_all_timers_(self):
+    def stop_all_timers(self):
         self.timer_running = False # stops timer for moderate mode
         self.hardmode_timer_running = False # stops timer for hard mode
         
@@ -244,6 +244,7 @@ class MathQuiz:
                 # go back to main menu
             else:
                 # start hard quiz
+    
     
     
     
