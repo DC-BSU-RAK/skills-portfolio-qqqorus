@@ -220,7 +220,19 @@ class MathQuiz:
             else:
                 # start with easy quiz
     
-    
+    def show_moderate_story(self):
+        self.story_progress += 1
+        
+        bg_index = min(self.story_progress - 1, 16)
+        
+        story_actions = {
+            1: lambda: # show moderate story and the background,
+            # will add more story actions once the show story frame functions is created
+            9: # start mod quiz part 1,
+            12: # start mod quiz part 2,
+            17: # start mod quiz part 3,
+            18: lambda: # go back to main menu
+        }
         
 def switch_frame(frame):
     frame.tkraise()
