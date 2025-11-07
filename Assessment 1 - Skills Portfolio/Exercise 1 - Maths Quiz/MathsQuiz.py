@@ -272,42 +272,19 @@ class MathQuiz:
                               command=next_action, bg='#c0c0c0', fg='black')
         continue_btn.place(x=610, y=448)
     
+    def start_easy_quiz(self):
+        self.total_ques = 10
+        self.ques_num = 0
+        self.quiz_completed = False
+        # create quiz screen
+        # generate question function
+    
+
+
+
+
 def switch_frame(frame):
     frame.tkraise()
-
-# EASY MODE FRAME
-easymode = Frame(container, bg='#000000')
-easymode.place(x=0, y=0, relwidth=1, relheight=1)
-easybg = ImageTk.PhotoImage(Image.open(r'.\img\easy1.png'))
-easybglbl = Label(easymode, image=easybg)
-easybglbl.pack()
-
-game1 = Frame(container, bg='#000000')
-game1.place(x=0, y=0, relwidth=1, relheight=1)
-game1bg = ImageTk.PhotoImage(Image.open(r'.\img\easy2.png'))
-game1bglbl = Label(game1, image=game1bg)
-game1bglbl.pack()
-
-nextbtn = Button(easymode, text='\u23f7',
-                 bg='#c0c0c0',
-                 font=('Lucida Console', 13),
-                 command=lambda: switch_frame(game1))
-nextbtn.place(x=610, y=448)
-
-# MODERATE MODE FRAME
-modmode = Frame(container, bg='#000000')
-modmode.place(x=0, y=0, relwidth=1, relheight=1)
-modbg = ImageTk.PhotoImage(Image.open(r'.\img\easy1.png'))
-modbglbl = Label(modmode, image=easybg)
-modbglbl.pack()
-
-# HARD MODE FRAME
-hardmode = Frame(container, bg='#000000')
-hardmode.place(x=0, y=0, relwidth=1, relheight=1)
-hardbg = ImageTk.PhotoImage(Image.open(r'.\img\easy1.png'))
-hardbglbl = Label(hardmode, image=easybg)
-hardbglbl.pack()
-
 
 # Make sure to stop animation when window closes
 def on_closing():
