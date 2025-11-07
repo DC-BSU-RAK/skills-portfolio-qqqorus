@@ -199,7 +199,7 @@ class MathQuiz:
         if mode == 'easy':
             self.show_easy_story() # proceed to easy mode story
         elif mode == 'moderate':
-            self.show_moderate_story # proceed to moderate mode story
+            self.show_moderate_story() # proceed to moderate mode story
         else:
             self.show_hard_story() # proceed to hard mode story
     
@@ -216,7 +216,7 @@ class MathQuiz:
             # show story frame, start with easy quiz
         elif self.story_progress == 2:
             if self.quiz_completed:
-                # show story frame, go back to main menu
+                self.show_story_frame(self.main_menu_loader, 1) # show story frame, go back to main menu
             else:
                 # start with easy quiz
     
@@ -245,8 +245,32 @@ class MathQuiz:
             else:
                 # start hard quiz
     
-    
-    
+    # this shows the story frame with its bg image and continue buttons
+    def show_story_frame(self, next_action, bg_index=0):
+        self.stop_all_timers() # stops all timers first
+
+        # for a clear container
+        for widget in self.container.winfo_children():
+            widget.destroy()
+            
+        # create a story frame
+        story_frame = Frame(self.container, bg='#000000')
+        story_frame.place(x=0, y=0, relwidth=1, relheight=1)
+        
+        # set the appropriate bg
+        if self.current_mode == 'easy' and hasattr(self, 'easy_bg'):
+            bg_image = self.easy_bg[bg_index] if bg_index < len(self.easy_bg) else None
+            self.set_background_img(story_frame, bg_image)
+        elif self.current_mode == 'moderate' and hasattr(self, 'moderate_bg'):
+            bg_image = self.moderate_bg[bg_index] if bg_index < len(self.moderate_bg) else None
+        elif self.current_mode == 'hard' and hasattr(self, 'hard_bg'):
+            bg_image = self.hard_bg[bg_index] if bg_index < len(self.hard_bg) else None
+            self.set_background_img(story_frame, bg_image)
+        
+        continue_btn = Button(story_frame, text='\u23f7',
+                              font=('Lucida Console', 13)
+                              command=next_action, bg='#c0c0c0', fg='black')
+        continue_btn.place(x=610, y=448)
     
 def switch_frame(frame):
     frame.tkraise()
