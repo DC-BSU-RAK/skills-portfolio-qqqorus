@@ -203,8 +203,25 @@ class MathQuiz:
         else:
             # show hard story
     
+    # stops all timers that are running
+    def stop_all_timers_(self):
+        self.timer_running = False # stops timer for moderate mode
+        self.hardmode_timer_running = False # stops timer for hard mode
+        
+    # goes to the easy mode path
+    def show_easy_story(self):
+        self.story_progress += 1
+        
+        if self.story_progress == 1:
+            # show story frame, start with easy quiz
+        elif self.story_progress == 2:
+            if self.quiz_completed:
+                # show story frame, go back to main menu
+            else:
+                # start with easy quiz
     
-
+    
+        
 def switch_frame(frame):
     frame.tkraise()
 
