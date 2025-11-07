@@ -304,7 +304,12 @@ class MathQuiz:
         # create quiz screen
         # generate question function
 
-
+    def start_hard_quiz(self):
+        self.total_ques = 10
+        self.ques_num = 0
+        self.quiz_completed = False
+        # create quiz screen
+        # generate question function
 
 def switch_frame(frame):
     frame.tkraise()
