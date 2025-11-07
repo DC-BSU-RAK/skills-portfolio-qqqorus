@@ -196,7 +196,14 @@ class MathQuiz:
         self.quiz_completed = False
         self.hardmode_time_remaining = self.hardmode_total_time
         
-        
+        if mode == 'easy':
+            # show easy story
+        elif mode == 'moderate':
+            # show mod story
+        else:
+            # show hard story
+    
+    
 
 def switch_frame(frame):
     frame.tkraise()
