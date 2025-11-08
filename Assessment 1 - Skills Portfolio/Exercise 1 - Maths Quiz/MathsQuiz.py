@@ -374,10 +374,9 @@ class MathQuiz:
         
         # input area for the user to answer
         if self.current_mode == 'easy':
-            # mcq interface
+            self.create_mcq_interface() # mcq interface
         else:
-            # entry form interface for moderate and hard mode
-            placeholder
+            self.create_entry_interface() # entry form interface for moderate and hard mode
         
     # show the appropriate character feedback img
     def show_feedback_img(self, type):
