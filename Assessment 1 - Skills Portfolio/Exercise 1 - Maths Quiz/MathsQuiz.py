@@ -453,6 +453,27 @@ class MathQuiz:
                             bg='#2ecc71', fg='white')
         submit_btn.place(x=500, y=350)
         
+    def update_hearts_display(self):
+        for widget in self.hearts_frame.winfo_children():
+            widget.destroy()
+            
+        # [placeholder]
+        for i in range(3):
+            if i < self.hearts:
+                hearts = '♥' if i < int(self.hearts) else '♡'
+                color = 'red' if i < int(self.hearts) else 'pink'
+            else:
+                heart = '♡'
+                color = 'gray'
+
+            heart_label = Label(self.hearts_frame, text=heart,
+                                font=('Lucida Console'),
+                                fg=color)
+            heart_label.pack(side='left', padx=2)
+    
+    
+    
+    
 if __name__ == "__main__":
     root = Tk()
     root.mainloop()
