@@ -353,6 +353,20 @@ class MathQuiz:
         self.hearts_frame.place(x=500, y=50)
         self.update_hearts_display()
         
+        # timer for moderate and hard mode
+        if self.current_mode == 'moderate':
+            timer_text = f'Time Left: {self.time_remaining}s'
+            self.mod_timer_label = Label(self.quiz_frame, text=timer_text,
+                                         font=('Lucida Console', 16), 
+                                         fg='#f39c12')
+            self.mod_timer_label.place(x=300, y=110)
+        elif self.current_mode == 'hard':
+            timer_text = f'Time Left: {self.hardmode_time_remaining}s'
+            self.hard_timer_label = Label(self.quiz_frame, text=timer_text,
+                                          font=('Lucida Console, 16'),
+                                          fg='#e74c3c')
+            self.hard_timer_label.place(x=300, y=110)
+        
 
 if __name__ == "__main__":
     root = Tk()
