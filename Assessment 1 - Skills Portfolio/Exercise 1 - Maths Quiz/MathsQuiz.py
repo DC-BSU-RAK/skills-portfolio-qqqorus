@@ -155,7 +155,7 @@ class MathQuiz:
                  bg='#c0c0c0',
                  font=('Lucida Console', 15),
                  padx=46, pady=3,
-                 command=lambda: [placeholder])
+                 command=lambda: self.start_story('easy'))
         easy_btn.place(x=125, y=384)
 
         # moderate button
@@ -163,7 +163,7 @@ class MathQuiz:
                         bg='#c0c0c0',
                         font=('Lucida Console', 15),
                         padx=21, pady=3,
-                        command=lambda: [placeholder])
+                        command=lambda: self.start_story('moderate'))
         med_btn.place(x=298, y=384)
 
         # hard button
@@ -171,7 +171,7 @@ class MathQuiz:
                         bg='#c0c0c0',
                         font=('Lucida Console', 15),
                         padx=46, pady=3,
-                        command=lambda: [placeholder])
+                        command=lambda: self.start_story('hard'))
         hard_btn.place(x=468, y=384)
 
     # will set the bg image on a frame
