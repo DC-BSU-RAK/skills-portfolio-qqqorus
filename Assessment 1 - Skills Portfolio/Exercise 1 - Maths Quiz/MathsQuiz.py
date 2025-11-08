@@ -274,52 +274,64 @@ class MathQuiz:
             bg_image = self.hard_bg[bg_index] if bg_index < len(self.hard_bg) else None
             self.set_background_img(story_frame, bg_image)
         
-        """
-        EDIT CONTINUE BUTTON LATER
-        """
-        continue_btn = Button(story_frame, text='\u23f7',
-                              font=('Lucida Console', 13)
-                              command=[placeholder], bg='#c0c0c0', fg='black')
-        continue_btn.place(x=610, y=448)
+        # variable to store the next action
+        self.next_action = next_action
+        
+        # binds any key press to navigate thru the narration
+        self.root.bind('<KeyPress>', self.handle_key_press)
+        self.root.focus_set() # ensure that the window has focus to receive key events
+        
+        # create the instruction label at the bottom
+        instruction_label = Label(story_frame, text='Press any key to continue...',
+                                  font=('Lucida Console', 12),
+                                  fg='white', bg='#000000')
+        instruction_label.place(x=250, y=550)
+        
+    # handle any key press to continue the story 
+    def handle_key_press(self, event):
+        self.root.unbind('<KeyPress>') # unbind the keys to prevent multiple triggers
+
+        if self.next_action:
+            self.next_action()
     
     def start_easy_quiz(self):
         self.total_ques = 10
         self.ques_num = 0
         self.quiz_completed = False
+        self.create_quiz_screen() # create quiz screen
         [placeholder]
-        # create quiz screen
         # generate question function
     
     def start_moderate_quiz_part1(self): # janitor's closet bg
         self.total_ques = 3
         self.ques_num = 0
         self.quiz_completed = False
+        self.create_quiz_screen() # create quiz screen
         [placeholder]
-        # create quiz screen
         # generate question function
 
     def start_moderate_quiz_part2(self): # principal's office bg
         self.total_ques = 3
         self.ques_num = 0
         self.quiz_completed = False
+        self.create_quiz_screen() # create quiz screen
         [placeholder]
-        # create quiz screen
         # generate question function
     
     def start_moderate_quiz_part3(self): # security room bg
         self.total_ques = 4 # 10 questions in total for moderate mode
         self.ques_num = 0
         self.quiz_completed = False
+        self.create_quiz_screen() # create quiz screen
         [placeholder]
-        # create quiz screen
         # generate question function
 
     def start_hard_quiz(self):
         self.total_ques = 10
         self.ques_num = 0
         self.quiz_completed = False
+        self.create_quiz_screen() # create quiz screen
         [placeholder]
-        # create quiz screen
         # generate question function
 
     def create_quiz_screen(self):
