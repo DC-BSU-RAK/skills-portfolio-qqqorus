@@ -362,7 +362,7 @@ class MathQuiz:
         self.score_label.place(x=300, y=50)
 
         # counts the questions
-        counter_text = f'Question: {self.ques_num}/{self.total_questions}'
+        counter_text = f'Question: {self.ques_num}/{self.total_ques}'
         self.counter_label = Label(self.quiz_frame, text=counter_text,
                                    font=('Lucida Console, 14'),
                                    fg='white')
@@ -471,7 +471,46 @@ class MathQuiz:
                                 fg=color)
             heart_label.pack(side='left', padx=2)
     
-    
+    def generate_question(self):
+        self.ques_num += 1
+        
+        self.show_feedback_img('nospeech') # reset to no speech character
+        
+        counter_text = f'Question: {self.ques_num}/{self.total_ques}'
+        self.counter_label.config(text=counter_text)
+        
+        self.attempts = 0
+        
+        # generate question based on difficulty
+        if self.current_mode == 'easy':
+            a, b = random.randint(-9, 10), random.randint(-9, 10)
+            operator = random.choice(['+', '-'])
+            if operator == '+':
+                self.correct_ans = a + b
+            else:
+                a, b = max(a, b), min(a, b) # makes sure that the bigger number is always first
+                self.correct_ans = a - b
+            self.current_ques = f'{a} {operator} {b} ='
+        elif self.current_mode == 'moderate':
+            a, b = random.randint(10, 100), random.randint(10, 100)
+            operator = random.choice(['+', '-'])
+            if operator == '+':
+                self.correct_ans = a + b
+            else:
+                a, b = max(a, b), min(a, b)
+                self.correct_ans = a - b
+            self.current_ques = f'{a} {operator} {b} = ?'
+        else:
+            a, b = random.randint(1000, 5001), random.randint(1000, 5001)
+            operator = random.choice(['+', '-'])
+            if operator == '+':
+                self.correct_ans = a + b
+            else:
+                a, b = max(a, b), min(a, b)
+                self.correct_ans = a - b
+            self.current_ques = f'{a} {operator} {b} = ?'
+        
+        
     
     
 if __name__ == "__main__":
