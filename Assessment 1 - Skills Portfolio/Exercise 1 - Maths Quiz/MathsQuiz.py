@@ -271,6 +271,9 @@ class MathQuiz:
             bg_image = self.hard_bg[bg_index] if bg_index < len(self.hard_bg) else None
             self.set_background_img(story_frame, bg_image)
         
+        """
+        EDIT CONTINUE BUTTON LATER
+        """
         continue_btn = Button(story_frame, text='\u23f7',
                               font=('Lucida Console', 13)
                               command=next_action, bg='#c0c0c0', fg='black')
@@ -311,18 +314,34 @@ class MathQuiz:
         # create quiz screen
         # generate question function
 
-def switch_frame(frame):
-    frame.tkraise()
+    def create_quiz_screen(self):
+        for widget in self.container.winfo_children(): # clear container
+            widget.destroy()
+            
+        # quiz frame
+        self.quiz_frame = Frame(self.container, bg='#000000')
+        self.quiz_frame.place(x=0, y=0, relwidth=1, relheight=1)
+        
+        # set quiz bgs based on the mode chosen
+        if self.current_mode == 'easy' and hasattr(self, 'easy_quiz_bg'):
+            self.bg_label = self.set_background_img(self.quiz_frame, self.easy_quiz_bg)
+        elif self.current_mode == 'moderate' and hasattr(self, 'moderate_quiz_bg'):
+            self.bg_label = self.set_background_img(self.quiz_frame, self.moderate_quiz_bg)
+        elif self.current_mode == 'hard' and hasattr(self, 'hard_quiz_bg'):
+            self.bg_label = self.set_background_img(self.quiz_frame, self.hard_quiz_bg)
+        
+        # character feedback img that is placed on the bg
+        self.feedback_img_label = Label(self.quiz_frame, bg='#000000')
+        self.feedback_img_label.place(x=50, y=200)
+        # show the default feedback img
+        
+        # score display
+        self.score_label = Label(self.quiz_frame, text=f'Score: {self.score}',
+                                 font=('Lucida Console', 14),
+                                 fg='white')
+        self.score_label.place(x=300, y=50)
 
-# Make sure to stop animation when window closes
-def on_closing():
-    gif_player.stop()
-    root.destroy()
-
-switch_frame(main_menu)
-
-
-root.protocol("WM_DELETE_WINDOW", on_closing)
+        
 
 if __name__ == "__main__":
     root = Tk()
