@@ -213,25 +213,28 @@ class MathQuiz:
         self.story_progress += 1
         
         if self.story_progress == 1:
-            # show story frame, start with easy quiz
+            self.show_story_frame(self.start_easy_quiz, 0) # show story frame, start with easy quiz
         elif self.story_progress == 2:
             if self.quiz_completed:
                 self.show_story_frame(self.main_menu_loader, 1) # show story frame, go back to main menu
             else:
-                # start with easy quiz
+                self.start_easy_quiz # start with easy quiz
     
     def show_moderate_story(self):
         self.story_progress += 1
         
         bg_index = min(self.story_progress - 1, 16)
         
+        """
+        EDIT THE BG IMGS LATER
+        """
         story_actions = {
             1: lambda: # show moderate story and the background,
             # will add more story actions once the show story frame functions is created
             9: # start mod quiz part 1,
             12: # start mod quiz part 2,
             17: # start mod quiz part 3,
-            18: lambda: # go back to main menu
+            18: lambda: [placeholder] # go back to main menu
         }
        
         action = story_actions.get(self.story_progress)
@@ -242,12 +245,12 @@ class MathQuiz:
         self.story_progress += 1
         
         if self.story_progress == 1: 
-            # start hard quiz
+            self.show_story_frame(self.start_hard_quiz, 0) # start hard quiz
         elif self.story_progress == 2:
             if self.quiz_completed:
-                # go back to main menu
+                self.show_story_frame(self.main_menu_loader) # go back to main menu
             else:
-                # start hard quiz
+                self.start_hard_quiz # start hard quiz
     
     # this shows the story frame with its bg image and continue buttons
     def show_story_frame(self, next_action, bg_index=0):
@@ -276,13 +279,14 @@ class MathQuiz:
         """
         continue_btn = Button(story_frame, text='\u23f7',
                               font=('Lucida Console', 13)
-                              command=next_action, bg='#c0c0c0', fg='black')
+                              command=[placeholder], bg='#c0c0c0', fg='black')
         continue_btn.place(x=610, y=448)
     
     def start_easy_quiz(self):
         self.total_ques = 10
         self.ques_num = 0
         self.quiz_completed = False
+        [placeholder]
         # create quiz screen
         # generate question function
     
@@ -290,6 +294,7 @@ class MathQuiz:
         self.total_ques = 3
         self.ques_num = 0
         self.quiz_completed = False
+        [placeholder]
         # create quiz screen
         # generate question function
 
@@ -297,6 +302,7 @@ class MathQuiz:
         self.total_ques = 3
         self.ques_num = 0
         self.quiz_completed = False
+        [placeholder]
         # create quiz screen
         # generate question function
     
@@ -304,6 +310,7 @@ class MathQuiz:
         self.total_ques = 4 # 10 questions in total for moderate mode
         self.ques_num = 0
         self.quiz_completed = False
+        [placeholder]
         # create quiz screen
         # generate question function
 
@@ -311,6 +318,7 @@ class MathQuiz:
         self.total_ques = 10
         self.ques_num = 0
         self.quiz_completed = False
+        [placeholder]
         # create quiz screen
         # generate question function
 
@@ -406,7 +414,7 @@ class MathQuiz:
         for i, (x, y) in enumerate(button_positions):
             choice_btn = Button(self.quiz_frame, text='',
                                 font=('Lucida Console', 14),
-                                command=[check choice function],
+                                command=[placeholder],
                                 width=8, height=2, bg='#ffffff', fg='black')
         choice_btn.place(x=x, y=y)
         self.choice_buttons.append() # appends the choices inside the list
@@ -423,13 +431,13 @@ class MathQuiz:
                                   font=('Lucida Console', 14),
                                   width=10, justify='center')
         self.answer_entry.place(x=400, y=350)
-        self.answer_entry.bind('<Return>', lambda e: [check if the answer is correct]) # uses the return key in the keyboard to submit the answer
+        self.answer_entry.bind('<Return>', lambda e: [placeholder]) # uses the return key in the keyboard to submit the answer
         self.answer_entry.focus()
         
         # submit button
         submit_btn = Button(self.quiz_frame, text='Submit',
                             font=('Lucida Console', 12),
-                            command=[check if answer is correct],
+                            command=[placeholder],
                             bg='#2ecc71', fg='white')
         submit_btn.place(x=500, y=350)
         
