@@ -191,7 +191,7 @@ class MathQuiz:
         self.current_mode = mode
         self.score = 0
         self.hearts = 3
-        self.question_number = 0
+        self.ques_num = 0
         self.story_progress = 0
         self.quiz_completed = False
         self.hardmode_time_remaining = self.hardmode_total_time
@@ -341,6 +341,17 @@ class MathQuiz:
                                  fg='white')
         self.score_label.place(x=300, y=50)
 
+        # counts the questions
+        counter_text = f'Question: {self.ques_num}/{self.total_questions}'
+        self.counter_label = Label(self.quiz_frame, text=counter_text,
+                                   font=('Lucida Console, 14'),
+                                   fg='white')
+        self.counter_label.place(x=300, y=80)
+        
+        # hearts display
+        self.hearts_frame = Frame(self.quiz_frame)
+        self.hearts_frame.place(x=500, y=50)
+        self.update_hearts_display()
         
 
 if __name__ == "__main__":
