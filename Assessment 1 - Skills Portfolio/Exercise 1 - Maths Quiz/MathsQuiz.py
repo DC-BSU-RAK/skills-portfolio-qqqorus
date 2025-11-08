@@ -399,8 +399,40 @@ class MathQuiz:
         # return to nospeech after 1 second
         self.root.after(1000, lambda: self.show_feedback_img('nospeech'))
     
+    # create multiple choice buttons for easy mode
+    def create_mcq_interface(self):
+        self.choice_buttons = [] # empty list to store the choices
+        button_positions = [(250, 300), (450, 300), (250, 400), (450, 400)] # list storing the buttons coordinates
         
+        for i, (x, y) in enumerate(button_positions):
+            choice_btn = Button(self.quiz_frame, text='',
+                                font=('Lucida Console', 14),
+                                command=[check choice function],
+                                width=8, height=2, bg='#ffffff', fg='black')
+        choice_btn.place(x=x, y=y)
+        self.choice_buttons.append() # appends the choices inside the list
+    
+    # create an entry form for moderate and hard mode
+    def create_entry_interface(self):
+        answer_label = Label(self.quiz_frame, text='Answer:',
+                             font=('Lucida Console', 14),
+                             fg='#00000')
+        answer_label.place(x=300, y=350)
         
+        # answer entry area
+        self.answer_entry = Entry(self.quiz_frame,
+                                  font=('Lucida Console', 14),
+                                  width=10, justify='center')
+        self.answer_entry.place(x=400, y=350)
+        self.answer_entry.bind('<Return>', lambda e: [check if the answer is correct]) # uses the return key in the keyboard to submit the answer
+        self.answer_entry.focus()
+        
+        # submit button
+        submit_btn = Button(self.quiz_frame, text='Submit',
+                            font=('Lucida Console', 12),
+                            command=[check if answer is correct],
+                            bg='#2ecc71', fg='white')
+        submit_btn.place(x=500, y=350)
         
 if __name__ == "__main__":
     root = Tk()
