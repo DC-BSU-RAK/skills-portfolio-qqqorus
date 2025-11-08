@@ -377,6 +377,29 @@ class MathQuiz:
             # mcq interface
         else:
             # entry form interface for moderate and hard mode
+            placeholder
+        
+    # show the appropriate character feedback img
+    def show_feedback_img(self, type):
+        if (hasattr(self, 'feedback_imgs') and type in self.feedback_imgs and
+            self.feedback_imgs[type] is not None):
+            self.feedback_img_label.config(image=self.feedback_imgs[type])
+            self.feedback_img_label.image = self.feedback_imgs[type]
+    
+    # display feedback using the imgs
+    def show_feedback(self, is_correct=True):
+        if is_correct:
+            self.show_feedback_img('correct')
+        else:
+            if self.attempts == 1:
+                self.show_feedback_img('try')
+            else:
+                self.show_feedback_img('incorrect')
+        
+        # return to nospeech after 1 second
+        self.root.after(1000, lambda: self.show_feedback_img('nospeech'))
+    
+        
         
         
 if __name__ == "__main__":
