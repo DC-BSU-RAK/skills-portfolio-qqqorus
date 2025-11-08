@@ -367,7 +367,18 @@ class MathQuiz:
                                           fg='#e74c3c')
             self.hard_timer_label.place(x=300, y=110)
         
-
+        self.ques_label = Label(self.quiz_frame, text='', 
+                                font=('Lucida Console', 24, 'bold'), 
+                                fg='#000000')
+        self.ques_label.place(x=375, y=200, anchor='center')
+        
+        # input area for the user to answer
+        if self.current_mode == 'easy':
+            # mcq interface
+        else:
+            # entry form interface for moderate and hard mode
+        
+        
 if __name__ == "__main__":
     root = Tk()
     root.mainloop()
