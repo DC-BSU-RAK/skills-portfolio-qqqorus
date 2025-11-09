@@ -510,9 +510,25 @@ class MathQuiz:
                 self.correct_ans = a - b
             self.current_ques = f'{a} {operator} {b} = ?'
         
+        self.question_label.config(text=self.current_ques)
+    
+        if self.current_mode == "easy":
+            self.generate_choices()
+        else:
+            if hasattr(self, 'answer_entry'):
+                self.answer_entry.delete(0, END)
+                self.answer_entry.focus()
         
+        # start the appropriate timer for each mode
+        if self.current_mode == "moderate" and self.question_number == 1:
+            # start moderate timer
+        elif self.current_mode == "hard" and self.question_number == 1:
+            # start hard timer
     
-    
+    def generate_choices(self):
+        self.choices = [self.correct_ans]
+        while len(self.choices) < 4:
+        
 if __name__ == "__main__":
     root = Tk()
     root.mainloop()
