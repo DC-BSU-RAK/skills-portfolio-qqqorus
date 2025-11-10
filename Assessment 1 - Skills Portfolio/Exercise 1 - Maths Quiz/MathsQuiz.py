@@ -576,7 +576,34 @@ class MathQuiz:
         for i, button in enumerate(self.choice_buttons):
             button.config(text=str(self.choices[i]), state='normal', bg='#c0c0c0')
             
+    def start_mod_timer(self):
+        self.mod_timer_running = True
+        self.update_mod_timer()
+    
+    def update_mod_timer(self):
+        # checks if timer should still run and if quiz frame still exists
+        if (self.mod_timer_running and self.mod_time_remaining > 0
+            and hasattr(self, 'quiz_frame') and self.quiz_frame.winfo_exists()
+            and hasattr(self, 'mod_timer_label') and self.mod_timer_label.winfo_exists()):
+            
+            self.mod_time_remaining -= 1
+            timer_text = f'Time left: {self.mod_time_remaining}s'
+            self.mod_timer_label.config(text=timer_text, fg='white')
+            
+            if self.mod_time_remaining <= 3:
+                self.mod_timer_label.config(fg='red')
 
+            self.root.after(1000, self.update_mod_timer)
+        
+        elif self.mod_timer_running and self.mod_time_remaining <= 0:
+            self.mod_timer_running = False
+            # time out func
+        
+        else:
+            # timer was stopped or screen was closed
+            self.mod_timer_running = False
+            
+    def mod_time_out(self):
         
 if __name__ == "__main__":
     root = Tk()
