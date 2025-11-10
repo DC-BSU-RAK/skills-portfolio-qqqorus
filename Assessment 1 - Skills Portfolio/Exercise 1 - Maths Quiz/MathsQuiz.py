@@ -603,7 +603,17 @@ class MathQuiz:
             # timer was stopped or screen was closed
             self.mod_timer_running = False
             
+    # timer has run out
     def mod_time_out(self):
+        if hasattr(self, 'quiz_frame') and self.quiz_frame.winfo_exists():
+            # time's up and lose half a heart and move to next question
+            self.hearts -= 0.5
+            self.show_feedback(False)
+            self.update_heart_images()  # update heart images
+            if self.hearts <= 0:
+                self.root.after(1000, [placeholder])
+            else:
+                self.root.after(1000, [placeholder])
         
 if __name__ == "__main__":
     root = Tk()
