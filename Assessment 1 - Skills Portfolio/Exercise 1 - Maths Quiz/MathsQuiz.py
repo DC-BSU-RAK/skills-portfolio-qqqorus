@@ -23,7 +23,7 @@ class MathQuiz:
             # timer for hard mode, time remaining (for both mod and hard), is timer running, 
             # story progress, quiz finished, play gif
         self.score = 0 # set the score to 0
-        self.hearts = 3 # set the number of hearts to 3 (full hearts)
+        self.hearts = 3.0 # set the number of hearts to 3 (full hearts) and as a float
         self.current_mode = None # set the current mode to none
         self.current_ques = None # question is none
         self.correct_ans = None # no correct answer set as default
@@ -32,7 +32,7 @@ class MathQuiz:
         self.ques_num = 0 # set to 0, will increment when the quiz starts
         self.total_ques = 10 # all quiz modes have 10 questions max
         self.time_limit = 15
-        self.mod_time_limit = 10 # 10 seconds for each question in moderate mode
+        self.mod_time_limit = 15 # 15 seconds for each question in moderate mode
         self.hardmode_total_time = 90 # 1min and 30secs timer for the whole hardmode quiz
         self.time_remaining = self.time_limit
         self.mod_time_remaining = self.mod_time_limit
@@ -111,6 +111,14 @@ class MathQuiz:
             img_path = f'./img/feedback/{type}.png' # uses 'type' instead of a random letter bc the file name is referred to based on the type
             self.feedback_imgs[type] = ImageTk.PhotoImage(Image.open(img_path)) # image appending with the type
 
+        self.heart_images = {}
+        heart_types = ['empty', 'full', 'half']
+        for type in heart_types:
+            img_path = f'./img/hearts/{type}.png'
+            img = Image.open(img_path)
+            img = img.resize((30,30)) # resize the hearts to 30x30 pixels
+            self.heart_images[type] = ImageTk.PhotoImage(img)
+
     # creating the main_menu with gif background
     def main_menu_loader(self):
         for widget in self.container.winfo_children():
@@ -124,9 +132,12 @@ class MathQuiz:
         self.gif_label = Label(self.main_menu, bg='#000000')
         self.gif_label.place(x=0, y=0, relwidth=1, relheight=1)
         
-        # will create function to load and play the gif bg
+        # load and play the gif bg
+        self.gif_playing = True
+        self.load_and_play_gif()
         
-        # putting the buttons for mode selection here
+        # putting the buttons for mode selection
+        self.create_mode_buttons()
         
     # function to load and play the main menu bg gif
     def load_and_play_gif(self):
