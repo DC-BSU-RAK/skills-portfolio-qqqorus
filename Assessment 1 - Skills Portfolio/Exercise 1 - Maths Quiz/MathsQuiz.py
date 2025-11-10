@@ -31,15 +31,20 @@ class MathQuiz:
         self.attempts = 0 # set to 0, will count when the quiz starts
         self.ques_num = 0 # set to 0, will increment when the quiz starts
         self.total_ques = 10 # all quiz modes have 10 questions max
-        self.time_limit = 10 # 10 seconds for each question in moderate mode
+        self.time_limit = 15
+        self.mod_time_limit = 10 # 10 seconds for each question in moderate mode
         self.hardmode_total_time = 90 # 1min and 30secs timer for the whole hardmode quiz
         self.time_remaining = self.time_limit
+        self.mod_time_remaining = self.mod_time_limit
         self.hardmode_time_remaining = self.hardmode_total_time
-        self.timer_running = False 
+        self.timer_running = False
+        self.mod_timer_running = False
         self.hardmode_timer_running = False
         self.story_progress = 0 # story progress will increase when the game starts based on frames
         self.quiz_completed = False
         self.gif_playing = False
+        self.mod_quiz_part = 1 # tracks which moderate quiz part the user is in
+        self.next_action = None
         
         # container for all frames
         self.container = Frame(self.root, bg='#000000')
@@ -82,9 +87,12 @@ class MathQuiz:
             self.moderate_bg.append(img)
 
         # quiz background for moderate mode
-        mod_quiz_path = './img/moderate/modquizbg.png'
-        self.moderate_quiz_bg = ImageTk.PhotoImage(Image.open(mod_quiz_path))
-        
+        self.mod_quiz_bgs = []
+        for i in range(1, 4): # modquizbg1.png to modquizbg3.png
+            img_path = f'./img/moderate/modquizbg{i}.png'
+            img = ImageTk.PhotoImage(Image.open(img_path))
+            self.mod_quiz_bgs.append(img)
+            
         # hard mode bgs
         self.hard_bg = []
         for i in range(1, 4):
