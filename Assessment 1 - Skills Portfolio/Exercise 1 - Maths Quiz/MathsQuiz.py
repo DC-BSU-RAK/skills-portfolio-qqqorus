@@ -246,18 +246,33 @@ class MathQuiz:
     def show_moderate_story(self):
         self.story_progress += 1
         
-        bg_index = min(self.story_progress - 1, 16)
+        bg_index = min(self.story_progress - 1, 16) # mod1.png to mod17.png
         
         """
         EDIT THE BG IMGS LATER
         """
         story_actions = {
-            1: lambda: # show moderate story and the background,
-            # will add more story actions once the show story frame functions is created
-            9: # start mod quiz part 1,
-            12: # start mod quiz part 2,
-            17: # start mod quiz part 3,
-            18: lambda: [placeholder] # go back to main menu
+            1: lambda: self.show_story_frame(self.show_moderate_story, bg_index), # show moderate story and the background,
+            2: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            3: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            4: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            5: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            6: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            7: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            8: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            9: self.start_moderate_quiz_part1, # start mod quiz part 1
+            10: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            11: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            12: self.start_moderate_quiz_part2, # start mod quiz part 2
+            13: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            14: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            15: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            16: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            17: self.start_moderate_quiz_part3, # start mod quiz part 3,
+            18: lambda: self.show_story_frame(self.show_moderate_story, bg_index), # go back to main menu
+            19: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            20: lambda: self.show_story_frame(self.main_menu_loader, bg_index),
+            21: lambda: self.show_story_frame(self.show_moderate_story, bg_index)
         }
        
         action = story_actions.get(self.story_progress)
@@ -550,7 +565,18 @@ class MathQuiz:
     
     def generate_choices(self):
         self.choices = [self.correct_ans]
+        # function to make the wrong choices
         while len(self.choices) < 4:
+            wrong_ans = self.correct_ans + random.randint(-5, 5)
+            if wrong_ans != self.correct_ans and wrong_ans > 0 and wrong_ans not in self.choices:
+                self.choices.append(wrong_ans)
+        
+        # randomizes the buttons
+        random.shuffle(self.choices) # shuffle is from random lib
+        for i, button in enumerate(self.choice_buttons):
+            button.config(text=str(self.choices[i]), state='normal', bg='#c0c0c0')
+            
+
         
 if __name__ == "__main__":
     root = Tk()
