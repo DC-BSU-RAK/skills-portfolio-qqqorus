@@ -15,6 +15,12 @@ class MathQuiz:
         self.root.resizable(0,0)
         self.root['bg'] = '#000000'
         
+        # pygame audio
+        [placeholder]
+        
+        # load audio files
+        [placeholder]
+        
         # center the window
         self.center_window()
         
@@ -45,14 +51,21 @@ class MathQuiz:
         
         # container for all frames
         self.container = Frame(self.root, bg='#000000')
-        self.container.place(x=0, y=0, relwidth=1, relhight=1)
+        self.container.place(x=0, y=0, relwidth=1, relheight=1)
         
         # call the function to load images
         self.load_images()
         
+        # add bg music
+        [placeholder]
+        
         # function to load the main menu
         self.main_menu_loader()
         
+    # load audio function
+    [placeholder]
+    
+    
     # a function to center the tkinter window when it opens
     def center_window(self):
         self.root.update()  # Force window to update and calculate actual size
@@ -69,7 +82,7 @@ class MathQuiz:
         # backgrounds for easy mode (2 story images and 1 quiz background)
         self.easy_bg = [] # a list to store all images for the story
         for i in range(1, 3):
-            img_path = f".img/easy/easy{i}.png" # imports the image files
+            img_path = f"./img/easy/easy{i}.png" # imports the image files
             img = ImageTk.PhotoImage(Image.open(img_path)) # opens each image
             self.easy_bg.append(img) # appends the images in the list
 
@@ -80,7 +93,7 @@ class MathQuiz:
         # backgrounds for moderate mode (17 story images and 1 quiz background)
         self.moderate_bg = []
         for i in range(1, 18): # mod1.png to mod17.png
-            img_path = f".img/moderate/mod{i}.png"
+            img_path = f"./img/moderate/mod{i}.png"
             img = ImageTk.PhotoImage(Image.open(img_path))
             self.moderate_bg.append(img)
 
@@ -172,7 +185,7 @@ class MathQuiz:
                  bg='#c0c0c0',
                  font=('Lucida Console', 15),
                  padx=46, pady=3,
-                 command=lambda: self.start_story('easy'))
+                 command=lambda: self.start_story('easy')) # insert play sound frr button [placeholder]
         easy_btn.place(x=125, y=384)
 
         # moderate button
@@ -180,7 +193,7 @@ class MathQuiz:
                         bg='#c0c0c0',
                         font=('Lucida Console', 15),
                         padx=21, pady=3,
-                        command=lambda: self.start_story('moderate'))
+                        command=lambda: self.start_story('moderate')) # insert play sound frr button [placeholder]
         med_btn.place(x=298, y=384)
 
         # hard button
@@ -188,7 +201,7 @@ class MathQuiz:
                         bg='#c0c0c0',
                         font=('Lucida Console', 15),
                         padx=46, pady=3,
-                        command=lambda: self.start_story('hard'))
+                        command=lambda: self.start_story('hard')) # insert play sound frr button [placeholder]
         hard_btn.place(x=468, y=384)
 
     # will set the bg image on a frame
@@ -237,40 +250,39 @@ class MathQuiz:
             self.show_story_frame(self.start_easy_quiz, 0) # show story frame, start with easy quiz
         elif self.story_progress == 2:
             if self.quiz_completed:
-                self.show_story_frame(self.main_menu_loader, 1) # show story frame, go back to main menu
+                [placeholder] # show ending screen
             else:
                 self.start_easy_quiz # start with easy quiz
     
     def show_moderate_story(self):
         self.story_progress += 1
         
-        bg_index = min(self.story_progress - 1, 20) # mod1.png to mod17.png
+        bg_index = min(self.story_progress - 1, 16) # mod1.png to mod17.png
         
         """
         EDIT THE BG IMGS LATER
         """
         story_actions = {
-            1: lambda: self.show_story_frame(self.show_moderate_story, bg_index), # show moderate story and the background,
-            2: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
-            3: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
-            4: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
-            5: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
-            6: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
-            7: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
-            8: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            1: lambda: self.show_story_frame(self.show_moderate_story, 0), # show moderate story and the background,
+            2: lambda: self.show_story_frame(self.show_moderate_story, 1),
+            3: lambda: self.show_story_frame(self.show_moderate_story, 2),
+            4: lambda: self.show_story_frame(self.show_moderate_story, 3),
+            5: lambda: self.show_story_frame(self.show_moderate_story, 4),
+            6: lambda: self.show_story_frame(self.show_moderate_story, 5),
+            7: lambda: self.show_story_frame(self.show_moderate_story, 6),
+            8: lambda: self.show_story_frame(self.show_moderate_story, 7),
             9: self.start_moderate_quiz_part1, # start mod quiz part 1
-            10: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
-            11: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            10: lambda: self.show_story_frame(self.show_moderate_story, 8),
+            11: lambda: self.show_story_frame(self.show_moderate_story, 9),
             12: self.start_moderate_quiz_part2, # start mod quiz part 2
-            13: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
-            14: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
-            15: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
-            16: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
+            13: lambda: self.show_story_frame(self.show_moderate_story, 10),
+            14: lambda: self.show_story_frame(self.show_moderate_story, 11),
+            15: lambda: self.show_story_frame(self.show_moderate_story, 12),
+            16: lambda: self.show_story_frame(self.show_moderate_story, 13),
             17: self.start_moderate_quiz_part3, # start mod quiz part 3,
-            18: lambda: self.show_story_frame(self.show_moderate_story, bg_index), # go back to main menu
-            19: lambda: self.show_story_frame(self.show_moderate_story, bg_index),
-            20: lambda: self.show_story_frame(self.main_menu_loader, bg_index),
-            21: lambda: self.show_story_frame(self.show_moderate_story, bg_index)
+            18: lambda: self.show_story_frame(self.show_moderate_story, 14), # go back to main menu
+            19: lambda: self.show_story_frame(self.show_moderate_story, 15),
+            20: lambda: self.show_story_frame([placeholder], 16),
         }
        
         action = story_actions.get(self.story_progress)
@@ -284,7 +296,7 @@ class MathQuiz:
             self.show_story_frame(self.start_hard_quiz, 0) # start hard quiz
         elif self.story_progress == 2:
             if self.quiz_completed:
-                self.show_story_frame(self.main_menu_loader) # go back to main menu
+                [placeholder] # go to ending screen
             else:
                 self.start_hard_quiz # start hard quiz
     
