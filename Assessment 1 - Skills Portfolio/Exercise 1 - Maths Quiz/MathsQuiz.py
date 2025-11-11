@@ -577,20 +577,20 @@ class MathQuiz:
             self.mod_timer_label = Label(self.quiz_frame, text=timer_text,
                                          font=('Lucida Console', 16), 
                                          fg='#f39c12', bg='black')
-            self.mod_timer_label.place(x=300, y=520)
+            self.mod_timer_label.place(x=300, y=100)
             
         if self.current_mode == 'hard':
             timer_text = f'Time Left: {self.hardmode_time_remaining}s'
             self.hard_timer_label = Label(self.quiz_frame, text=timer_text,
                                           font=('Lucida Console', 16),
                                           fg='#e74c3c', bg='black')
-            self.hard_timer_label.place(x=300, y=520)
+            self.hard_timer_label.place(x=300, y=100)
         
         self.ques_label = Label(self.quiz_frame, text='', 
                                 font=('Lucida Console', 24, 'bold'), 
                                 fg='black', bg='white',
                                 padx=23, pady=18)
-        self.ques_label.place(x=510, y=205, anchor='center')
+        self.ques_label.place(x=510, y=260, anchor='center')
         
         # input area for the user to answer
         if self.current_mode == 'easy':
@@ -622,16 +622,17 @@ class MathQuiz:
     def create_mcq_interface(self):
         self.choice_buttons = [] # empty list to store the choices
         button_positions = [
-            (250, 300), (450, 300), 
-            (250, 400), (450, 400)
+            (358, 356), (510, 356), 
+            (358, 415), (510, 415)
         ] # list storing the buttons coordinates
         
         for i, (x, y) in enumerate(button_positions):
             choice_btn = Button(self.quiz_frame, text='',
-                                font=('Lucida Console', 14),
+                                font=('Lucida Console', 15),
                                 command=lambda idx=i: [self.play_sound('button'), # play button click sound
                                                        self.check_choice(idx)],
-                                width=8, height=2, bg='#c0c0c0', fg='black')
+                                width=10, bg='#c0c0c0', fg='black',
+                                padx=7, pady=5)
             choice_btn.place(x=x, y=y)
             self.choice_buttons.append(choice_btn) # appends the choices inside the list
     
@@ -641,7 +642,7 @@ class MathQuiz:
         self.answer_entry = Entry(self.quiz_frame, textvariable='Answer',
                                   font=('Lucida Console', 20),
                                   width=10, justify='center')
-        self.answer_entry.place(x=420, y=310)
+        self.answer_entry.place(x=420, y=365)
         self.answer_entry.bind('<Return>', lambda e: [self.play_sound('button'), # play button sound
                                                       self.check_ans_entry()]) # uses the return key in the keyboard to submit the answer
         self.answer_entry.focus()
@@ -653,7 +654,7 @@ class MathQuiz:
                                              self.check_ans_entry()],
                             bg='#c0c0c0', fg='black',
                             padx=30, pady=3)
-        submit_btn.place(x=425, y=420)
+        submit_btn.place(x=425, y=443)
         
     # update hearts using imags
     def update_hearts_display(self):
