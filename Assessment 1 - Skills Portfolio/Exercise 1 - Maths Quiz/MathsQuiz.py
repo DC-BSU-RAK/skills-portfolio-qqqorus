@@ -38,7 +38,7 @@ class MathQuiz:
         self.total_ques = 10 # all quiz modes have 10 questions max
         self.time_limit = 15
         self.mod_time_limit = 15 # 15 seconds for each question in moderate mode
-        self.hardmode_total_time = 90 # 1min and 30secs timer for the whole hardmode quiz
+        self.hardmode_total_time = 120 # 2min timer for the whole hardmode quiz
         self.time_remaining = self.time_limit
         self.mod_time_remaining = self.mod_time_limit
         self.hardmode_time_remaining = self.hardmode_total_time
@@ -389,8 +389,8 @@ class MathQuiz:
         # score display
         score_label = Label(ending_frame, text=f'Final Score: {self.score}/100',
                             font=('Lucida Console', 20, 'bold'),
-                            fg='white', bg='black')
-        score_label.place(x=375, y=300, anchor='center')
+                            fg='black', bg='#d7c198')
+        score_label.place(x=375, y=340, anchor='center')
         
         # grade calculation based on the score
         percentage = self.score
@@ -411,9 +411,10 @@ class MathQuiz:
             grade_color = "#e74c3c"
     
         grade_label = Label(ending_frame, text=f'Grade: {grade}',
-                            font=('Lucida Console', 24, 'bold'),
-                            fg=grade_color, bg='black')
-        grade_label.place(x=375, y=350, anchor='center')
+                            font=('Lucida Console', 18, 'bold'),
+                            fg='black', bg=grade_color,
+                            padx=5, pady=2)
+        grade_label.place(x=375, y=380, anchor='center')
         
         # continue button to proceed to the main menu
         continue_btn = Button(ending_frame, text='Back to Main Menu',
@@ -421,7 +422,7 @@ class MathQuiz:
                               bg='#c0c0c0',
                               command=lambda: [self.play_sound('button'), # play button sound click
                                                self.main_menu_loader()]) # go back to main menu
-        continue_btn.place(x=375, y=450, anchor='center')
+        continue_btn.place(x=375, y=520, anchor='center')
         
         # bind key press to continue
         self.root.bind('<KeyPress>', lambda e: [self.play_sound('button'), # play sound
@@ -590,7 +591,7 @@ class MathQuiz:
                                 font=('Lucida Console', 24, 'bold'), 
                                 fg='black', bg='white',
                                 padx=23, pady=18)
-        self.ques_label.place(x=510, y=260, anchor='center')
+        self.ques_label.place(x=505, y=260, anchor='center')
         
         # input area for the user to answer
         if self.current_mode == 'easy':
@@ -864,7 +865,7 @@ class MathQuiz:
                 self.score += 5 # gives 5 points on the second try
             self.show_feedback(True) # boolean to show the feedback
             self.score_label.config(text=f'Score: {self.score}')
-            self.root.after(1000, self.next_ques)
+            self.root.after(2000, self.next_ques)
         
         else:
             self.play_sound('incorrect') # sound if incorrect
@@ -880,9 +881,9 @@ class MathQuiz:
                 self.show_feedback(False)
                 self.update_heart_img() # update heart images
                 if self.hearts <= 0:
-                    self.root.after(1500, self.game_over)
+                    self.root.after(2000, self.game_over)
                 else:
-                    self.root.after(1500, self.next_ques)
+                    self.root.after(2000, self.next_ques)
                     
     def check_ans_entry(self):
         # if the user gives a data type that is not an integer
@@ -905,7 +906,7 @@ class MathQuiz:
                 self.score += 5 # +5 for correct ans on second try
             self.show_feedback(True)
             self.score_label.config(text=f'Score: {self.score}')
-            self.root.after(1000, self.next_ques)
+            self.root.after(2000, self.next_ques)
         
         else:
             self.play_sound('incorrect') # incorrect sfx
@@ -915,7 +916,7 @@ class MathQuiz:
                 self.show_feedback(False)
                 self.update_heart_img()
                 if self.hearts <= 0:
-                    self.root.after(1500, self.game_over)
+                    self.root.after(2000, self.game_over)
                 else:
                     # allow second attempt
                     self.answer_entry.delete(0, END) # clears the entry area
@@ -927,9 +928,9 @@ class MathQuiz:
                 self.show_feedback(False)
                 self.update_heart_img()
                 if self.hearts <= 0:
-                    self.root.after(1000, self.game_over)
+                    self.root.after(2000, self.game_over)
                 else:
-                    self.root.after(1000, self.next_ques)
+                    self.root.after(2000, self.next_ques)
     
     def next_ques(self):
         if self.ques_num >= self.total_ques:
