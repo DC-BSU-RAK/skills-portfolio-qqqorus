@@ -300,6 +300,76 @@ class MathQuiz:
             else:
                 self.start_hard_quiz # start hard quiz
     
+    # show ending screen for easy mode
+    def show_easy_ending(self):
+        [placeholder] # audio 
+        self.show_ending_screen('easy', 'easyend.png')
+    
+    # show ending screen for moderate mode
+    def show_mod_ending(self):
+        [placeholder]
+        self.show_ending_screen('moderate', 'modend.png')
+    
+    # show ending screen for hard mode 
+    def show_hard_ending(self):
+        [placeholder]
+        self.show_ending_screen('hard', 'hardend.png')
+    
+    # ending screen which shows the summary of the game mode and the score
+    def show_ending_screen(self, mode, bg_img_name):
+        for widget in self.container.winfo_children():
+            widget.destroy()
+        
+        # create ending frame
+        ending_frame = Frame(self.container, bg='#000000')
+        ending_frame.place(x=0, y=0, relwidth=1, relheight=1)
+        
+        # load and set bg images
+        bg_path = f'./img/{mode}/{bg_img_name}'
+        bg_img = ImageTk.PhotoImage(Image.open(bg_path))
+        bg_label = Label(ending_frame, image=bg_img, bg='#000000')
+        bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+        bg_label.image = bg_img
+        
+        # score display
+        score_label = Label(ending_frame, text=f'Final Score: {self.score}/100',
+                            font=('Lucida Console', 20, bold),
+                            fg='#000000')
+        score_label.place(x=375, y=300, anchor='center')
+        
+        # grade calculation based on the score
+        percentage = self.score
+        if percentage >= 90:
+            grade = 'A+'
+            grade_color = '#f1c40f'
+        elif percentage >= 80:
+            grade = "A"
+            grade_color = "#2ecc71"
+        elif percentage >= 70:
+            grade = "B"
+            grade_color = "#3498db"
+        elif percentage >= 60:
+            grade = "C"
+            grade_color = "#e67e22"
+        else:
+            grade = "D"
+            grade_color = "#e74c3c"
+    
+        grade_label = Label(ending_frame, text=f'Grade: {grade}',
+                            font=('Lucida Console', 24, 'bold'),
+                            fg=grade_color)
+        grade_label.place(x=375, y=350, anchor='center')
+        
+        # continue button to proceed to the main menu
+        continue_btn = Button(ending_frame, text='Back to Main Menu',
+                              font=('Lucida Console', 14), 
+                              bg='#c0c0c0',
+                              command=lambda: self.main_menu_loader()) # add audio for button [placeholder]
+        continue_btn.place(x=375, y=450, anchor='center')
+        
+        # bind key press to continue
+        self.root.bind('<KeyPress>', lambda e: self.main_menu_loader) # add audio on button click [placeholder]
+    
     # this shows the story frame with its bg image and continue buttons
     def show_story_frame(self, next_action, bg_index=0):
         self.stop_all_timers() # stops all timers first
