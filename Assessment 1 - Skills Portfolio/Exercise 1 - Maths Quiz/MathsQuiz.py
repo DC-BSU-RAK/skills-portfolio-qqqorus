@@ -302,7 +302,7 @@ class MathQuiz:
             if self.quiz_completed:
                 self.show_easy_ending() # show ending screen
             else:
-                self.start_easy_quiz # start with easy quiz
+                self.start_easy_quiz() # start with easy quiz
     
     def show_moderate_story(self):
         self.story_progress += 1
@@ -348,7 +348,7 @@ class MathQuiz:
             if self.quiz_completed:
                 self.show_hard_ending() # go to ending screen
             else:
-                self.start_hard_quiz # start hard quiz
+                self.start_hard_quiz() # start hard quiz
     
     # show ending screen for easy mode
     def show_easy_ending(self):
@@ -369,7 +369,7 @@ class MathQuiz:
     def show_ending_screen(self, mode, bg_img_name):
         # stop quiz music and play ending sound
         self.play_bg_music('silence')
-        self.play_bg_music('complete')
+        self.play_sound('complete')
         
         for widget in self.container.winfo_children():
             widget.destroy()
@@ -388,7 +388,7 @@ class MathQuiz:
         # score display
         score_label = Label(ending_frame, text=f'Final Score: {self.score}/100',
                             font=('Lucida Console', 20, 'bold'),
-                            fg='#000000')
+                            fg='white', bg='#000000')
         score_label.place(x=375, y=300, anchor='center')
         
         # grade calculation based on the score
@@ -411,7 +411,7 @@ class MathQuiz:
     
         grade_label = Label(ending_frame, text=f'Grade: {grade}',
                             font=('Lucida Console', 24, 'bold'),
-                            fg=grade_color)
+                            fg=grade_color, bg='#000000')
         grade_label.place(x=375, y=350, anchor='center')
         
         # continue button to proceed to the main menu
@@ -456,6 +456,7 @@ class MathQuiz:
             self.set_background_img(story_frame, bg_image)
         elif self.current_mode == 'moderate' and hasattr(self, 'moderate_bg'):
             bg_image = self.moderate_bg[bg_index] if bg_index < len(self.moderate_bg) else None
+            self.set_background_img(story_frame, bg_image)
         elif self.current_mode == 'hard' and hasattr(self, 'hard_bg'):
             bg_image = self.hard_bg[bg_index] if bg_index < len(self.hard_bg) else None
             self.set_background_img(story_frame, bg_image)
@@ -533,60 +534,60 @@ class MathQuiz:
         
         # set quiz bgs based on the mode chosen
         if self.current_mode == "easy" and hasattr(self, 'easy_quiz_bg'):
-            self.bg_label = self.set_background_image(self.quiz_frame, self.easy_quiz_bg)
-        elif self.current_mode == "moderate" and hasattr(self, 'moderate_quiz_bgs'):
+            self.bg_label = self.set_background_img(self.quiz_frame, self.easy_quiz_bg)
+        elif self.current_mode == "moderate" and hasattr(self, 'mod_quiz_bgs'):
             # Use different background for each moderate quiz part
             bg_index = self.mod_quiz_part - 1  # Convert to 0-based index
             if bg_index < len(self.mod_quiz_bgs) and self.mod_quiz_bgs[bg_index] is not None:
-                self.bg_label = self.set_background_image(self.quiz_frame, self.mod_quiz_bgs[bg_index])
+                self.bg_label = self.set_background_img(self.quiz_frame, self.mod_quiz_bgs[bg_index])
                 print(f"Using moderate quiz background {self.mod_quiz_part}")
             else:
                 # Fallback if specific background not found
-                self.bg_label = self.set_background_image(self.quiz_frame, self.mod_quiz_bgs[0])
+                self.bg_label = self.set_background_img(self.quiz_frame, self.mod_quiz_bgs[0])
         elif self.current_mode == "hard" and hasattr(self, 'hard_quiz_bg'):
-            self.bg_label = self.set_background_image(self.quiz_frame, self.hard_quiz_bg)
+            self.bg_label = self.set_background_img(self.quiz_frame, self.hard_quiz_bg)
         
         # character feedback img that is placed on the bg
         self.feedback_img_label = Label(self.quiz_frame, bg='#000000')
         self.feedback_img_label.place(x=50, y=200)
-        self.show_feedback_image('nospeech') # show the default feedback img
+        self.show_feedback_img('nospeech') # show the default feedback img
         
         # score display
         self.score_label = Label(self.quiz_frame, text=f'Score: {self.score}',
                                  font=('Lucida Console', 14),
-                                 fg='white')
+                                 fg='white', bg='#000000')
         self.score_label.place(x=300, y=50)
 
         # counts the questions
         counter_text = f'Question: {self.ques_num}/{self.total_ques}'
         self.counter_label = Label(self.quiz_frame, text=counter_text,
-                                   font=('Lucida Console, 14'),
-                                   fg='white')
+                                   font=('Lucida Console', 14),
+                                   fg='white', bg='#000000')
         self.counter_label.place(x=300, y=80)
         
-        # hearts display
-        self.hearts_frame = Frame(self.quiz_frame)
+        # display the hearts
+        self.hearts_frame = Frame(self.quiz_frame, bg='#000000')
         self.hearts_frame.place(x=500, y=50)
         self.update_hearts_display()
         
         # timer for moderate and hard mode
         if self.current_mode == 'moderate':
-            timer_text = f'Time Left: {self.time_remaining}s'
+            timer_text = f'Time Left: {self.mod_time_remaining}s'
             self.mod_timer_label = Label(self.quiz_frame, text=timer_text,
                                          font=('Lucida Console', 16), 
-                                         fg='#f39c12')
+                                         fg='#f39c12', bg='#000000')
             self.mod_timer_label.place(x=300, y=110)
             
         if self.current_mode == 'hard':
             timer_text = f'Time Left: {self.hardmode_time_remaining}s'
             self.hard_timer_label = Label(self.quiz_frame, text=timer_text,
-                                          font=('Lucida Console, 16'),
-                                          fg='#e74c3c')
+                                          font=('Lucida Console', 16),
+                                          fg='#e74c3c', bg='#000000')
             self.hard_timer_label.place(x=300, y=110)
         
         self.ques_label = Label(self.quiz_frame, text='', 
                                 font=('Lucida Console', 24, 'bold'), 
-                                fg='#000000')
+                                fg='white', bg='#000000')
         self.ques_label.place(x=375, y=200, anchor='center')
         
         # input area for the user to answer
@@ -628,15 +629,15 @@ class MathQuiz:
                                 font=('Lucida Console', 14),
                                 command=lambda idx=i: [self.play_sound('button'), # play button click sound
                                                        self.check_choice(idx)],
-                                width=8, height=2, bg='#ffffff', fg='black')
-        choice_btn.place(x=x, y=y)
-        self.choice_buttons.append(choice_btn) # appends the choices inside the list
+                                width=8, height=2, bg='#c0c0c0', fg='black')
+            choice_btn.place(x=x, y=y)
+            self.choice_buttons.append(choice_btn) # appends the choices inside the list
     
     # create an entry form for moderate and hard mode
     def create_entry_interface(self):
         answer_label = Label(self.quiz_frame, text='Answer:',
                              font=('Lucida Console', 14),
-                             fg='#00000')
+                             fg='white', bg='#000000')
         answer_label.place(x=300, y=350)
         
         # answer entry area
@@ -660,7 +661,7 @@ class MathQuiz:
     def update_hearts_display(self):
         for widget in self.hearts_frame.winfo_children():
             widget.destroy()
-            
+        
         # create heart labels
         self.heart_labels = []
         for i in range(3):
@@ -676,7 +677,7 @@ class MathQuiz:
             return
         
         for i in range(3):
-            heart_value = self.hearts - 1 # calculate the heart value for this position
+            heart_value = self.hearts - i
             
             # full heart
             if heart_value >= 1:
@@ -708,10 +709,10 @@ class MathQuiz:
         # reset timers based on mode
         if self.current_mode == "moderate":
             self.mod_time_remaining = self.mod_time_limit
-            if hasattr(self, 'moderate_timer_label'):
+            if hasattr(self, 'mod_timer_label'):
                 self.mod_timer_label.config(text=f"Time Left: {self.mod_time_remaining}s", fg='#e74c3c')
         elif self.current_mode == "hard":
-            self.hard_mode_time_remaining = self.hardmode_total_time
+            self.hardmode_time_remaining = self.hardmode_total_time
         
         # generate question based on difficulty
         if self.current_mode == 'easy':
@@ -755,7 +756,7 @@ class MathQuiz:
         
         # start the appropriate timer for each mode
         if self.current_mode == "moderate":
-            self.start_moderate_timer() # start moderate timer
+            self.start_mod_timer() # start moderate timer
         elif self.current_mode == "hard" and self.ques_num == 1:
             self.start_hard_timer() # start hard timer
     
@@ -827,7 +828,7 @@ class MathQuiz:
             if self.hardmode_time_remaining <= 10:
                 self.hard_timer_label.config(fg='red')
             
-            self.root.after(100, self.update_hard_timer)
+            self.root.after(1000, self.update_hard_timer)
         
         elif self.hardmode_timer_running and self.hardmode_time_remaining <= 0:
             self.hardmode_timer_running = False
@@ -844,6 +845,13 @@ class MathQuiz:
     def check_choice(self, choice_index):
         selected = self.choices[choice_index]
         self.attempts += 1
+        
+        # reset all buttons to default color
+        for button in self.choice_buttons:
+            button.config(bg='#c0c0c0')
+        
+        # highlight the selected button
+        self.choice_buttons[choice_index].config(bg='#a0a0a0')  # slightly darker when selected
         
         # stop moderate timer if answe ris submitted
         if self.current_mode == 'moderate':
@@ -873,9 +881,9 @@ class MathQuiz:
                 self.show_feedback(False)
                 self.update_heart_img() # update heart images
                 if self.hearts <= 0:
-                    self.root.after(2000, self.game_over)
+                    self.root.after(1500, self.game_over)
                 else:
-                    self.root.afer(2000, self.next_ques)
+                    self.root.after(1500, self.next_ques)
                     
     def check_ans_entry(self):
         # if the user gives a data type that is not an integer
@@ -897,7 +905,7 @@ class MathQuiz:
             else:
                 self.score += 5 # +5 for correct ans on second try
             self.show_feedback(True)
-            self.score_label.config(text='Score: {self.score}')
+            self.score_label.config(text=f'Score: {self.score}')
             self.root.after(1000, self.next_ques)
         
         else:
@@ -908,7 +916,7 @@ class MathQuiz:
                 self.show_feedback(False)
                 self.update_heart_img()
                 if self.hearts <= 0:
-                    self.root.after(2000, self.game_over)
+                    self.root.after(1500, self.game_over)
                 else:
                     # allow second attempt
                     self.answer_entry.delete(0, END) # clears the entry area
@@ -931,7 +939,7 @@ class MathQuiz:
                 self.mod_timer_running = False
             elif self.current_mode == 'hard':
                 self.hardmode_timer_running = False
-            self.continue_story # continue story after the quiz is completed
+            self.continue_story() # continue story after the quiz is completed
         else:
             self.generate_question()
     
