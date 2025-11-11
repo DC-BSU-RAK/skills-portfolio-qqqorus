@@ -74,10 +74,10 @@ class MathQuiz:
         }
         
         # sound effects
-        self.btn_sound = './audio/btnclick.wav'
-        self.correct_sound = './audio/correct.wav'
-        self.incorrect_sound = './audio/incorrect.wav'
-        self.complete_sound = './audio/complete.wav'
+        self.btn_sound = './audio/btnclick.mp3'
+        self.correct_sound = './audio/correct.mp3'
+        self.incorrect_sound = './audio/incorrect.mp3'
+        self.complete_sound = './audio/ending.mp3'
     
         # story sound effects
         self.footsteps1 = './audio/footsteps1.mp3'
@@ -179,6 +179,9 @@ class MathQuiz:
         for widget in self.container.winfo_children():
             widget.destroy() # this function creates a clear container
 
+        # play music for main menu
+        self.play_bg_music('main_menu')
+
         # creating frame for main menu
         self.main_menu = Frame(self.container, bg='#000000')
         self.main_menu.place(x=0, y=0, relwidth=1, relheight=1)
@@ -229,7 +232,8 @@ class MathQuiz:
                  bg='#c0c0c0',
                  font=('Lucida Console', 15),
                  padx=46, pady=3,
-                 command=lambda: self.start_story('easy')) # insert play sound frr button [placeholder]
+                 command=lambda: [self.play_sound('button'), # play button click sound 
+                                  self.start_story('easy')]) # start easy story
         easy_btn.place(x=125, y=384)
 
         # moderate button
@@ -237,7 +241,8 @@ class MathQuiz:
                         bg='#c0c0c0',
                         font=('Lucida Console', 15),
                         padx=21, pady=3,
-                        command=lambda: self.start_story('moderate')) # insert play sound frr button [placeholder]
+                        command=lambda: [self.play_sound('button'), # play button click sound 
+                                  self.start_story('moderate')]) # play moderate story
         med_btn.place(x=298, y=384)
 
         # hard button
@@ -245,7 +250,8 @@ class MathQuiz:
                         bg='#c0c0c0',
                         font=('Lucida Console', 15),
                         padx=46, pady=3,
-                        command=lambda: self.start_story('hard')) # insert play sound frr button [placeholder]
+                        command=lambda: [self.play_sound('button'), # play button click sound 
+                                  self.start_story('hard')]) # play hard story
         hard_btn.place(x=468, y=384)
 
     # will set the bg image on a frame
@@ -294,7 +300,7 @@ class MathQuiz:
             self.show_story_frame(self.start_easy_quiz, 0) # show story frame, start with easy quiz
         elif self.story_progress == 2:
             if self.quiz_completed:
-                [placeholder] # show ending screen
+                self.show_easy_ending() # show ending screen
             else:
                 self.start_easy_quiz # start with easy quiz
     
@@ -326,7 +332,7 @@ class MathQuiz:
             17: self.start_moderate_quiz_part3, # start mod quiz part 3,
             18: lambda: self.show_story_frame(self.show_moderate_story, 14), # go back to main menu
             19: lambda: self.show_story_frame(self.show_moderate_story, 15),
-            20: lambda: self.show_story_frame([placeholder], 16),
+            20: lambda: self.show_story_frame(self.show_mod_ending, 16),
         }
        
         action = story_actions.get(self.story_progress)
@@ -340,27 +346,31 @@ class MathQuiz:
             self.show_story_frame(self.start_hard_quiz, 0) # start hard quiz
         elif self.story_progress == 2:
             if self.quiz_completed:
-                [placeholder] # go to ending screen
+                self.show_hard_ending() # go to ending screen
             else:
                 self.start_hard_quiz # start hard quiz
     
     # show ending screen for easy mode
     def show_easy_ending(self):
-        [placeholder] # audio 
+        self.play_sound('complete') # audio 
         self.show_ending_screen('easy', 'easyend.png')
     
     # show ending screen for moderate mode
     def show_mod_ending(self):
-        [placeholder]
+        self.play_sound('complete') # audio 
         self.show_ending_screen('moderate', 'modend.png')
     
     # show ending screen for hard mode 
     def show_hard_ending(self):
-        [placeholder]
+        self.play_sound('complete') # audio 
         self.show_ending_screen('hard', 'hardend.png')
     
     # ending screen which shows the summary of the game mode and the score
     def show_ending_screen(self, mode, bg_img_name):
+        # stop quiz music and play ending sound
+        self.play_bg_music('silence')
+        self.play_bg_music('complete')
+        
         for widget in self.container.winfo_children():
             widget.destroy()
         
@@ -377,7 +387,7 @@ class MathQuiz:
         
         # score display
         score_label = Label(ending_frame, text=f'Final Score: {self.score}/100',
-                            font=('Lucida Console', 20, bold),
+                            font=('Lucida Console', 20, 'bold'),
                             fg='#000000')
         score_label.place(x=375, y=300, anchor='center')
         
@@ -408,15 +418,29 @@ class MathQuiz:
         continue_btn = Button(ending_frame, text='Back to Main Menu',
                               font=('Lucida Console', 14), 
                               bg='#c0c0c0',
-                              command=lambda: self.main_menu_loader()) # add audio for button [placeholder]
+                              command=lambda: [self.play_sound('button'), # play button sound click
+                                               self.main_menu_loader()]) # go back to main menu
         continue_btn.place(x=375, y=450, anchor='center')
         
         # bind key press to continue
-        self.root.bind('<KeyPress>', lambda e: self.main_menu_loader) # add audio on button click [placeholder]
+        self.root.bind('<KeyPress>', lambda e: [self.play_sound('button'), # play sound
+                                                self.main_menu_loader()]) # go back to main menu
     
     # this shows the story frame with its bg image and continue buttons
     def show_story_frame(self, next_action, bg_index=0):
         self.stop_all_timers() # stops all timers first
+
+        # stops any music for story panels
+        self.play_bg_music('silence')
+        
+        # play story sound effects based on bg index
+        if self.current_mode == 'moderate':
+            if bg_index == 5: # mod6.png
+                self.root.after(500, lambda: self.play_sound('footsteps1'))
+            elif bg_index == 11: # mod12.png
+                self.root.after(500, lambda: self.play_sound('footsteps2'))
+            elif bg_index == 15: # mod16.png
+                self.root.after(500, lambda: self.play_sound('thud'))
 
         # for a clear container
         for widget in self.container.winfo_children():
@@ -460,6 +484,7 @@ class MathQuiz:
         self.total_ques = 10
         self.ques_num = 0
         self.quiz_completed = False
+        self.play_bg_music('easy_quiz') # play easy quiz music
         self.create_quiz_screen() # create quiz screen
         self.generate_question() # generate question function
     
@@ -467,6 +492,7 @@ class MathQuiz:
         self.total_ques = 3
         self.ques_num = 0
         self.quiz_completed = False
+        self.play_bg_music('moderate_quiz') # play moderate quiz music
         self.create_quiz_screen() # create quiz screen
         self.generate_question() # generate question function
 
@@ -474,6 +500,7 @@ class MathQuiz:
         self.total_ques = 3
         self.ques_num = 0
         self.quiz_completed = False
+        self.play_bg_music('moderate_quiz') # play moderate quiz music
         self.create_quiz_screen() # create quiz screen
         self.generate_question() # generate question function
     
@@ -481,6 +508,7 @@ class MathQuiz:
         self.total_ques = 4 # 10 questions in total for moderate mode
         self.ques_num = 0
         self.quiz_completed = False
+        self.play_bg_music('moderate_quiz') # play moderate quiz music
         self.create_quiz_screen() # create quiz screen
         self.generate_question() # generate question function
 
@@ -488,6 +516,7 @@ class MathQuiz:
         self.total_ques = 10
         self.ques_num = 0
         self.quiz_completed = False
+        self.play_bg_music('hard_quiz') # play hard quiz music
         self.create_quiz_screen() # create quiz screen
         self.generate_question() # generate question function
 
@@ -597,7 +626,8 @@ class MathQuiz:
         for i, (x, y) in enumerate(button_positions):
             choice_btn = Button(self.quiz_frame, text='',
                                 font=('Lucida Console', 14),
-                                command=lambda idx=i: self.check_choice(idx),
+                                command=lambda idx=i: [self.play_sound('button'), # play button click sound
+                                                       self.check_choice(idx)],
                                 width=8, height=2, bg='#ffffff', fg='black')
         choice_btn.place(x=x, y=y)
         self.choice_buttons.append(choice_btn) # appends the choices inside the list
@@ -614,13 +644,15 @@ class MathQuiz:
                                   font=('Lucida Console', 14),
                                   width=10, justify='center')
         self.answer_entry.place(x=400, y=350)
-        self.answer_entry.bind('<Return>', lambda e: self.check_ans_entry()) # uses the return key in the keyboard to submit the answer
+        self.answer_entry.bind('<Return>', lambda e: [self.play_sound('button'), # play button sound
+                                                      self.check_ans_entry()]) # uses the return key in the keyboard to submit the answer
         self.answer_entry.focus()
         
         # submit button
         submit_btn = Button(self.quiz_frame, text='Submit',
                             font=('Lucida Console', 12),
-                            command=[placeholder],
+                            command=lambda: [self.play_sound('button'),
+                                             self.check_ans_entry()],
                             bg='#2ecc71', fg='white')
         submit_btn.place(x=500, y=350)
         
@@ -818,6 +850,7 @@ class MathQuiz:
             self.mod_timer_running = False
         
         if selected == self.correct_ans:
+            self.play_sound('correct') # play sound if user gets the correct ans
             if self.attempts == 1:
                 self.score += 10 # gives 10 points if user get the correct answer on first try
             else:
@@ -827,6 +860,7 @@ class MathQuiz:
             self.root.after(1000, self.next_ques)
         
         else:
+            self.play_sound('incorrect') # sound if incorrect
             if self.attempts == 1:
                 # first wrong attempt loses half a heart
                 self.hearts -= 0.5
@@ -857,6 +891,7 @@ class MathQuiz:
             self.mod_timer_running = False
         
         if user_ans == self.correct_ans:
+            self.play_sound('correct') # play sound if user gets the correct ans
             if self.attempts == 1:
                 self.score += 10 # +10 for correct ans on first try
             else:
@@ -866,6 +901,7 @@ class MathQuiz:
             self.root.after(1000, self.next_ques)
         
         else:
+            self.play_sound('incorrect') # incorrect sfx
             if self.attempts == 1:
                 # first wrong attempt -0.5 heart
                 self.hearts -= 0.5
