@@ -644,6 +644,38 @@ class MathQuiz:
     def hard_time_out(self):
         if hasattr(self, 'quiz_frame') and self.quiz_frame.winfo_exists():
             self.root.after(1000, [placeholder])
+            
+    def check_choice(self, choice_index):
+        selected = self.choices[choice_index]
+        self.attempts += 1
+        
+        # stop moderate timer if answe ris submitted
+        if self.current_mode == 'moderate':
+            self.mod_timer_running = False
+        
+        if selected == self.correct_ans:
+            if self.attempts == 1:
+                self.score += 10 # gives 10 points if user get the correct answer on first try
+            else:
+                self.score += 5 # gives 5 points on the second try
+            self.show_feedback(True) # boolean to show the feedback
+            self.score_label.config(text=f'Score: {self.score}')
+            self.root.after(1000, [placeholder])
+        
+        else:
+            if self.attempts == 1:
+                # first wrong attempt loses half a heart
+                self.hearts -= 0.5
+                self.show_feedback(False)
+                self.update_hearts_display()
+            else:
+                self.hearts -= 1
+                self.show_feedback(False)
+                self.update_hearts_display()
+                if self.hearts <= 0:
+                    self.root.after(2000, [placeholder])
+                else:
+                    self.root.afer(2000, [placeholder])
         
         
 if __name__ == "__main__":
