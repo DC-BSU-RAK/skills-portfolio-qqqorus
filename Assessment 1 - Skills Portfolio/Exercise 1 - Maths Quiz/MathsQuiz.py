@@ -15,6 +15,7 @@ class MathQuiz:
         self.root.iconbitmap(r'.\img\logo.ico') # icon for the app
         self.root.resizable(0,0)
         self.root['bg'] = '#000000'
+        # self.root.wm_attributes('-transparentcolor', 'black')
         
         # pygame audio
         pygame.mixer.init()
@@ -388,7 +389,7 @@ class MathQuiz:
         # score display
         score_label = Label(ending_frame, text=f'Final Score: {self.score}/100',
                             font=('Lucida Console', 20, 'bold'),
-                            fg='white', bg='#000000')
+                            fg='white', bg='black')
         score_label.place(x=375, y=300, anchor='center')
         
         # grade calculation based on the score
@@ -411,7 +412,7 @@ class MathQuiz:
     
         grade_label = Label(ending_frame, text=f'Grade: {grade}',
                             font=('Lucida Console', 24, 'bold'),
-                            fg=grade_color, bg='#000000')
+                            fg=grade_color, bg='black')
         grade_label.place(x=375, y=350, anchor='center')
         
         # continue button to proceed to the main menu
@@ -472,7 +473,7 @@ class MathQuiz:
         instruction_label = Label(story_frame, text='Press any key to continue...',
                                   font=('Lucida Console', 12),
                                   fg='white', bg='#000000')
-        instruction_label.place(x=250, y=550)
+        instruction_label.place(x=240, y=550)
         
     # handle any key press to continue the story 
     def handle_key_press(self, event):
@@ -548,26 +549,26 @@ class MathQuiz:
             self.bg_label = self.set_background_img(self.quiz_frame, self.hard_quiz_bg)
         
         # character feedback img that is placed on the bg
-        self.feedback_img_label = Label(self.quiz_frame, bg='#000000')
-        self.feedback_img_label.place(x=50, y=200)
+        self.feedback_img_label = Label(self.quiz_frame, bg='black')
+        self.feedback_img_label.place(x=80, y=180)
         self.show_feedback_img('nospeech') # show the default feedback img
         
         # score display
         self.score_label = Label(self.quiz_frame, text=f'Score: {self.score}',
                                  font=('Lucida Console', 14),
-                                 fg='white', bg='#000000')
-        self.score_label.place(x=300, y=50)
+                                 fg='white', bg='black')
+        self.score_label.place(x=50, y=50)
 
         # counts the questions
         counter_text = f'Question: {self.ques_num}/{self.total_ques}'
         self.counter_label = Label(self.quiz_frame, text=counter_text,
                                    font=('Lucida Console', 14),
-                                   fg='white', bg='#000000')
-        self.counter_label.place(x=300, y=80)
+                                   fg='white', bg='black')
+        self.counter_label.place(x=50, y=80)
         
         # display the hearts
         self.hearts_frame = Frame(self.quiz_frame, bg='#000000')
-        self.hearts_frame.place(x=500, y=50)
+        self.hearts_frame.place(x=580, y=50)
         self.update_hearts_display()
         
         # timer for moderate and hard mode
@@ -575,20 +576,21 @@ class MathQuiz:
             timer_text = f'Time Left: {self.mod_time_remaining}s'
             self.mod_timer_label = Label(self.quiz_frame, text=timer_text,
                                          font=('Lucida Console', 16), 
-                                         fg='#f39c12', bg='#000000')
-            self.mod_timer_label.place(x=300, y=110)
+                                         fg='#f39c12', bg='black')
+            self.mod_timer_label.place(x=300, y=520)
             
         if self.current_mode == 'hard':
             timer_text = f'Time Left: {self.hardmode_time_remaining}s'
             self.hard_timer_label = Label(self.quiz_frame, text=timer_text,
                                           font=('Lucida Console', 16),
-                                          fg='#e74c3c', bg='#000000')
-            self.hard_timer_label.place(x=300, y=110)
+                                          fg='#e74c3c', bg='black')
+            self.hard_timer_label.place(x=300, y=520)
         
         self.ques_label = Label(self.quiz_frame, text='', 
                                 font=('Lucida Console', 24, 'bold'), 
-                                fg='white', bg='#000000')
-        self.ques_label.place(x=375, y=200, anchor='center')
+                                fg='black', bg='white',
+                                padx=23, pady=18)
+        self.ques_label.place(x=510, y=205, anchor='center')
         
         # input area for the user to answer
         if self.current_mode == 'easy':
@@ -635,27 +637,23 @@ class MathQuiz:
     
     # create an entry form for moderate and hard mode
     def create_entry_interface(self):
-        answer_label = Label(self.quiz_frame, text='Answer:',
-                             font=('Lucida Console', 14),
-                             fg='white', bg='#000000')
-        answer_label.place(x=300, y=350)
-        
         # answer entry area
-        self.answer_entry = Entry(self.quiz_frame,
-                                  font=('Lucida Console', 14),
+        self.answer_entry = Entry(self.quiz_frame, textvariable='Answer',
+                                  font=('Lucida Console', 20),
                                   width=10, justify='center')
-        self.answer_entry.place(x=400, y=350)
+        self.answer_entry.place(x=420, y=310)
         self.answer_entry.bind('<Return>', lambda e: [self.play_sound('button'), # play button sound
                                                       self.check_ans_entry()]) # uses the return key in the keyboard to submit the answer
         self.answer_entry.focus()
         
         # submit button
         submit_btn = Button(self.quiz_frame, text='Submit',
-                            font=('Lucida Console', 12),
+                            font=('Lucida Console', 15, 'bold'),
                             command=lambda: [self.play_sound('button'),
                                              self.check_ans_entry()],
-                            bg='#2ecc71', fg='white')
-        submit_btn.place(x=500, y=350)
+                            bg='#c0c0c0', fg='black',
+                            padx=30, pady=3)
+        submit_btn.place(x=425, y=420)
         
     # update hearts using imags
     def update_hearts_display(self):
@@ -665,7 +663,7 @@ class MathQuiz:
         # create heart labels
         self.heart_labels = []
         for i in range(3):
-            heart_label = Label(self.hearts_frame, bg='#000000')
+            heart_label = Label(self.hearts_frame, bg='black')
             heart_label.pack(side='left', padx=2)
             self.heart_labels.append(heart_label)
     
