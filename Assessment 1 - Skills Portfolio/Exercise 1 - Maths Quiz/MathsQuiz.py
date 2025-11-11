@@ -687,17 +687,19 @@ class MathQuiz:
                 # first wrong attempt loses half a heart
                 self.hearts -= 0.5
                 self.show_feedback(False)
-                self.update_hearts_display()
+                self.update_heart_img() # update heart images
+                # dont move to the next ques yet to allow a 2nd attempt
             else:
-                self.hearts -= 1
+                # second wrong attmept loses the remaining half of the heart
+                self.hearts -= 0.5
                 self.show_feedback(False)
-                self.update_hearts_display()
+                self.update_heart_img() # update heart images
                 if self.hearts <= 0:
                     self.root.after(2000, [placeholder])
                 else:
                     self.root.afer(2000, [placeholder])
                     
-    
+    def 
         
         
 if __name__ == "__main__":
