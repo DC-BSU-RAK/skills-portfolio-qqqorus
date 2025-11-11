@@ -4,6 +4,7 @@ from PIL import Image, ImageTk, ImageSequence
 from tkinter import ttk, messagebox
 import random
 import time
+import pygame 
 
 class MathQuiz:
     def __init__(self, root):
@@ -16,10 +17,10 @@ class MathQuiz:
         self.root['bg'] = '#000000'
         
         # pygame audio
-        [placeholder]
+        pygame.mixer.init()
         
         # load audio files
-        [placeholder]
+        self.load_audio()
         
         # center the window
         self.center_window()
@@ -57,14 +58,57 @@ class MathQuiz:
         self.load_images()
         
         # add bg music
-        [placeholder]
+        self.play_bg_music('main_menu')
         
         # function to load the main menu
         self.main_menu_loader()
         
-    # load audio function
-    [placeholder]
+    # load al audio files
+    def load_audio(self):
+        # background music for different screens
+        self.bg_music = {
+            'main_menu': './audio/mainmenu.mp3',
+            'easy_quiz': './audio/easy.mp3',
+            'moderate_quiz': './audio/moderate.mp3',
+            'hard_quiz': './audio/hard.mp3'
+        }
+        
+        # sound effects
+        self.btn_sound = './audio/btnclick.wav'
+        self.correct_sound = './audio/correct.wav'
+        self.incorrect_sound = './audio/incorrect.wav'
+        self.complete_sound = './audio/complete.wav'
     
+        # story sound effects
+        self.footsteps1 = './audio/footsteps1.mp3'
+        self.footsteps2 = './audio/footsteps2.mp3'
+        self.thud_sound = './audio/thud.mp3'
+    
+    # play bg music for specific frames
+    def play_bg_music(self, type):
+        pygame.mixer.music.stop() # stop any currently playnig audio
+        if type in self.bg_music:
+            pygame.mixer.music.load(self.bg_music[type])
+            pygame.mixer.music.play(-1) # loop indefinitely
+        elif type == 'silence':
+            pygame.mixer.music.stop() # stop music for story panels
+    
+    # play sound effect
+    def play_sound(self, type):
+        if type == 'button':
+            pygame.mixer.Sound(self.btn_sound).play()
+        elif type == 'correct':
+            pygame.mixer.Sound(self.correct_sound).play()
+        elif type == 'incorrect':
+            pygame.mixer.Sound(self.incorrect_sound).play()
+        elif type == 'complete':
+            pygame.mixer.Sound(self.complete_sound).play()
+        elif type == 'footsteps1':
+            pygame.mixer.Sound(self.footsteps1).play()
+        elif type == 'footsteps2':
+            pygame.mixer.Sound(self.footsteps2).play()
+        elif type == 'thud':
+            pygame.mixer.Sound(self.thud_sound).play()
     
     # a function to center the tkinter window when it opens
     def center_window(self):
