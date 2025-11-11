@@ -954,7 +954,13 @@ class MathQuiz:
         
     def game_over(self):
         self.stop_all_timers()
-        self.main_menu_loader()
+        # instead of going to the main menu, it should show the ending screen for the current mode
+        if self.current_mode == 'easy':
+            self.show_easy_ending()
+        elif self.current_mode == 'moderate':
+            self.show_mod_ending()
+        else:
+            self.show_hard_ending()
         
 if __name__ == "__main__":
     root = Tk()
