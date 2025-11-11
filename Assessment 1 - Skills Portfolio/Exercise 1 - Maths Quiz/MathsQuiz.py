@@ -629,7 +629,7 @@ class MathQuiz:
             # time's up and lose half a heart and move to next question
             self.hearts -= 0.5
             self.show_feedback(False)
-            self.update_heart_images()  # update heart images
+            self.update_heart_img()  # update heart images
             if self.hearts <= 0:
                 self.root.after(1000, [placeholder])
             else:
@@ -699,8 +699,51 @@ class MathQuiz:
                 else:
                     self.root.afer(2000, [placeholder])
                     
-    def 
+    def check_ans_entry(self):
+        # if the user gives a data type that is not an integer
+        try:
+            user_ans = int(self.answer_entry.get())
+        except ValueError:
+            return
         
+        self.attempts += 1
+        
+        # stop mod timer if ans is submitted
+        if self.current_mode == 'moderate':
+            self.mod_timer_running = False
+        
+        if user_ans == self.correct_ans:
+            if self.attempts == 1:
+                self.score += 10 # +10 for correct ans on first try
+            else:
+                self.score += 5 # +5 for correct ans on second try
+            self.show_feedback(True)
+            self.score_label.config(text='Score: {self.score}')
+            self.root.after(1000, [placeholder])
+        
+        else:
+            if self.attempts == 1:
+                # first wrong attempt -0.5 heart
+                self.hearts -= 0.5
+                self.show_feedback(False)
+                self.update_heart_img()
+                if self.hearts <= 0:
+                    self.root.after(2000, [placeholder])
+                else:
+                    # allow second attempt
+                    self.answer_entry.delete(0, END) # clears the entry area
+                    self.answer_entry.focus()
+            
+            else:
+                # second wrong attempt -0.5 heart
+                self.hearts -= 0.5
+                self.show_feedback(False)
+                self.update_heart_img()
+                if self.hearts <= 0:
+                    self.root.after(1000, [placeholder])
+                else:
+                    self.root.after(1000, [placeholder])
+    def
         
 if __name__ == "__main__":
     root = Tk()
