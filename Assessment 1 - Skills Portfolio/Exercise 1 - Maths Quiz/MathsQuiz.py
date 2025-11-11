@@ -743,8 +743,34 @@ class MathQuiz:
                     self.root.after(1000, [placeholder])
                 else:
                     self.root.after(1000, [placeholder])
-    def
+    
+    def next_ques(self):
+        if self.ques_num >= self.total_ques:
+            self.quiz_completed = True
+            if self.current_mode == 'moderate':
+                self.mod_timer_running = False
+            elif self.current_mode == 'hard':
+                self.hardmode_timer_running = False
+            [placeholder] # continue story after the quiz is completed
+        else:
+            self.generate_question()
+    
+    def continue_story(self):
+        # stop all timers before continuing
+        self.stop_all_timers()
+        
+        if self.current_mode == 'easy':
+            self.show_easy_story()
+        elif self.current_mode == 'moderate':
+            self.show_moderate_story()
+        else:
+            self.show_hard_story()
+        
+    def game_over(self):
+        self.stop_all_timers()
+        self.main_menu_loader()
         
 if __name__ == "__main__":
     root = Tk()
+    app = MathQuiz(root)
     root.mainloop()
