@@ -597,7 +597,7 @@ class MathQuiz:
         
         elif self.mod_timer_running and self.mod_time_remaining <= 0:
             self.mod_timer_running = False
-            # time out func
+            self.mod_time_out()
         
         else:
             # timer was stopped or screen was closed
@@ -614,6 +614,37 @@ class MathQuiz:
                 self.root.after(1000, [placeholder])
             else:
                 self.root.after(1000, [placeholder])
+        
+    def start_hard_timer(self):
+        self.hardmode_timer_running = True
+        self.update_hard_timer()
+    
+    def update_hard_timer(self):
+        if (self.hardmode_timer_running and self.hardmode_time_remaining > 0
+        and hasattr(self, 'quiz_frame') and self.quiz_frame.winfo_exists()
+        and hasattr(self, 'hard_timer_label') and self.hard_timer_label.winfo_exists()):
+            
+            self.hardmode_time_remaining -= 1
+            timer_text = f'Time left: {self.hardmode_time_remaining}s'
+            self.hard_timer_label.config(text=timer_text, fg='white')
+            
+            if self.hardmode_time_remaining <= 10:
+                self.hard_timer_label.config(fg='red')
+            
+            self.root.after(100, self.update_hard_timer)
+        
+        elif self.hardmode_timer_running and self.hardmode_time_remaining <= 0:
+            self.hardmode_timer_running = False
+            self.hard_time_out()
+        
+        else:
+            # timer was stopped ot quiz screen was closed
+            self.hardmode_timer_running = False
+    
+    def hard_time_out(self):
+        if hasattr(self, 'quiz_frame') and self.quiz_frame.winfo_exists():
+            self.root.after(1000, [placeholder])
+        
         
 if __name__ == "__main__":
     root = Tk()
