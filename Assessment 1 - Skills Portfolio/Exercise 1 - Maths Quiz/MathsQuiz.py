@@ -551,7 +551,7 @@ class MathQuiz:
         
         # character feedback img that is placed on the bg
         self.feedback_img_label = Label(self.quiz_frame, bg='black')
-        self.feedback_img_label.place(x=80, y=180)
+        self.feedback_img_label.place(x=80, y=200)
         self.show_feedback_img('nospeech') # show the default feedback img
         
         # score display
@@ -578,14 +578,14 @@ class MathQuiz:
             self.mod_timer_label = Label(self.quiz_frame, text=timer_text,
                                          font=('Lucida Console', 16), 
                                          fg='#f39c12', bg='black')
-            self.mod_timer_label.place(x=300, y=100)
+            self.mod_timer_label.place(x=300, y=130)
             
         if self.current_mode == 'hard':
             timer_text = f'Time Left: {self.hardmode_time_remaining}s'
             self.hard_timer_label = Label(self.quiz_frame, text=timer_text,
                                           font=('Lucida Console', 16),
                                           fg='#e74c3c', bg='black')
-            self.hard_timer_label.place(x=300, y=100)
+            self.hard_timer_label.place(x=300, y=130)
         
         self.ques_label = Label(self.quiz_frame, text='', 
                                 font=('Lucida Console', 24, 'bold'), 
@@ -711,8 +711,6 @@ class MathQuiz:
             self.mod_time_remaining = self.mod_time_limit
             if hasattr(self, 'mod_timer_label'):
                 self.mod_timer_label.config(text=f"Time Left: {self.mod_time_remaining}s", fg='#e74c3c')
-        elif self.current_mode == "hard":
-            self.hardmode_time_remaining = self.hardmode_total_time
         
         # generate question based on difficulty
         if self.current_mode == 'easy':
