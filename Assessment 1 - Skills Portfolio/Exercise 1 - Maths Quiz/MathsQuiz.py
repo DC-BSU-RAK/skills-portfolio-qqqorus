@@ -491,23 +491,43 @@ class MathQuiz:
                             bg='#2ecc71', fg='white')
         submit_btn.place(x=500, y=350)
         
+    # update hearts using imags
     def update_hearts_display(self):
         for widget in self.hearts_frame.winfo_children():
             widget.destroy()
             
-        # [placeholder]
+        # create heart labels
+        self.heart_labels = []
         for i in range(3):
-            if i < self.hearts:
-                hearts = '♥' if i < int(self.hearts) else '♡'
-                color = 'red' if i < int(self.hearts) else 'pink'
-            else:
-                heart = '♡'
-                color = 'gray'
-
-            heart_label = Label(self.hearts_frame, text=heart,
-                                font=('Lucida Console'),
-                                fg=color)
+            heart_label = Label(self.hearts_frame, bg='#000000')
             heart_label.pack(side='left', padx=2)
+            self.heart_labels.append(heart_label)
+    
+        self.update_heart_img()
+    
+    # update the heart images based on current heart count
+    def update_heart_img(self):
+        if not hasattr(self, 'heart_labels') or not self.heart_labels:
+            return
+        
+        for i in range(3):
+            heart_value = self.hearts - 1 # calculate the heart value for this position
+            
+            # full heart
+            if heart_value >= 1:
+                if self.heart_images.get('full'):
+                    self.heart_labels[i].config(image=self.heart_images['full'])
+                    self.heart_labels[i].image = self.heart_images['full']
+            # half heart
+            elif heart_value >= 0.5:
+                if self.heart_images.get('half'):
+                    self.heart_labels[i].config(image=self.heart_images['half'])
+                    self.heart_labels[i].image = self.heart_images['half']
+            # empty heart
+            else:
+                if self.heart_images.get('empty'):
+                    self.heart_labels[i].config(image=self.heart_images['empty'])
+                    self.heart_labels[i].image = self.heart_images['empty']
     
     def generate_question(self):
         self.ques_num += 1
@@ -676,6 +696,8 @@ class MathQuiz:
                     self.root.after(2000, [placeholder])
                 else:
                     self.root.afer(2000, [placeholder])
+                    
+    
         
         
 if __name__ == "__main__":
