@@ -84,6 +84,7 @@ class MathQuiz:
         self.footsteps1 = './audio/footsteps1.mp3'
         self.footsteps2 = './audio/footsteps2.mp3'
         self.thud_sound = './audio/thud.mp3'
+        self.running = './audio/running.mp3'
     
     # play bg music for specific frames
     def play_bg_music(self, type):
@@ -110,6 +111,8 @@ class MathQuiz:
             pygame.mixer.Sound(self.footsteps2).play()
         elif type == 'thud':
             pygame.mixer.Sound(self.thud_sound).play()
+        elif type == 'running':
+            pygame.mixer.Sound(self.running).play()
     
     # a function to center the tkinter window when it opens
     def center_window(self):
@@ -301,7 +304,7 @@ class MathQuiz:
             self.show_story_frame(self.start_easy_quiz, 0) # show story frame, start with easy quiz
         elif self.story_progress == 2:
             if self.quiz_completed:
-                self.show_easy_ending() # show ending screen
+                self.show_story_frame(self.show_easy_ending, 1) # show ending screen
             else:
                 self.start_easy_quiz() # start with easy quiz
     
@@ -347,9 +350,14 @@ class MathQuiz:
             self.show_story_frame(self.start_hard_quiz, 0) # start hard quiz
         elif self.story_progress == 2:
             if self.quiz_completed:
-                self.show_hard_ending() # go to ending screen
+                self.show_story_frame(self.show_hard_story, 1) # go to ending screen
             else:
                 self.start_hard_quiz() # start hard quiz
+        elif self.story_progress == 3:
+            if self.quiz_completed:
+                self.show_story_frame(self.show_hard_ending, 2)
+            else:
+                self.start_hard_quiz()
     
     # show ending screen for easy mode
     def show_easy_ending(self):
@@ -443,6 +451,10 @@ class MathQuiz:
                 self.root.after(500, lambda: self.play_sound('footsteps2'))
             elif bg_index == 15: # mod16.png
                 self.root.after(500, lambda: self.play_sound('thud'))
+
+        elif self.current_mode == 'hard':
+            if bg_index == 2: # hard3.png
+                self.root.after(500, lambda: self.play_sound('running'))
 
         # for a clear container
         for widget in self.container.winfo_children():
@@ -551,7 +563,7 @@ class MathQuiz:
         
         # character feedback img that is placed on the bg
         self.feedback_img_label = Label(self.quiz_frame, bg='black')
-        self.feedback_img_label.place(x=80, y=200)
+        self.feedback_img_label.place(x=80, y=190)
         self.show_feedback_img('nospeech') # show the default feedback img
         
         # score display
