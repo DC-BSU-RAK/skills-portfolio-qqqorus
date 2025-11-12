@@ -433,7 +433,7 @@ class MathQuiz:
         continue_btn.place(x=375, y=520, anchor='center')
         
         # bind key press to continue
-        self.root.bind('<KeyPress>', lambda e: [self.play_sound('button'), # play sound
+        self.root.bind('<space>', lambda e: [self.play_sound('button'), # play sound
                                                 self.main_menu_loader()]) # go back to main menu
     
     # this shows the story frame with its bg image and continue buttons
@@ -479,18 +479,18 @@ class MathQuiz:
         self.next_action = next_action
         
         # binds any key press to navigate thru the narration
-        self.root.bind('<KeyPress>', self.handle_key_press)
+        self.root.bind('<space>', self.handle_key_press)
         self.root.focus_set() # ensure that the window has focus to receive key events
         
         # create the instruction label at the bottom
-        instruction_label = Label(story_frame, text='Press any key to continue...',
+        instruction_label = Label(story_frame, text='Press the SPACEBAR to continue...',
                                   font=('Lucida Console', 12),
                                   fg='white', bg='#000000')
-        instruction_label.place(x=240, y=550)
+        instruction_label.place(x=230, y=550)
         
     # handle any key press to continue the story 
     def handle_key_press(self, event):
-        self.root.unbind('<KeyPress>') # unbind the keys to prevent multiple triggers
+        self.root.unbind('<space>') # unbind the keys to prevent multiple triggers
 
         if self.next_action:
             self.next_action()
@@ -540,7 +540,7 @@ class MathQuiz:
             widget.destroy()
         
         # unbind any previous key bindings
-        self.root.unbind('<KeyPress>')
+        self.root.unbind('<space>')
         
         # quiz frame
         self.quiz_frame = Frame(self.container, bg='#000000')
