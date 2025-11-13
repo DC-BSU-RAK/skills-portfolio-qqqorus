@@ -28,43 +28,31 @@ root.title('AlexaAI')
 root.geometry('500x500')
 root['bg'] = '#234567'
 
-jokes = {}
 
-with open('randomJokes.txt', 'r') as file_handler:
-    lines = file_handler.readlines()
-joke = []
-punchline = []
+def open_file():
+    with open('randomJokes.txt', 'r') as file_handler:
+        lines = file_handler.readlines()
+    joke = []
+    punchline = []
 
-for l in lines:
-    data = l.split('?')
-    joke.append(data[0])
-    punchline.append(data[1].replace('\n', ''))
+    for l in lines:
+        data = l.split('?')
+        joke.append(data[0])
+        punchline.append(data[1].replace('\n', ''))
 
-number = random.randint(1, len(joke))
-chosen_joke = joke[number]
-chosen_punchline = punchline[number]
-print(f'{chosen_joke}?')
-print(f'{chosen_punchline}')
-
-
-
-# print(f'Joke list: {joke}')
-# print(f'Punchline list: {punchline}')
-
-
-# def open_file():
-#     with open('randomJokes.txt') as file_handler:
-#         lines = file_handler.readline()
-#         num_string = ''
-#         for line in lines:
-#             num_string += line.rstrip() + ''
+    number = random.randint(1, len(joke))
+    chosen_joke = joke[number]
+    chosen_punchline = punchline[number]
     
-#     txtarea.insert(END, num_string)
+    joketxt.insert(END, chosen_joke)
+    punchlinetxt.insert(END, chosen_punchline)
 
-# txtarea = Text(root)
-# txtarea.place(x=20, y=20, width=300, height=150)
+joketxt = Text(root)
+joketxt.place(x=20, y=20, width=300, height=150)
+punchlinetxt = Text(root)
+punchlinetxt.place(x=320, y=20, width=300, height=150)
 
-# Button(root, text='read line',
-#        command=open_file).place(x=20, y=155, width=100, height=20)
+Button(root, text='Tell me a joke',
+       command=open_file).place(x=20, y=155, width=100, height=20)
 
 root.mainloop()
