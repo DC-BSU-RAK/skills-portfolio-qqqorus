@@ -38,10 +38,18 @@ punchline = []
 for l in lines:
     data = l.split('?')
     joke.append(data[0])
-    punchline.append(data[1])
-    
-print(f'Joke list: {joke}')
-print(f'Punchline list: {punchline}')
+    punchline.append(data[1].replace('\n', ''))
+
+number = random.randint(1, len(joke))
+chosen_joke = joke[number]
+chosen_punchline = punchline[number]
+print(f'{chosen_joke}?')
+print(f'{chosen_punchline}')
+
+
+
+# print(f'Joke list: {joke}')
+# print(f'Punchline list: {punchline}')
 
 
 # def open_file():
