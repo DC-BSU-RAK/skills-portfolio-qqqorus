@@ -20,3 +20,43 @@ The program should:
 - Additionally , provide a "Quit" button to close the application.
 """
 
+from tkinter import *
+import random
+
+root = Tk()
+root.title('AlexaAI')
+root.geometry('500x500')
+root['bg'] = '#234567'
+
+jokes = {}
+
+with open('randomJokes.txt', 'r') as file_handler:
+    lines = file_handler.readlines()
+joke = []
+punchline = []
+
+for l in lines:
+    data = l.split('?')
+    joke.append(data[0])
+    punchline.append(data[1])
+    
+print(f'Joke list: {joke}')
+print(f'Punchline list: {punchline}')
+
+
+# def open_file():
+#     with open('randomJokes.txt') as file_handler:
+#         lines = file_handler.readline()
+#         num_string = ''
+#         for line in lines:
+#             num_string += line.rstrip() + ''
+    
+#     txtarea.insert(END, num_string)
+
+# txtarea = Text(root)
+# txtarea.place(x=20, y=20, width=300, height=150)
+
+# Button(root, text='read line',
+#        command=open_file).place(x=20, y=155, width=100, height=20)
+
+root.mainloop()
