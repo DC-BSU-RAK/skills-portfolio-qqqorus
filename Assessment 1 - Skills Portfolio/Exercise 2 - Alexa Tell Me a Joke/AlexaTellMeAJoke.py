@@ -22,12 +22,15 @@ The program should:
 
 from tkinter import *
 import random
+from PIL import Image, ImageTk, ImageSequence
 
 root = Tk()
 root.title('AlexaAI')
-root.geometry('500x500')
+root.geometry('750x600')
 root['bg'] = '#234567'
 
+
+    
 
 def open_file():
     with open('randomJokes.txt', 'r') as file_handler:
