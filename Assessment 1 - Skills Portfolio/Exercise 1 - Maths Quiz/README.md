@@ -39,7 +39,7 @@ An interactive game that combines math challenges with a storyline across three 
         * Used [Labels] to display text, scores, timers, and background images.
         * Used [Buttons] to submit answers, select difficulty, and replaying.
         * Used [Entry] to submit answers in moderate and hard mode.
-*
+
     *> FILE STRUCTURE <*
         MathsQuiz/
         |--- MathsQuiz.py       # main game file
@@ -51,13 +51,13 @@ An interactive game that combines math challenges with a storyline across three 
         |   |--- hearts/        # heart display images
         |--- audio/             # music and sound effects
         |--- gif/               # main menu background
-*
+
     *> CONTROLS <*
         * Mouse: Click buttons and navigate menus
         * Keyboard:
             - Press any key to advance story panels
             - Enter key to submit answers in moderate / hard mode
-*
+
     *> FUNCTIONS <*    
         `Class Structure`
             <MathQuiz> : main game class
