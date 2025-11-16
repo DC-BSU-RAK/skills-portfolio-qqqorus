@@ -504,6 +504,7 @@ class MathQuiz:
         self.generate_question() # generate question function
     
     def start_moderate_quiz_part1(self): # janitor's closet bg
+        self.mod_quiz_part = 1
         self.total_ques = 3
         self.ques_num = 0
         self.quiz_completed = False
@@ -512,6 +513,7 @@ class MathQuiz:
         self.generate_question() # generate question function
 
     def start_moderate_quiz_part2(self): # principal's office bg
+        self.mod_quiz_part = 2
         self.total_ques = 3
         self.ques_num = 0
         self.quiz_completed = False
@@ -520,6 +522,7 @@ class MathQuiz:
         self.generate_question() # generate question function
     
     def start_moderate_quiz_part3(self): # security room bg
+        self.mod_quiz_part = 3
         self.total_ques = 4 # 10 questions in total for moderate mode
         self.ques_num = 0
         self.quiz_completed = False
