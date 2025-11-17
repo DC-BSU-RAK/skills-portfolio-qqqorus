@@ -46,15 +46,16 @@ class GIFPlayer:
             self.current_frame = (self.current_frame + 1) % len(self.frames)
             self.label.after(20, self.animate)
 
-
+class AlexaAI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title('AlexaAI')
+        self.root.geometry('750x600')
+        self.root['bg'] = '#000000'
 
 # def switch_frame(frame):
 #     frame.tkraise()
 
-root = Tk()
-root.title('AlexaAI')
-root.geometry('750x600')
-root['bg'] = '#000000'
 
 center_window(root)
 
