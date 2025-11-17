@@ -1,32 +1,10 @@
-"""
-# Exercise 2 - Alexa tell me a Joke
-
-The randomJokes.txt file in the resources folder contains a dataset of random jokes. 
-Each joke is on a new line and consists of a setup and punchline separated by a question mark. 
-For example:
-
-    - Why did the chicken cross the road? To get to the other side.
-    - What happens if you boil a clown? You get a laughing stock.
-  
-Develop a Tkinter GUI application that acts like a joke-telling assistant. 
-The program should:
-
-- Display a window with a button labeled "Alexa tell me a Joke".
-- When the button is clicked, randomly select a joke from the randomJokes.txt file, 
-    display the setup of the joke in a label.
-- Provide another button labeled "Show Punchline"- When clicked, 
-    display the punchline below the setup.
-- Include a "Next Joke" button so the user can request another random joke.
-- Additionally , provide a "Quit" button to close the application.
-"""
-
 import os
 from tkinter import *
 import random
 from PIL import Image, ImageTk, ImageSequence
 
 def center_window(window):
-    window.update()  # Force window to update and calculate actual size
+    window.update()
     screen_width = window.winfo_screenwidth()
     screen_height = window.winfo_screenheight()
     window_width = window.winfo_width()
@@ -36,12 +14,10 @@ def center_window(window):
     window.geometry(f"+{x}+{y}")
 
 class GIFPlayer:
-    def __init__(self, gif_path, label, width=None, height=None):
+    def __init__(self, gif_path, label):
         self.gif_path = gif_path
         self.label = label
         self.frames = []
-        self.width = width
-        self.height = height
         self.load_gif()
         self.current_frame = 0
         self.playing = False
@@ -53,7 +29,8 @@ class GIFPlayer:
         
         with Image.open(gif_absolute_path) as img:
             for frame in ImageSequence.Iterator(img):
-                photo = ImageTk.PhotoImage(frame.copy())
+                frame = frame.resize((750, 600), Image.LANCZOS)
+                photo = ImageTk.PhotoImage(frame)
                 self.frames.append(photo)
                 
     def play(self):
@@ -67,7 +44,12 @@ class GIFPlayer:
         if self.playing and self.frames:
             self.label.config(image=self.frames[self.current_frame])
             self.current_frame = (self.current_frame + 1) % len(self.frames)
-            self.label.after(100, self.animate)  # Adjust speed as needed
+            self.label.after(20, self.animate)
+
+
+
+# def switch_frame(frame):
+#     frame.tkraise()
 
 root = Tk()
 root.title('AlexaAI')
@@ -76,53 +58,58 @@ root['bg'] = '#000000'
 
 center_window(root)
 
-container = Frame(root, bg='#000000')
-container.place(x=0, y=0, relwidth=1, relheight=1)
+title = Frame(root, bg='#000000')
+title.place(x=0, y=0, relwidth=1, relheight=1)
 
-hero_page = Frame(container, bg='#000000')
-hero_page.place(x=0, y=0, relwidth=1, relheight=1)
-
-# Create label for GIF
-gif_label = Label(hero_page, bg='#000000')
+# create label for gif
+gif_label = Label(title, bg='#000000')
 gif_label.place(relx=0.5, rely=0.5, anchor=CENTER)  # Center the label
 
-# Create and play GIF
-gif_player = GIFPlayer('gifs/hero.gif', gif_label, width=600, height=400)
+# create and play gif
+gif_player = GIFPlayer('gifs/title.gif', gif_label, width=600, height=400)
 gif_player.play()
 
 def on_closing():
     gif_player.stop()
     root.destroy()
     
-class AlexaAI():
-    def __init__(self, root):
-        self.root = root
+def open_file():
+    with open('randomJokes.txt', 'r') as file_handler:
+        lines = file_handler.readlines()
+    joke = []
+    punchline = []
+
+    for l in lines:
+        data = l.split('?')
+        joke.append(data[0])
+        punchline.append(data[1].replace('\n', ''))
+
+    number = random.randint(1, len(joke))
+    chosen_joke = joke[number]
+    chosen_punchline = punchline[number]
+
+def title_countdown():
+    countdown_time = 3
     
-# def open_file():
-#     with open('randomJokes.txt', 'r') as file_handler:
-#         lines = file_handler.readlines()
-#     joke = []
-#     punchline = []
-
-#     for l in lines:
-#         data = l.split('?')
-#         joke.append(data[0])
-#         punchline.append(data[1].replace('\n', ''))
-
-#     number = random.randint(1, len(joke))
-#     chosen_joke = joke[number]
-#     chosen_punchline = punchline[number]
+    def update_countdown():
+        if countdown_time > 0:
+            countdown_time -= 1
+            root.after(1000, update_countdown)
+        else:
+            mainframe_transition()
     
-#     joketxt.insert(END, chosen_joke)
-#     punchlinetxt.insert(END, chosen_punchline)
+    update_countdown()
+    
+def mainframe_transition():
+    gif_player.stop()
+    title.destroy()
+    
 
-# joketxt = Text(root)
-# joketxt.place(x=20, y=20, width=300, height=150)
-# punchlinetxt = Text(root)
-# punchlinetxt.place(x=320, y=20, width=300, height=150)
+interface = Frame(root, )
 
-# Button(root, text='Tell me a joke',
-#        command=open_file).place(x=20, y=155, width=100, height=20)
+
+Button(root, text='Tell me a joke',
+       command=open_file).place(x=20, y=155, width=100, height=20)
 
 root.protocol("WM_DELETE_WINDOW", on_closing)
 root.mainloop()
