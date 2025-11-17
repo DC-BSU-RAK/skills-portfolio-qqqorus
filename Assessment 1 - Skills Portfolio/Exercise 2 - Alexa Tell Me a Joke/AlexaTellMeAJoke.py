@@ -53,11 +53,29 @@ class AlexaAI:
         self.root.geometry('750x600')
         self.root['bg'] = '#000000'
 
-# def switch_frame(frame):
-#     frame.tkraise()
+        # load jokes
+        self.jokes = []
+        self.punchlines = []
 
+        
+        # create frames
+        
+        # start with title frame
+        
+        # center window using the function
+        center_window(root)
 
-center_window(root)
+    # loads the jokes from the randomJokes.txt file
+    def load_jokes(self):
+        with open('randomJokes.txt', 'r', encoding='utf-8') as file_handler:
+           lines = file_handler.readlines()
+    
+        for l in lines:
+            if '?' in l:
+                data = l.split('?', 1) # split only on the first question mark
+                if len(data) == 2:
+                    self.jokes.append(data[0].strip())
+                   self.punchlines.append(data[1].strip().replace('\n', ''))
 
 title = Frame(root, bg='#000000')
 title.place(x=0, y=0, relwidth=1, relheight=1)
@@ -74,20 +92,7 @@ def on_closing():
     gif_player.stop()
     root.destroy()
     
-def open_file():
-    with open('randomJokes.txt', 'r') as file_handler:
-        lines = file_handler.readlines()
-    joke = []
-    punchline = []
 
-    for l in lines:
-        data = l.split('?')
-        joke.append(data[0])
-        punchline.append(data[1].replace('\n', ''))
-
-    number = random.randint(1, len(joke))
-    chosen_joke = joke[number]
-    chosen_punchline = punchline[number]
 
 def title_countdown():
     countdown_time = 3
