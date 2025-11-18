@@ -60,11 +60,13 @@ class AlexaAI:
         self.load_jokes() # lad the jokes from randomJokes .txt
         
         # create frames
+        self.current_joke_index = -1
         
         # setup fonts for labels
         self.setup_fonts()
         
         # start with title frame
+        self.show_title_frame()
         
         # center window using the function
         center_window(root)
@@ -114,7 +116,7 @@ class AlexaAI:
         # frame 1 - generate joke button
         self.generate_btn = Button(self.frames['bg1'], bg='#d9d9d9', 
                                  image=self.generate_img, 
-                                 command=[placeholder], bd=0, highlightthickness=0,
+                                 command=self.generate_joke, bd=0, highlightthickness=0,
                                  activebackground='#d9d9d9')
         self.generate_btn.place(x=86, y=361)
         
@@ -138,13 +140,13 @@ class AlexaAI:
         # control buttons for frame 3
         self.punchline_btn = Button(self.frames['bg3'], image=self.punchline_img, 
                                     bg='#d9d9d9', fg='black', 
-                                    command=[placeholder], bd=0, highlightthickness=0,
+                                    command=self.show_punchline, bd=0, highlightthickness=0,
                                     activebackground='#d9d9d9')
         self.punchline_btn.place(x=150, y=600)
         
         self.next_btn = Button(self.frames['bg3'], image=self.next_img, 
                                     bg='#d9d9d9', fg='black', 
-                                    command=[placeholder], bd=0, highlightthickness=0,
+                                    command=self.next_joke, bd=0, highlightthickness=0,
                                     activebackground='#d9d9d9')
         self.next_btn.place(x=450, y=600)
         
