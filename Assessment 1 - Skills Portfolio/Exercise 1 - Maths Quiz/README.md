@@ -4,11 +4,12 @@
 An interactive game that combines math challenges with a storyline across three difficulty levels. This Math Quiz contains subtle horror elements to it. It is set in a school setting, with one nameless character the player will portray to navigate the story with.
 
 **FEATURES:**
+
     *> GAME MODES / DIFFICULTY LEVEL <*
         <Easy Mode>: Contains basic subtraction and addition of single-digit numbers with  multiple-choice answers.
         <Moderate Mode>: Involves intermediate subtraction and addition of two-digit numbers with text entry, and a 15 second timer per question.
         <Hard Mode>: Has advanced subtraction and addition of four-digit numbers with text entry, and a 2 minute timer for the overall quiz.
-*
+
     *> CORE MECHANICS <*
         # Hearts System: 3 hearts in total, player loses 0.5 hearts every time they get an answer incorrectly.
         # Scoring System: 
@@ -17,7 +18,7 @@ An interactive game that combines math challenges with a storyline across three 
         # Timed Quizzes:
             - Moderate: 15 seconds per question
             - Hard: 2 minutes / 120 seconds for the entire quiz
-*
+
     *> IMMERSIVE ELEMENTS <*
         ~ Narrative panels between quiz sections.
         ~ Contains background music for each mode, sound effects, and character feedback sounds.
@@ -31,9 +32,10 @@ An interactive game that combines math challenges with a storyline across three 
 5. Finish all questions to see your final score.
 
 **TECHNICAL IMPLEMENTATION:**
+
     *> RANDOMIZATION <*
         # Used Python's `random` module to generate random numbers for the quiz, randomize operators, shuffle the multiple-choice answers in Easy mode, and ensure that the number ranges appropriate for each difficulty level.
-*   
+
     *> GUI FRAMEWORK AND WIDGETS <*
         * Used [Frames] to contain different screens, especially in quizzes and story panels.
         * Used [Labels] to display text, scores, timers, and background images.
