@@ -55,9 +55,11 @@ class AlexaAI:
         self.root.resizable(0,0)
 
         # load jokes
-        self.jokes = [] # list to store the jokes
-        self.punchlines = [] # list to store the punchlines
-        self.load_jokes() # lad the jokes from randomJokes .txt
+        self.original_jokes = [] # store all jokes initially before getting used
+        self.original_punchlines = [] # store all punchlines initially before getting used
+        self.jokes = [] # list to store the available jokes
+        self.punchlines = [] # list to store the available punchlines
+        self.load_jokes() # load the jokes from randomJokes .txt
         
         # create frames
         self.current_joke_index = -1
@@ -83,8 +85,12 @@ class AlexaAI:
             if '?' in l:
                 data = l.split('?', 1) # split only on the first question mark
                 if len(data) == 2:
-                    self.jokes.append(data[0].strip())
-                    self.punchlines.append(data[1].strip().replace('\n', ''))
+                    self.original_jokes.append(data[0].strip())
+                    self.original_punchlines.append(data[1].strip().replace('\n', ''))
+    
+        # initialize available jokes with all jokes
+        self.jokes = self.original_jokes.copy()
+        self.punchlines = self.original_punchlines.copy()
     
     def setup_fonts(self):
         self.joke_font = ('Stack Sans Headline', 13)
@@ -134,7 +140,7 @@ class AlexaAI:
                                   bg='#d9d9d9', fg='black')
         self.thinking_lbl.place(x=90, y=207)
         
-        self.joke_lbl = Label(self.frames['bg3'], text='', wraplength=400,
+        self.joke_lbl = Label(self.frames['bg3'], text='', wraplength=500,
                                  font=self.joke_font, justify='left',
                                  bg='#d9d9d9', fg='black')
         self.joke_lbl.place(x=80, y=212)
@@ -160,17 +166,17 @@ class AlexaAI:
         
         # frame 4 (bg4) - Loading before punchline (no UI elements)
         self.joke_lbl_bg4 = Label(self.frames['bg4'], font=self.joke_font, 
-                              wraplength=400, justify='left', bg='#d9d9d9', fg='black')
+                              wraplength=500, justify='left', bg='#d9d9d9', fg='black')
         self.joke_lbl_bg4.place(x=80, y=212)
         
         # frame 5 (bg5)
         # copy the joke label to bg5 so it remains visible
         self.joke_lbl_bg5 = Label(self.frames['bg5'], font=self.joke_font, 
-                              wraplength=400, justify='left', bg='#d9d9d9', fg='black')
+                              wraplength=500, justify='left', bg='#d9d9d9', fg='black')
         self.joke_lbl_bg5.place(x=80, y=212)
         
         self.punchline_lbl = Label(self.frames['bg5'], text='', font=self.joke_font, 
-                                   wraplength=400, justify='left', bg='#d9d9d9', fg='black')
+                                   wraplength=500, justify='left', bg='#d9d9d9', fg='black')
         self.punchline_lbl.place(x=80, y=362)
         
         # Control buttons for frame 5
@@ -240,32 +246,66 @@ class AlexaAI:
     
     def show_joke_setup(self):
         # select random joke from the list
-        if self.jokes:
-            self.current_joke_index = random.randint(0, len(self.jokes) - 1)
-            joke_text = self.jokes[self.current_joke_index]
-            
-            # show joke setup in bg3
-            self.thinking_lbl.forget() # remove the thinking text
-            self.joke_lbl.config(text=joke_text + '?')
-            
-             # set the joke in bg4 and bg5 so they will remain shown
-            self.joke_lbl_bg4.config(text=joke_text + '?')
-            self.joke_lbl_bg5.config(text=joke_text + '?')
+        if not self.jokes:
+            self.handle_no_more_jokes()
+            return
+
+        # select random joke from available jokes list
+        self.current_joke_index = random.randint(0, len(self.jokes) - 1)
+        joke_text = self.jokes[self.current_joke_index]
+        
+        # show joke setup in bg3
+        self.thinking_lbl.forget() # remove the thinking text
+        self.joke_lbl.config(text=joke_text + '?')
+        
+        # set the joke in bg4 and bg5 so they will remain shown
+        self.joke_lbl_bg4.config(text=joke_text + '?')
+        self.joke_lbl_bg5.config(text=joke_text + '?')
+        
+        # store the current punchline before removing the joke
+        self.current_punchline = self.punchlines[self.current_joke_index]
+        
+        # remove the used joke immediately after selecting it
+        self.remove_used_joke()
     
     def show_punchline(self):
         # go to bg4 first
         self.show_frame('bg4')
         
-        # after 1.9 seconds, go to bg5 and show punchline
-        self.root.after(1900, self.reveal_punchline)
+        # after 1.3 seconds, go to bg5 and show punchline
+        self.root.after(1300, self.reveal_punchline)
             
+    def remove_used_joke(self):
+        if self.current_joke_index >= 0:
+            # remove used joke and punchline
+            del self.jokes[self.current_joke_index]
+            del self.punchlines[self.current_joke_index]
+            self.current_joke_index = -1        
+    
     def reveal_punchline(self):
         self.show_frame('bg5')
-        if self.current_joke_index >= 0 and self.punchlines:
-            punchline_text = self.punchlines[self.current_joke_index] # joke index will have the same index as punchline
-            self.punchline_lbl.config(text=punchline_text)
+        # use the stored punchline instead of accessing by index
+        if hasattr(self, 'current_punchline') and self.current_punchline:
+            self.punchline_lbl.config(text=self.current_punchline)
+            self.current_punchline = None # clear the stored punchline after use
+    
+    def handle_no_more_jokes(self):
+        # show message when no more jokes are available
+        self.thinking_lbl.forget()
+        self.joke_lbl.config(text='No more jokes available! Restart the app for more jokes.')
+        
+        # disable button since there's no punchline to show
+        self.punchline_btn.config(state=DISABLED)
+        
+        # disable next button
+        self.next_btn.config(state=DISABLED)
     
     def next_joke(self):
+        # check if there's still jokes available
+        if not self.jokes:
+            self.handle_no_more_jokes()
+            return
+        
         # go back to bg 2 and restart the cycle
         self.show_frame('bg2')
         self.root.after(1000, self.show_thinking_animation)
