@@ -52,6 +52,7 @@ class AlexaAI:
         self.root.title('AlexaAI')
         self.root.geometry('750x600')
         self.root['bg'] = '#000000'
+        self.root.resizable(0,0)
 
         # load jokes
         self.jokes = [] # list to store the jokes
@@ -88,13 +89,35 @@ class AlexaAI:
             frame = Frame(self.root)
             self.frames[name] = frame # matches the bg to their own frames
             
-            bg_path = os.path.join('bgs', f'{name}.png')
+            bg_path = os.path.join('imgs', 'bgs', f'{name}.png')
             bg_photo = ImageTk.PhotoImage(Image.open(bg_path))
             bg_label = Label(frame, image=bg_photo)
             bg_label.image = bg_photo # to keep as reference
             bg_label.place(x=0, y=0, relwidth=1, relheight=1)
             
-    
+        self.setup_ui()
+        
+    def setup_ui(self):
+        # using images for the buttons since i want them to be rounded
+        self.generate_img = PhotoImage(file='./imgs/buttons/generate.png')
+        self.punchline_img = PhotoImage(file='./imgs/buttons/punchline.png')
+        self.next_img = PhotoImage(file='./imgs/buttons/next.png')
+        self.quit_img = PhotoImage(file='./imgs/buttons/quit.png')
+        
+        # frame 1 - generate joke button
+        self.generate_btn = Button(self.frames['bg1'], bg='#d9d9d9', image=self.generate_img, 
+                                 command=self.generate_joke, bd=0, highlightthickness=0,
+                                 activebackground='#d9d9d9')
+        self.generate_btn.place(x=86, y=361)
+        
+        self.quit_btn = Button(self.frames['bg1'], bg='#d9d9d9', image=self.quit_img,
+                               command=self.root.destroy, bd=0, highlightthickness=0,
+                               activebackground='#d9d9d9')
+        self.quit_btn.place(x=351, y=361)
+        
+        # frame 3
+        self.thinking_lbl = Label(self.frames['bg3'], text='', font)
+
 
 title = Frame(root, bg='#000000')
 title.place(x=0, y=0, relwidth=1, relheight=1)
@@ -110,24 +133,7 @@ gif_player.play()
 def on_closing():
     gif_player.stop()
     root.destroy()
-    
 
-
-def title_countdown():
-    countdown_time = 3
-    
-    def update_countdown():
-        if countdown_time > 0:
-            countdown_time -= 1
-            root.after(1000, update_countdown)
-        else:
-            mainframe_transition()
-    
-    update_countdown()
-    
-def mainframe_transition():
-    gif_player.stop()
-    title.destroy()
     
 
 interface = Frame(root, )
