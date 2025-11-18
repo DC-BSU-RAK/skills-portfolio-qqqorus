@@ -54,9 +54,9 @@ class AlexaAI:
         self.root['bg'] = '#000000'
 
         # load jokes
-        self.jokes = []
-        self.punchlines = []
-
+        self.jokes = [] # list to store the jokes
+        self.punchlines = [] # list to store the punchlines
+        self.load_jokes() # lad the jokes from randomJokes .txt
         
         # create frames
         
@@ -75,7 +75,26 @@ class AlexaAI:
                 data = l.split('?', 1) # split only on the first question mark
                 if len(data) == 2:
                     self.jokes.append(data[0].strip())
-                   self.punchlines.append(data[1].strip().replace('\n', ''))
+                    self.punchlines.append(data[1].strip().replace('\n', ''))
+    
+    def create_frames(self):
+        # create the title frame with gif
+        self.title_frame = Frame(self.root, bg='#000000')
+        
+        # main frames with different backgrounds
+        self.frames = {} # dictionary to store the frames and bg
+        bg_names = ['bg1', 'bg2', 'bg3', 'bg4', 'bg5']
+        for name in bg_names:
+            frame = Frame(self.root)
+            self.frames[name] = frame # matches the bg to their own frames
+            
+            bg_path = os.path.join('bgs', f'{name}.png')
+            bg_photo = ImageTk.PhotoImage(Image.open(bg_path))
+            bg_label = Label(frame, image=bg_photo)
+            bg_label.image = bg_photo # to keep as reference
+            bg_label.place(x=0, y=0, relwidth=1, relheight=1)
+            
+    
 
 title = Frame(root, bg='#000000')
 title.place(x=0, y=0, relwidth=1, relheight=1)
@@ -117,5 +136,8 @@ interface = Frame(root, )
 Button(root, text='Tell me a joke',
        command=open_file).place(x=20, y=155, width=100, height=20)
 
-root.protocol("WM_DELETE_WINDOW", on_closing)
-root.mainloop()
+
+def main():
+    root= Tk()
+    app = AlexaAI(root)
+    root.mainloop()
