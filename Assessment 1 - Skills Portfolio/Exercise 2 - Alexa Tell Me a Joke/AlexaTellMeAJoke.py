@@ -88,7 +88,7 @@ class AlexaAI:
     
     def setup_fonts(self):
         self.joke_font = ('Stack Sans Headline', 13)
-        self.thinking_font = ('Stack Sans Headline', 16)
+        self.thinking_font = ('Stack Sans Headline', 20)
     
     def create_frames(self):
         # create the title frame with gif
@@ -132,12 +132,12 @@ class AlexaAI:
         self.thinking_lbl = Label(self.frames['bg3'], text='',
                                   font=self.thinking_font,
                                   bg='#d9d9d9', fg='black')
-        self.thinking_lbl.place(x=90, y=190)
+        self.thinking_lbl.place(x=90, y=207)
         
-        self.joke_lbl = Label(self.frames['bg3'], text='', wraplength=600,
-                                 font=self.joke_font,
+        self.joke_lbl = Label(self.frames['bg3'], text='', wraplength=400,
+                                 font=self.joke_font, justify='left',
                                  bg='#d9d9d9', fg='black')
-        self.joke_lbl.place(x=80, y=197)
+        self.joke_lbl.place(x=80, y=212)
         
         # control buttons for frame 3
         self.punchline_btn = Button(self.frames['bg3'], image=self.punchline_img, 
@@ -160,18 +160,18 @@ class AlexaAI:
         
         # frame 4 (bg4) - Loading before punchline (no UI elements)
         self.joke_lbl_bg4 = Label(self.frames['bg4'], font=self.joke_font, 
-                              wraplength=600, justify='center', bg='#d9d9d9', fg='black')
-        self.joke_lbl_bg4.place(x=80, y=197)
+                              wraplength=400, justify='left', bg='#d9d9d9', fg='black')
+        self.joke_lbl_bg4.place(x=80, y=212)
         
         # frame 5 (bg5)
         # copy the joke label to bg5 so it remains visible
         self.joke_lbl_bg5 = Label(self.frames['bg5'], font=self.joke_font, 
-                              wraplength=600, bg='#d9d9d9', fg='black')
-        self.joke_lbl_bg5.place(x=80, y=197)
+                              wraplength=400, justify='left', bg='#d9d9d9', fg='black')
+        self.joke_lbl_bg5.place(x=80, y=212)
         
         self.punchline_lbl = Label(self.frames['bg5'], text='', font=self.joke_font, 
-                                   wraplength=600, bg='#d9d9d9', fg='black')
-        self.punchline_lbl.place(x=80, y=348)
+                                   wraplength=400, justify='left', bg='#d9d9d9', fg='black')
+        self.punchline_lbl.place(x=80, y=362)
         
         # Control buttons for frame 5
         self.next_btn_bg5 = Button(self.frames['bg5'], image=self.next_img, 
