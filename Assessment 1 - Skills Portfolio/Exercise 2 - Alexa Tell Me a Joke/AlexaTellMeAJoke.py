@@ -61,6 +61,9 @@ class AlexaAI:
         
         # create frames
         
+        # setup fonts for labels
+        self.setup_fonts()
+        
         # start with title frame
         
         # center window using the function
@@ -77,6 +80,10 @@ class AlexaAI:
                 if len(data) == 2:
                     self.jokes.append(data[0].strip())
                     self.punchlines.append(data[1].strip().replace('\n', ''))
+    
+    def setup_fonts(self):
+        self.joke_font = ('Stack Sans Headline', 13)
+        self.thinking_font = ('Stack Sans Headline', 16)
     
     def create_frames(self):
         # create the title frame with gif
@@ -105,8 +112,9 @@ class AlexaAI:
         self.quit_img = PhotoImage(file='./imgs/buttons/quit.png')
         
         # frame 1 - generate joke button
-        self.generate_btn = Button(self.frames['bg1'], bg='#d9d9d9', image=self.generate_img, 
-                                 command=self.generate_joke, bd=0, highlightthickness=0,
+        self.generate_btn = Button(self.frames['bg1'], bg='#d9d9d9', 
+                                 image=self.generate_img, 
+                                 command=[placeholder], bd=0, highlightthickness=0,
                                  activebackground='#d9d9d9')
         self.generate_btn.place(x=86, y=361)
         
@@ -116,8 +124,63 @@ class AlexaAI:
         self.quit_btn.place(x=351, y=361)
         
         # frame 3
-        self.thinking_lbl = Label(self.frames['bg3'], text='', font)
-
+        self.thinking_lbl = Label(self.frames['bg3'], text='',
+                                  font=self.thinking_font,
+                                  bg='#d9d9d9', fg='black')
+        self.thinking_lbl.place(x=90, y=190)
+        
+        
+        self.joke_lbl = Label(self.frames['bg3'], text='', wraplength=600,
+                                 font=self.joke_font,
+                                 bg='#d9d9d9', fg='black')
+        self.joke_lbl.place(x=80, y=197)
+        
+        # control buttons for frame 3
+        self.punchline_btn = Button(self.frames['bg3'], image=self.punchline_img, 
+                                    bg='#d9d9d9', fg='black', 
+                                    command=[placeholder], bd=0, highlightthickness=0,
+                                    activebackground='#d9d9d9')
+        self.punchline_btn.place(x=150, y=600)
+        
+        self.next_btn = Button(self.frames['bg3'], image=self.next_img, 
+                                    bg='#d9d9d9', fg='black', 
+                                    command=[placeholder], bd=0, highlightthickness=0,
+                                    activebackground='#d9d9d9')
+        self.next_btn.place(x=450, y=600)
+        
+        self.quit_btn = Button(self.frames['bg3'], image=self.quit_img, 
+                                    bg='#d9d9d9', fg='black', 
+                                    command=self.root.destroy, bd=0, highlightthickness=0,
+                                    activebackground='#d9d9d9')
+        self.quit_btn.place(x=250)
+        
+        # Frame 4 (bg4) - Loading before punchline (no UI elements)
+        self.joke_label_bg4 = Label(self.frames['bg4'], font=self.joke_font, 
+                              wraplength=600, justify='center', bg='#d9d9d9', fg='black')
+        self.joke_label_bg4.place(x=80, y=197)
+        
+        # Frame 5 (bg5) - Punchline reveal (with joke still visible)
+        # Copy the joke label to bg5 so it remains visible
+        self.joke_label_bg5 = Label(self.frames['bg5'], font=self.joke_font, 
+                              wraplength=600, justify='center', bg='#d9d9d9', fg='black')
+        self.joke_label_bg5.place(x=80, y=197)
+        
+        self.punchline_label = Label(self.frames['bg5'], text='', font=self.joke_font, 
+                                   wraplength=600, justify='center', bg='#d9d9d9', fg='black')
+        self.punchline_label.place(x=80, y=348)
+        
+        # Control buttons for frame 5
+        self.next_btn_bg5 = Button(self.frames['bg5'], image=self.next_img, 
+                                    bg='#d9d9d9', fg='black', 
+                                    command=self.next_joke, bd=0, highlightthickness=0,
+                                    activebackground='#d9d9d9')
+        self.next_btn_bg5.place(relx=0.4, rely=0.85, anchor=CENTER, width=120, height=35)
+        
+        self.quit_btn_bg5 = Button(self.frames['bg5'], image=self.quit_img, 
+                                    bg='#d9d9d9', fg='black', 
+                                    command=self.root.destroy, bd=0, highlightthickness=0,
+                                    activebackground='#d9d9d9')
+        self.quit_btn_bg5.place(relx=0.6, rely=0.85, anchor=CENTER, width=120, height=35)
 
 title = Frame(root, bg='#000000')
 title.place(x=0, y=0, relwidth=1, relheight=1)
