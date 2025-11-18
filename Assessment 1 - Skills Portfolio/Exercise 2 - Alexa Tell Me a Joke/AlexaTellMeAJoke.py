@@ -155,19 +155,19 @@ class AlexaAI:
         self.quit_btn.place(x=250)
         
         # Frame 4 (bg4) - Loading before punchline (no UI elements)
-        self.joke_label_bg4 = Label(self.frames['bg4'], font=self.joke_font, 
+        self.joke_lbl_bg4 = Label(self.frames['bg4'], font=self.joke_font, 
                               wraplength=600, justify='center', bg='#d9d9d9', fg='black')
-        self.joke_label_bg4.place(x=80, y=197)
+        self.joke_lbl_bg4.place(x=80, y=197)
         
         # Frame 5 (bg5) - Punchline reveal (with joke still visible)
         # Copy the joke label to bg5 so it remains visible
-        self.joke_label_bg5 = Label(self.frames['bg5'], font=self.joke_font, 
+        self.joke_lbl_bg5 = Label(self.frames['bg5'], font=self.joke_font, 
                               wraplength=600, justify='center', bg='#d9d9d9', fg='black')
-        self.joke_label_bg5.place(x=80, y=197)
+        self.joke_lbl_bg5.place(x=80, y=197)
         
-        self.punchline_label = Label(self.frames['bg5'], text='', font=self.joke_font, 
+        self.punchline_lbl = Label(self.frames['bg5'], text='', font=self.joke_font, 
                                    wraplength=600, justify='center', bg='#d9d9d9', fg='black')
-        self.punchline_label.place(x=80, y=348)
+        self.punchline_lbl.place(x=80, y=348)
         
         # Control buttons for frame 5
         self.next_btn_bg5 = Button(self.frames['bg5'], image=self.next_img, 
@@ -182,30 +182,101 @@ class AlexaAI:
                                     activebackground='#d9d9d9')
         self.quit_btn_bg5.place(relx=0.6, rely=0.85, anchor=CENTER, width=120, height=35)
 
-title = Frame(root, bg='#000000')
-title.place(x=0, y=0, relwidth=1, relheight=1)
+    def show_title_frame(self):
+        self.title_frame.place(x=0, y=0, relwidth=1, relheight=1)
+        
+        gif_lbl = Label(self.title_frame, bg='#000000')
+        gif_lbl.place(x=0, y=0, relwidth=1, relheight=1)
+        
+        self.gif_player = GIFPlayer('gifs/title.gif', gif_lbl)
+        self.gif_player.play()
+        
+        # switch to main frame after 5 seconds
+        self.root.after(5000, self.show_frame, 'bg1')
 
-# create label for gif
-gif_label = Label(title, bg='#000000')
-gif_label.place(relx=0.5, rely=0.5, anchor=CENTER)  # Center the label
+    def show_frame(self, name):
+        # hide all frames first
+        self.title_frame.place_forget()
+        for frame in self.frames.values():
+            frame.place_forget()
+        
+        # show the requested frame
+        self.frames[name].place(x=0, y=0, relwidth=1, relheight=1)
 
-# create and play gif
-gif_player = GIFPlayer('gifs/title.gif', gif_label, width=600, height=400)
-gif_player.play()
-
-def on_closing():
-    gif_player.stop()
-    root.destroy()
-
+    def generate_joke(self):
+        # disable generate button for the rest of the app
+        self.generate_btn.config(state=DISABLED)
+        
+        # go to bg2
+        self.show_frame('bg2')
+        
+        # after 0.5 seconds it will go to bg3 after thinking animation
+        self.root.after(500, self.show_thinking_animation_bg3)
     
+    def show_thinking_animation_bg3(self):
+        self.show_frame('bg3')
+        
+        # clear previous joke
+        self.joke_lbl.config(text='')
+        
+        # start thinking animation
+        self.thinking_dots = 0
+        self.animate_thinking()
+        
+    def animate_thinking(self):
+        dots = '.' * (self.thinking_dots % 4)
+        self.thinking_lbl.config(text=f'{dots}')
+        self.thinking_dots += 1
 
-interface = Frame(root, )
-
-
-Button(root, text='Tell me a joke',
-       command=open_file).place(x=20, y=155, width=100, height=20)
-
-
+        # animate for 2 seconds, then show joke
+        if self.thinking_dots <= 8:
+            self.root.after(250, self.animate_thinking)
+        else:
+            self.show_joke_setup()
+    
+    def show_joke_setup(self):
+        # select random joke from the list
+        if self.jokes:
+            self.current_joke_index = random.randint(0, len(self.jokes) - 1)
+            joke_text = self.jokes[self.current_joke_index]
+            
+            # show joke setup in bg3
+            self.thinking_lbl.forget() # remove the thinking text
+            self.joke_lbl.config(text=joke_text + '?')
+            
+             # set the joke in bg4 and bg5 so they will remain shown
+            self.joke_lbl_bg4.config(text=joke_text + '?')
+            self.joke_lbl_bg5.config(text=joke_text + '?')
+            
+    def show_thinking_animation_bg5(self):
+        self.show_frame('bg5')
+        
+        # clear previous joke
+        self.punchline_lbl.config(text='')
+        
+        # start thinking animation
+        self.thinking_dots = 0
+        self.animate_thinking()
+    
+    def show_punchline(self):
+        # go to bg4 first
+        self.show_frame('bg4')
+        
+        # after 2 seconds, go to bg5, thinking animation, and show punchline
+        self.thinking_lbl.forget()
+        self.reveal_punchline()
+        
+    def reveal_punchline(self):
+        self.show_frame('bg5')
+        if self.current_joke_index >= 0 and self.punchlines:
+            punchline_text = self.punchlines[self.current_joke_index] # joke index will have the same index as punchline
+            self.punchline_lbl.config(text=punchline_text)
+    
+    def next_joke(self):
+        # go back to bg 2 and restart the cycle
+        self.show_frame('bg2')
+        self.root.after(1000, self.show_thinking_animation_bg3)
+            
 def main():
     root= Tk()
     app = AlexaAI(root)
