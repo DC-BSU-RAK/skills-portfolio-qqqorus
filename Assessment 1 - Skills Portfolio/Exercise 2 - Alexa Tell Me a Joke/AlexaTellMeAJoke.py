@@ -65,6 +65,9 @@ class AlexaAI:
         # setup fonts for labels
         self.setup_fonts()
         
+        # create frames
+        self.create_frames()
+        
         # start with title frame
         self.show_title_frame()
         
@@ -131,7 +134,6 @@ class AlexaAI:
                                   bg='#d9d9d9', fg='black')
         self.thinking_lbl.place(x=90, y=190)
         
-        
         self.joke_lbl = Label(self.frames['bg3'], text='', wraplength=600,
                                  font=self.joke_font,
                                  bg='#d9d9d9', fg='black')
@@ -166,12 +168,6 @@ class AlexaAI:
         self.joke_lbl_bg5 = Label(self.frames['bg5'], font=self.joke_font, 
                               wraplength=600, bg='#d9d9d9', fg='black')
         self.joke_lbl_bg5.place(x=80, y=197)
-        
-        # thinking label for punchline animation in bg5
-        self.thinking_lbl_bg5 = Label(self.frames['bg5'], text='',
-                                      font=self.thinking_font,
-                                      bg='#d9d9d9', fg='black')
-        self.thinking_lbl_bg5.place(x=90, y=348)
         
         self.punchline_lbl = Label(self.frames['bg5'], text='', font=self.joke_font, 
                                    wraplength=600, bg='#d9d9d9', fg='black')
@@ -219,9 +215,9 @@ class AlexaAI:
         self.show_frame('bg2')
         
         # after 0.5 seconds it will go to bg3 after thinking animation
-        self.root.after(500, self.show_thinking_animation_bg3)
+        self.root.after(500, self.show_thinking_animation)
     
-    def show_thinking_animation_bg3(self):
+    def show_thinking_animation(self):
         self.show_frame('bg3')
         
         # clear previous joke
@@ -229,16 +225,16 @@ class AlexaAI:
         
         # start thinking animation
         self.thinking_dots = 0
-        self.animate_thinking_bg3()
+        self.animate_thinking()
         
-    def animate_thinking_bg3(self):
+    def animate_thinking(self):
         dots = '.' * (self.thinking_dots % 4)
         self.thinking_lbl.config(text=f'{dots}')
         self.thinking_dots += 1
 
         # animate for 2 seconds, then show joke
         if self.thinking_dots <= 8: # 8 cycles = 2 seconds
-            self.root.after(250, self.animate_thinking_bg3)
+            self.root.after(250, self.animate_thinking)
         else:
             self.show_joke_setup()
     
@@ -255,53 +251,15 @@ class AlexaAI:
              # set the joke in bg4 and bg5 so they will remain shown
             self.joke_lbl_bg4.config(text=joke_text + '?')
             self.joke_lbl_bg5.config(text=joke_text + '?')
-          
-            # show buttons in bg3
-            self.show_bg3_buttons()
-            
-    def hide_bg3_buttons(self):
-        self.punchline_btn.place_forget()
-        self.next_btn.place_forget()
-        self.quit_btn.place_forget()
-            
-    def show_bg3_buttons(self):
-        self.punchline_btn.place(x=220, y=509)
-        self.next_btn.place(x=525, y=509)
-        self.quit_btn.place(x=355, y=509)
     
     def show_punchline(self):
         # go to bg4 first
         self.show_frame('bg4')
         
-        # after 2 seconds, go to bg5, thinking animation, and show punchline
-        self.root.after(1000, self.show_thinking_animation_bg5)
+        # after 1.9 seconds, go to bg5 and show punchline
+        self.root.after(1900, self.reveal_punchline)
             
-    def show_thinking_animation_bg5(self):
-        self.show_frame('bg5')
-        
-        # clear previous joke
-        self.punchline_lbl.config(text='')
-        self.thinking_lbl_bg5.config(text='')
-        
-        # start thinking animation
-        self.thinking_dots = 0
-        self.animate_thinking_bg5()
-    
-    def animate_thinking_bg5(self):
-        dots = '.' * (self.thinking_dots % 4)
-        self.thinking_lbl_bg5.config(text=f'{dots}')
-        self.thinking_dots_bg5 += 1
-
-        # animate for 2 seconds, then show joke
-        if self.thinking_dots_bg5 <= 8: # 8 cycles = 2 seconds
-            self.root.after(250, self.animate_thinking_bg5)
-        else:
-            self.show_joke_setup()
-        
     def reveal_punchline(self):
-        # hide thinking label before showing punchline
-        self.thinking_lbl_bg5.config(text='')
-        
         self.show_frame('bg5')
         if self.current_joke_index >= 0 and self.punchlines:
             punchline_text = self.punchlines[self.current_joke_index] # joke index will have the same index as punchline
@@ -310,7 +268,7 @@ class AlexaAI:
     def next_joke(self):
         # go back to bg 2 and restart the cycle
         self.show_frame('bg2')
-        self.root.after(1000, self.show_thinking_animation_bg3)
+        self.root.after(1000, self.show_thinking_animation)
             
 def main():
     root= Tk()
