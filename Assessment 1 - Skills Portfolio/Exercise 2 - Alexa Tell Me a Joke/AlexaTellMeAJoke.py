@@ -2,6 +2,10 @@ import os
 from tkinter import *
 import random
 from PIL import Image, ImageTk, ImageSequence
+import pygame
+
+# for audio
+pygame.mixer.init()
 
 def center_window(window):
     window.update()
@@ -46,6 +50,27 @@ class GIFPlayer:
             self.current_frame = (self.current_frame + 1) % len(self.frames)
             self.label.after(20, self.animate)
 
+class AudioPlayer:
+    def __init__(self):
+        self.load_audio_files()
+        
+    def load_audio_files(self):
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # load button sound
+        button_path = os.path.join(current_dir, 'audios', 'button.mp3')
+        self.button_sound = pygame.mixer.Sound(button_path)
+        
+        # load popup sound for the joke and punchline
+        popup_path = os.path.join(current_dir, 'audios', 'popup.mp3')
+        self.popup_sound = pygame.mixer.Sound(popup_path)
+    
+    def play_button_sound(self):
+        self.button_sound.play()
+        
+    def play_popup_sound(self):
+        self.popup_sound.play()
+
 class AlexaAI:
     def __init__(self, root):
         self.root = root
@@ -53,6 +78,8 @@ class AlexaAI:
         self.root.geometry('750x600')
         self.root['bg'] = '#000000'
         self.root.resizable(0,0)
+
+        self.audio = AudioPlayer()
 
         # load jokes
         self.original_jokes = [] # store all jokes initially before getting used
@@ -130,7 +157,7 @@ class AlexaAI:
         self.generate_btn.place(x=86, y=361)
         
         self.quit_btn = Button(self.frames['bg1'], bg='#d9d9d9', image=self.quit_img,
-                               command=self.root.destroy, bd=0, highlightthickness=0,
+                               command=self.quit_app, bd=0, highlightthickness=0,
                                activebackground='#d9d9d9')
         self.quit_btn.place(x=351, y=361)
         
@@ -158,11 +185,11 @@ class AlexaAI:
                                     activebackground='#d9d9d9')
         self.next_btn.place(x=525, y=509)
         
-        self.quit_btn = Button(self.frames['bg3'], image=self.quit_img, 
+        self.quit_btn_bg3 = Button(self.frames['bg3'], image=self.quit_img, 
                                     bg='#d9d9d9', fg='black', 
-                                    command=self.root.destroy, bd=0, highlightthickness=0,
+                                    command=self.quit_app, bd=0, highlightthickness=0,
                                     activebackground='#d9d9d9')
-        self.quit_btn.place(x=355, y=509)
+        self.quit_btn_bg3.place(x=355, y=509)
         
         # frame 4 (bg4) - Loading before punchline (no UI elements)
         self.joke_lbl_bg4 = Label(self.frames['bg4'], font=self.joke_font, 
@@ -188,7 +215,7 @@ class AlexaAI:
         
         self.quit_btn_bg5 = Button(self.frames['bg5'], image=self.quit_img, 
                                     bg='#d9d9d9', fg='black', 
-                                    command=self.root.destroy, bd=0, highlightthickness=0,
+                                    command=self.quit_app, bd=0, highlightthickness=0,
                                     activebackground='#d9d9d9')
         self.quit_btn_bg5.place(x=355, y=509)
 
@@ -214,6 +241,8 @@ class AlexaAI:
         self.frames[name].place(x=0, y=0, relwidth=1, relheight=1)
 
     def generate_joke(self):
+        self.audio.play_button_sound() # play button sound
+        
         # disable generate button for the rest of the app
         self.generate_btn.config(state=DISABLED)
         
@@ -262,6 +291,8 @@ class AlexaAI:
         self.joke_lbl_bg4.config(text=joke_text + '?')
         self.joke_lbl_bg5.config(text=joke_text + '?')
         
+        self.audio.play_popup_sound() # play popup sound when joke appears
+        
         # store the current punchline before removing the joke
         self.current_punchline = self.punchlines[self.current_joke_index]
         
@@ -269,6 +300,8 @@ class AlexaAI:
         self.remove_used_joke()
     
     def show_punchline(self):
+        self.audio.play_button_sound() # play button sound
+        
         # go to bg4 first
         self.show_frame('bg4')
         
@@ -289,6 +322,10 @@ class AlexaAI:
             self.punchline_lbl.config(text=self.current_punchline)
             self.current_punchline = None # clear the stored punchline after use
     
+            self.audio.play_popup_sound() # play popup sound when punchline appears
+            
+            self.current_punchline = None
+    
     def handle_no_more_jokes(self):
         # show message when no more jokes are available
         self.thinking_lbl.forget()
@@ -301,6 +338,8 @@ class AlexaAI:
         self.next_btn.config(state=DISABLED)
     
     def next_joke(self):
+        self.audio.play_button_sound() # play button sound
+        
         # check if there's still jokes available
         if not self.jokes:
             self.handle_no_more_jokes()
@@ -309,6 +348,10 @@ class AlexaAI:
         # go back to bg 2 and restart the cycle
         self.show_frame('bg2')
         self.root.after(1000, self.show_thinking_animation)
+        
+    def quit_app(self):
+        self.audio.play_button_sound() # play button sfx
+        self.root.after(100, self.root.destroy) # add a small delay before quitting to let the sound play
             
 def main():
     root= Tk()
