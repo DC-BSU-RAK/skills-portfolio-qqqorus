@@ -58,11 +58,11 @@ class AudioPlayer:
         current_dir = os.path.dirname(os.path.abspath(__file__))
 
         # load button sound
-        button_path = os.path.join(current_dir, 'audios', 'button.mp3')
+        button_path = os.path.join(current_dir, 'audio', 'button.mp3')
         self.button_sound = pygame.mixer.Sound(button_path)
         
         # load popup sound for the joke and punchline
-        popup_path = os.path.join(current_dir, 'audios', 'popup.mp3')
+        popup_path = os.path.join(current_dir, 'audio', 'popup.mp3')
         self.popup_sound = pygame.mixer.Sound(popup_path)
     
     def play_button_sound(self):
