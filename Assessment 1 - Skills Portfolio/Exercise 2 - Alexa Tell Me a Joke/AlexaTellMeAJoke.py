@@ -78,6 +78,7 @@ class AlexaAI:
         self.root.geometry('750x600')
         self.root['bg'] = '#000000'
         self.root.resizable(0,0)
+        self.root.iconbitmap(r'.\imgs\logo.ico')
 
         self.audio = AudioPlayer()
 
