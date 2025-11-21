@@ -56,11 +56,91 @@ menu item 1.
 
 import os
 from tkinter import *
+from PIL import Image, ImageTk
 
 root = Tk()
 root.title('Student Manager')
-root.geometry('1000x700')
+root.geometry('1200x700')
 root.iconbitmap(r'.\img\logo.ico')
 root.resizable(0,0)
+
+# maincontainer = Frame(root, bg='#000000')
+# maincontainer.place(x=0, y=0, relwidth=1, relheight=1)
+
+# frame1 = Frame(root, bg='#000000')
+# frame1.place(x=0, y=0, relwidth=1, relheight=1)
+
+# bgimg = ImageTk.PhotoImage(Image.open(r'.\img\bgs\studentrecordsbg.png'))
+# bglbl = Label(frame1, image=bgimg)
+# bglbl.place(x=0, y=0)
+
+def home_page():
+    delete_pages()
+    home_frame = Frame(main_frame)
+
+    lb = Label(home_frame,text='This is Home Page', font = ('Bold',30), bg='#234567',fg='#ffffff')
+    lb.pack()
+    home_frame.pack(pady=20)
+
+#Function definitions for main page , When user clicks on main tab this function would be executed
+def main_page():
+    delete_pages()
+    m_frame = Frame(main_frame)
+
+    lb = Label(m_frame,text='This is Main Page', font = ('Bold',30), bg='#234567',fg='#ffffff')
+    lb.pack()
+    m_frame.pack(pady=20)
+
+#Function definitions for info page , When user clicks on information tab this function would be executed
+def info_page():
+    delete_pages()
+    info_frame = Frame(main_frame)
+
+    lb = Label(info_frame,text='This is Info Page', font = ('Bold',30), bg='#234567',fg='#ffffff')
+    lb.pack()
+    info_frame.pack(pady=20)
+
+
+#The following function is used to delete the contents of previous selected pages
+def delete_pages():
+    for frame in main_frame.winfo_children():
+        frame.destroy()
+
+
+
+#To create the frame on the left side of the window
+options_frame = Frame(root, bg = '#22263d')
+
+#Create home button
+home_btn = Button(options_frame, text='Home', font=('Bold',12), fg='#ffffff',bg='#22263d',bd=0,
+                     command=home_page)
+home_btn.place(x=10, y=50)
+
+
+#Create main button
+main_btn = Button(options_frame, text='Main', font=('Bold',12), fg='#ffffff',bg='#22263d',bd=0,
+                     command=main_page)
+main_btn.place(x=10, y=100)
+
+#Create info button
+info_btn = Button(options_frame, text='Information', font=('Bold',12), fg='#ffffff',bg='#22263d',bd=0,
+                     command=info_page)
+info_btn.place(x=10, y=150)
+
+
+options_frame.pack(side=LEFT)
+options_frame.pack_propagate(False)
+options_frame.configure(width=120, height=400) # Set the size of the left frame
+
+#Create another frame to dispaly the contents when user clicks the buttons
+main_frame = Frame(root,highlightbackground='black',highlightthickness=2,bg='#234567')
+
+lb = Label(main_frame,text='Click on the buttons on left side', font = ('Bold',25),wraplength=250, bg='#234567',fg='#ffffff')
+lb.pack()
+
+main_frame.pack(side=LEFT)
+main_frame.pack_propagate(False)
+main_frame.configure(width=500, height=400) #Set the size of the frame on right side of window
+
 
 root.mainloop()
