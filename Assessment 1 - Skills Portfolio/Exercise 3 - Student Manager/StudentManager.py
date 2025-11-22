@@ -40,10 +40,54 @@ class Student:
         else:
             return "F"
 
+# create class for the app
+class StudentManagerApp:
+    def __init__(self, root: Tk):
+        self.root = root
+        self.root.title('Student Manager')
+        self.root.geometry('1200x700')
+        self.root.resizable(0, 0)
+        self.root.iconbitmap(r'.\img\logo.ico')
+
+        # App colours
+        self.BG_MAIN = '#f3f4f6'
+        self.BG_SIDEBAR = '#111827'
+        self.BG_SIDEBAR_BTN_ACTIVE = '#10b981'
+        self.BG_SIDEBAR_BTN_INACTIVE = '#1f2933'
+        self.BG_CARD = '#ffffff'
+        self.CARD_BORDER = '#e5e7eb'
+        self.TEXT_PRIMARY = '#111827'
+        self.TEXT_MUTED = '#6b7280'
+
+        self.root.configure(bg=self.BG_MAIN)
+
+        # global font setup
+        self.base_font_family = self._choose_font_family()
+        self._configure_default_fonts()
+
+        # data
+        self.students: list[Student] = []
+        self.highest_student: Student | None = None
+        self.lowest_student: Student | None = None
+
+        # placeholders for widgets that need cross-method access
+        self.center_frame = None
+        self.center_title_var = None
+        self.highest_txt = None
+        self.lowest_txt = None
+        self.students_btn = None
+        self.individual_btn = None
+
+        # layout
+        self._load_data()
+        self._build_layout()
+        self.set_active_sidebar("students")
+        self.students_page()
+        # highest/lowest start blank on purpose
 
 
 
 # execution in main page
 if __name__ == "__main__":
-    app = StudentManager()
+    app = StudentManagerApp()
     app.run()
