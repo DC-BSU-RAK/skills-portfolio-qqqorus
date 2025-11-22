@@ -159,6 +159,26 @@ class StudentManagerApp:
 
         return students
 
+    def _build_layout(self):
+        """
+        Build all the fixed layout frames:
+          - sidebar
+          - center column and title
+          - center card
+          - right column with highest/lowest cards
+        """
+        # left sidebar frame
+        options_frame = Frame(self.root, bg=self.BG_SIDEBAR)
+        options_frame.pack(side=LEFT, fill=Y)
+        options_frame.pack_propagate(False)
+        options_frame.configure(width=180, height=700)
+
+        # center "card" frame
+        center_outer = Frame(self.root, bg=self.BG_MAIN)
+        center_outer.pack(side=LEFT, fill=BOTH, expand=True)
+        center_outer.pack_propagate(False)
+        center_outer.configure(width=640, height=700)
+
 
 # execution in main page
 if __name__ == "__main__":
