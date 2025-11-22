@@ -99,6 +99,25 @@ class StudentManagerApp:
         default = tkfont.nametofont("TkDefaultFont")
         return default.cget("family")
 
+    # default fonts configuration
+    def _configure_default_fonts(self):
+        """
+        Override Tk default fonts so everything uses the chosen family
+        unless explicitly changed.
+        """
+        for name in ("TkDefaultFont", "TkTextFont", "TkMenuFont",
+                     "TkHeadingFont", "TkFixedFont", "TkIconFont",
+                     "TkTooltipFont"):
+            f = tkfont.nametofont(name)
+            size = f.cget("size")
+            weight = f.cget("weight")
+            slant = f.cget("slant")
+            underline = f.cget("underline")
+            overstrike = f.cget("overstrike")
+            f.configure(family=self.base_font_family, size=size,
+                        weight=weight, slant=slant,
+                        underline=underline, overstrike=overstrike)
+
 # execution in main page
 if __name__ == "__main__":
     app = StudentManagerApp()
