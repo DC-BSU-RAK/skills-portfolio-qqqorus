@@ -1,6 +1,6 @@
 import os
 from tkinter import *
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, font as tkfont
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -85,7 +85,19 @@ class StudentManagerApp:
         self.students_page()
         # highest/lowest start blank on purpose
 
-
+    # functions for fonts
+    def _choose_font_family(self) -> str:
+        """
+        Try Quicksand, then Century Gothic, else fall back to TkDefaultFont's family.
+        """
+        families = set(tkfont.families())
+        if "Quicksand" in families:
+            return "Quicksand"
+        if "Century Gothic" in families:
+            return "Century Gothic"
+        # fallback
+        default = tkfont.nametofont("TkDefaultFont")
+        return default.cget("family")
 
 # execution in main page
 if __name__ == "__main__":
