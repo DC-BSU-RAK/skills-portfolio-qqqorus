@@ -118,6 +118,48 @@ class StudentManagerApp:
                         weight=weight, slant=slant,
                         underline=underline, overstrike=overstrike)
 
+    # load data from studentMarks.txt
+    def _load_data(self):
+        """
+        Load students from studentMarks.txt into self.students.
+        """
+        self.students = self.load_students("studentMarks.txt")
+    
+    @staticmethod
+    def load_students(filename: str) -> list[Student]:
+        """
+        Read studentMarks.txt and return a list of Student objects.
+        File format:
+            first line: number of students (can be ignored safely)
+            remaining lines: code,name,cw1,cw2,cw3,exam
+        """
+        path = Path(filename)
+        if not path.exists():
+            raise FileNotFoundError(f"{filename} not found")
+
+        students: list[Student] = []
+        with path.open("r", encoding="utf-8") as f:
+            first = f.readline().strip()
+            # If the first line isn't a count, treat it as data
+            _ = int(first)
+
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+
+                parts = [p.strip() for p in line.split(",")]
+                if len(parts) != 6:
+                    continue
+
+                code = int(parts[0])
+                name = parts[1]
+                cw1, cw2, cw3, exam = map(int, parts[2:])
+                students.append(Student(code, name, cw1, cw2, cw3, exam))
+
+        return students
+
+
 # execution in main page
 if __name__ == "__main__":
     app = StudentManagerApp()
