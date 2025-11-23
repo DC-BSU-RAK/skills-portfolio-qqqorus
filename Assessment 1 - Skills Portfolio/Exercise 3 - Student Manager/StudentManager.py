@@ -312,6 +312,48 @@ class StudentManagerApp:
             bg=self.BG_CARD, fg=self.TEXT_MUTED)
         summary.place(x=450, y=20)
 
+    # individual record page to find a student
+    def individual_page(self):
+        self.clear_center()
+        self.center_title_var.set("Individual Record")
+
+        # title
+        title = Label(self.center_frame, text="Find Student",
+            font=(self.base_font, 12, "bold"),
+            bg=self.BG_CARD, fg=self.TEXT_PRIMARY)
+        title.place(x=20, y=15)
+
+        # search label
+        search_lbl = Label(self.center_frame, text="Student ID or Name:",
+            font=(self.base_font, 10),
+            bg=self.BG_CARD, fg=self.TEXT_MUTED)
+        search_lbl.place(x=20, y=50)
+
+        # search entry
+        self.search_var = StringVar()
+        search_entry = Entry(self.center_frame, textvariable=self.search_var,
+            font=(self.base_font, 10), width=30)
+        search_entry.place(x=180, y=50)
+        search_entry.bind('<Return>', lambda e: self.do_search()) # may use return to search
+
+        # search button
+        search_btn = Button(self.center_frame, text="Search",
+            font=(self.base_font, 9, "bold"),
+            bg=self.BG_SIDEBAR_BTN_ACTIVE, fg="#ecfdf5",
+            bd=0, padx=12, pady=4, command=self.do_search)
+        search_btn.place(x=420, y=48)
+
+        # results frame
+        self.result_frame = Frame(self.center_frame,
+            bg="#f8fafc", relief=RAISED, bd=1)
+        self.result_frame.place(x=20, y=90, width=680, height=450)
+
+        # rnitial message beforre showing the result
+        initial_msg = Label(self.result_frame, text="Enter student ID or name above to search",
+            font=(self.base_font, 10),
+            bg="#f8fafc", fg=self.TEXT_MUTED)
+        initial_msg.place(relx=0.5, rely=0.5, anchor="center")
+
 if __name__ == "__main__":
     root = Tk()
     app = StudentManagerApp(root)
