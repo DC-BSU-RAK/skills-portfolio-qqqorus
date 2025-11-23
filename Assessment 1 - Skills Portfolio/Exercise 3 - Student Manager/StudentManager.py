@@ -107,6 +107,84 @@ class StudentManagerApp:
 
         self.students = students
 
+    # function to build the main layout which will be applied to all frames
+    def build_layout(self):
+        # sidebar
+        sidebar = Frame(self.root, bg=self.BG_SIDEBAR, width=500, height=650)
+        sidebar.place(x=0, y=0)
+
+        # load and resize logo
+        logo = Image.open(r'.\img\logo.png')
+        logoresize = logo.resize((30, 30))
+        avianlogo = ImageTk.PhotoImage(logoresize)
+        
+        # store the image reference to prevent garbage collection
+        self.title_logo_image = avianlogo
+        
+        # logo on the left of the title
+        title_logo = Label(sidebar, image=avianlogo, bg=self.BG_SIDEBAR)
+        title_logo.place(x=20, y=35)
+
+        # title text beside the logo
+        title_label1 = Label(sidebar, text="Avian",
+            font=(self.base_font, 16, "bold"),
+            bg=self.BG_SIDEBAR, fg="#b6c58c", justify=LEFT)
+        title_label1.place(x=60, y=27)  # x position adjusted to be right of logo
+        
+        title_label2 = Label(sidebar, text="UNIVERSITY",
+            font=(self.base_font, 12, "bold"),
+            bg=self.BG_SIDEBAR, fg="#ffffff", justify=LEFT)
+        title_label2.place(x=60, y=50)  # same x position, different y
+
+        # predeclared values for the button width and height
+        btn_width = 20
+        btn_height = 2
+
+        # navigation buttons
+        # student records button is active
+        self.students_btn = Button(sidebar, text="Student Records     ",
+            font=(self.base_font, 10, "bold"),
+            fg="#ffffff", bg=self.BG_SIDEBAR_BTN_ACTIVE,
+            bd=0, width=btn_width, height=btn_height, anchor='e',
+            command=lambda: [self.set_active_sidebar("students"), self.students_page()])
+        self.students_btn.place(x=15, y=100)
+
+        # individual records button is inactive
+        self.individual_btn = Button(sidebar, text="Individual Records     ",
+            font=(self.base_font, 10, "bold"),
+            fg="#d1d5db", bg=self.BG_SIDEBAR_BTN_INACTIVE,
+            bd=0, width=btn_width, height=btn_height, anchor='e',
+            command=lambda: [self.set_active_sidebar("individual"), self.individual_page()])
+        self.individual_btn.place(x=15, y=150)
+
+        # minimum and maximum scores button (frame for the highest and lowest score) is inactive
+        self.totalscores_btn = Button(sidebar, text="Min-Max Scores     ",
+            font=(self.base_font, 10, "bold"), anchor='e',
+            fg="#d1d5db", bg=self.BG_SIDEBAR_BTN_INACTIVE,
+            bd=0, width=btn_width, height=btn_height,
+            command=lambda: [self.set_active_sidebar("totalscores"), self.totalscores_page()])
+        self.totalscores_btn.place(x=15, y=200)
+
+        # center area displaying the main content
+        center_outer = Frame(self.root, bg=self.BG_MAIN, width=900, height=650)
+        center_outer.place(x=180, y=0)
+
+        self.center_title_var = StringVar()
+        self.center_title_var.set("Student Records")
+
+        title_lbl = Label(center_outer, textvariable=self.center_title_var,
+            font=(self.base_font, 16, "bold"),
+            bg=self.BG_MAIN, fg=self.TEXT_PRIMARY)
+        title_lbl.place(x=20, y=15)
+
+        # frame containing the students records
+        self.center_frame = Frame(center_outer, bg=self.BG_CARD,
+            highlightbackground=self.CARD_BORDER, highlightthickness=1,
+            width=730, height=570)
+        self.center_frame.place(x=20, y=60)
+    
+    
+
 if __name__ == "__main__":
     root = Tk()
     app = StudentManagerApp(root)
