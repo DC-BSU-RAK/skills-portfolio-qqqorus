@@ -183,7 +183,74 @@ class StudentManagerApp:
             width=730, height=570)
         self.center_frame.place(x=20, y=60)
     
-    
+    # clear center for every new frame
+    def clear_center(self):
+        for widget in self.center_frame.winfo_children():
+            widget.destroy()
+
+
+    def format_student_card(self, student, parent_frame=None):
+        # format student info as a compact card with individual marks
+        if parent_frame is None:
+            parent_frame = self.center_frame
+        
+        grade_color = {
+            "A": "green",
+            "B": "blue",
+            "C": "#fce80a",  # yellow
+            "D": "orange",
+            "F": "red" 
+        }
+        
+        card_frame = Frame(parent_frame, bg="#f8fafc",
+            relief=RAISED, bd=1, width=300, height=120)
+        
+        # name and ID
+        name_label = Label(card_frame, text=f"{student.name}",
+            font=(self.base_font, 9, "bold"),
+            bg="#f8fafc", fg=self.TEXT_PRIMARY, anchor="w")
+        name_label.place(x=10, y=8)
+        
+        id_label = Label(card_frame, text=f"ID: {student.code}",
+            font=(self.base_font, 8),
+            bg="#f8fafc", fg=self.TEXT_MUTED, anchor="w")
+        id_label.place(x=10, y=25)
+        
+        # individual coursework marks
+        marks_label = Label(card_frame, text=f"Marks: {student.cw1}, {student.cw2}, {student.cw3}",
+            font=(self.base_font, 8),
+            bg="#f8fafc", fg=self.TEXT_MUTED, anchor="w")
+        marks_label.place(x=10, y=42)
+        
+        # coursework total and exam
+        coursework_label = Label(card_frame, text=f"CW Total: {student.coursework_total}/60",
+            font=(self.base_font, 8),
+            bg="#f8fafc", fg=self.TEXT_PRIMARY, anchor="w")
+        coursework_label.place(x=10, y=59)
+        
+        exam_label = Label(card_frame, text=f"Exam: {student.exam}/100",
+            font=(self.base_font, 8),
+            bg="#f8fafc", fg=self.TEXT_PRIMARY, anchor="w")
+        exam_label.place(x=10, y=76)
+        
+        # overall total and percentage
+        total_label = Label(card_frame, text=f"Total: {student.overall_total}/160",
+            font=(self.base_font, 9, "bold"),
+            bg="#f8fafc", fg=self.TEXT_PRIMARY, anchor="w")
+        total_label.place(x=120, y=42)
+        
+        percent_label = Label(card_frame, text=f"{student.percentage:.1f}%",
+            font=(self.base_font, 9, "bold"),
+            bg="#f8fafc", fg=self.TEXT_PRIMARY, anchor="w")
+        percent_label.place(x=120, y=59)
+        
+        # grade with color coding
+        grade_label = Label(card_frame, text=student.grade,
+            font=(self.base_font, 12, "bold"),
+            bg=grade_color[student.grade], fg="white", width=3)
+        grade_label.place(x=230, y=35)
+        
+        return card_frame
 
 if __name__ == "__main__":
     root = Tk()
