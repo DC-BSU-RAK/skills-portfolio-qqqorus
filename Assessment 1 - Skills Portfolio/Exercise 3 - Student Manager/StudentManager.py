@@ -85,6 +85,28 @@ class StudentManagerApp:
             return "Century Gothic"
         return tkfont.nametofont("TkDefaultFont").cget("family")
 
+    # function to load data from studentMarks.txt
+    def load_data(self):
+        path = Path("studentMarks.txt")
+        students = [] # stores the student's info in this list
+        with path.open("r", encoding="utf-8") as f:
+            first = f.readline().strip() # read line by line
+            _ = int(first)
+
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                parts = [p.strip() for p in line.split(",")] # splits the words separated by a comma
+                if len(parts) != 6:
+                    continue
+                code = int(parts[0])
+                name = parts[1]
+                cw1, cw2, cw3, exam = map(int, parts[2:])
+                students.append(Student(code, name, cw1, cw2, cw3, exam))
+
+        self.students = students
+
 if __name__ == "__main__":
     root = Tk()
     app = StudentManagerApp(root)
