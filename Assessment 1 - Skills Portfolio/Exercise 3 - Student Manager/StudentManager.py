@@ -252,6 +252,66 @@ class StudentManagerApp:
         
         return card_frame
 
+    # main container for the student cards
+    def students_page(self):
+        self.clear_center()
+        self.center_title_var.set("Student Records")
+
+        # title
+        title = Label(self.center_frame, text="All Students - Detailed View",
+            font=(self.base_font, 12, "bold"),
+            bg=self.BG_CARD, fg=self.TEXT_PRIMARY)
+        title.place(x=30, y=20)
+
+        # create scrollable frame for cards
+        canvas = Canvas(self.center_frame, bg=self.BG_CARD, highlightthickness=0, width=650, height=500)
+        scrollbar = Scrollbar(self.center_frame, orient="vertical", command=canvas.yview)
+        scrollable_frame = Frame(canvas, bg=self.BG_CARD)
+
+        # make it scrollable 
+        scrollable_frame.bind(
+            "<Configure>",
+            lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+        )
+
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        # pPsition canvas and scrollbar properly
+        canvas.place(x=40, y=60, width=650, height=500)
+        scrollbar.place(x=690, y=60, height=500)  # Adjusted x position
+
+        # bind mouse wheel event for scrolling
+        def _on_mousewheel(event):
+            canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        
+        canvas.bind("<MouseWheel>", _on_mousewheel)
+        scrollable_frame.bind("<MouseWheel>", _on_mousewheel)
+
+        # add student cards in grid layout
+        row, col = 0, 0
+        for student in self.students:
+            card = self.format_student_card(student, scrollable_frame)
+            card.grid(row=row, column=col, padx=10, pady=10, in_=scrollable_frame)  # use grid instead of place
+            
+            col += 1
+            if col >= 2:  # 2 columns
+                col = 0
+                row += 1
+
+        # update scroll region after adding all cards
+        canvas.update_idletasks()
+        canvas.configure(scrollregion=canvas.bbox("all"))
+
+        # summary of the card info
+        count = len(self.students)
+        avg_percentage = sum(s.percentage for s in self.students) / count if count else 0
+        
+        summary = Label(self.center_frame, text=f"Total Students: {count} | Average: {avg_percentage:.1f}%",
+            font=(self.base_font, 10),
+            bg=self.BG_CARD, fg=self.TEXT_MUTED)
+        summary.place(x=450, y=20)
+
 if __name__ == "__main__":
     root = Tk()
     app = StudentManagerApp(root)
