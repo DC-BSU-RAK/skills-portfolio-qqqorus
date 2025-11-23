@@ -603,6 +603,20 @@ class StudentManagerApp:
         self.highest_student = max(self.students, key=lambda s: s.overall_total)
         self.lowest_student = min(self.students, key=lambda s: s.overall_total)
 
+    # links the sidebar buttons to tabs they belong to
+    def set_active_sidebar(self, which):
+        buttons = [self.students_btn, self.individual_btn, self.minmax_btn]
+        for btn in buttons:
+            btn.configure(bg=self.BG_SIDEBAR_BTN_INACTIVE, fg="#d1d5db")
+        
+        if which == "students":
+            self.students_btn.configure(bg=self.BG_SIDEBAR_BTN_ACTIVE, fg="#ecfdf5")
+        elif which == "individual":
+            self.individual_btn.configure(bg=self.BG_SIDEBAR_BTN_ACTIVE, fg="#ecfdf5")
+        elif which == "minmax":
+            self.minmax_btn.configure(bg=self.BG_SIDEBAR_BTN_ACTIVE, fg="#ecfdf5")
+
+# root
 if __name__ == "__main__":
     root = Tk()
     app = StudentManagerApp(root)
