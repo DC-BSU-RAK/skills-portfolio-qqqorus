@@ -517,7 +517,82 @@ class StudentManagerApp:
                     grade_label.place(x=x_pos, y=75)
                     x_pos += 60
 
-        
+    # function that activates the searching
+    def do_search(self):
+        query = self.search_var.get().strip().lower() # gets the keyword close to the names or ids
+        if not query:
+            messagebox.showinfo("Search", "Enter a student ID or name.")
+            return
+
+        found = None
+        for s in self.students:
+            if query == str(s.code).lower() or query in s.name.lower():
+                found = s
+                break
+
+        # clear previous results
+        for widget in self.result_frame.winfo_children():
+            widget.destroy()
+
+        # text display if no student is found
+        if found is None:
+            not_found = Label(self.result_frame, text=f"No student found for: '{query}'",
+                font=(self.base_font, 10),
+                bg="#f8fafc", fg=self.TEXT_MUTED)
+            not_found.place(relx=0.5, rely=0.5, anchor="center")
+        else:
+            # create a detailed student card for search results
+            detailed_card = Frame(self.result_frame, bg="#ffffff",
+                relief=RAISED, bd=1, width=450, height=180)
+            detailed_card.place(relx=0.5, rely=0.5, anchor="center")
+            
+            # student name and ID
+            name_label = Label(detailed_card, text=found.name,
+                font=(self.base_font, 12, "bold"),
+                bg="#ffffff", fg='#2a4a3d')
+            name_label.place(x=20, y=20)
+            
+            id_label = Label(detailed_card, text=f"ID: {found.code}",
+                font=(self.base_font, 10),
+                bg="#ffffff", fg=self.TEXT_MUTED)
+            id_label.place(x=20, y=45)
+            
+            # individual marks
+            marks_label = Label(detailed_card, text=f"Coursework Marks: {found.cw1}, {found.cw2}, {found.cw3}",
+                font=(self.base_font, 10),
+                bg="#ffffff", fg=self.TEXT_PRIMARY)
+            marks_label.place(x=20, y=70)
+            
+            cw_total_label = Label(detailed_card, text=f"Coursework Total: {found.coursework_total}/60",
+                font=(self.base_font, 10),
+                bg="#ffffff", fg=self.TEXT_PRIMARY)
+            cw_total_label.place(x=20, y=95)
+            
+            exam_label = Label(detailed_card, text=f"Exam Mark: {found.exam}/100",
+                font=(self.base_font, 10),
+                bg="#ffffff", fg=self.TEXT_PRIMARY)
+            exam_label.place(x=20, y=120)
+            
+            # overall performance
+            total_label = Label(detailed_card, text=f"Overall Total: {found.overall_total}/160",
+                font=(self.base_font, 10, "bold"),
+                bg="#ffffff", fg=self.TEXT_PRIMARY)
+            total_label.place(x=230, y=70)
+            
+            percent_label = Label(detailed_card, text=f"Percentage: {found.percentage:.1f}%",
+                font=(self.base_font, 10, "bold"),
+                bg="#ffffff", fg=self.TEXT_PRIMARY)
+            percent_label.place(x=230, y=95)
+            
+            # grade with color
+            grade_color = {
+                "A": "green", "B": "blue", "C": "#fce80a", 
+                "D": "orange", "F": "red"
+            }
+            grade_label = Label(detailed_card, text=f"Grade: {found.grade}",
+                font=(self.base_font, 14, "bold"),
+                bg=grade_color[found.grade], fg="white", width=10)
+            grade_label.place(x=230, y=120)
 
 if __name__ == "__main__":
     root = Tk()
