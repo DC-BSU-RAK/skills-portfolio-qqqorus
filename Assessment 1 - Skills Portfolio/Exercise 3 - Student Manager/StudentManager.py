@@ -71,7 +71,7 @@ class StudentManagerApp:
         self.center_title_var = None
         self.students_btn = None
         self.individual_btn = None
-        self.totalscores_btn = None
+        self.minmax_btn = None
 
         self.load_data()
         self.build_layout()
@@ -158,12 +158,12 @@ class StudentManagerApp:
         self.individual_btn.place(x=15, y=150)
 
         # minimum and maximum scores button (frame for the highest and lowest score) is inactive
-        self.totalscores_btn = Button(sidebar, text="Min-Max Scores     ",
+        self.minmax_btn = Button(sidebar, text="Min-Max Scores     ",
             font=(self.base_font, 10, "bold"), anchor='e',
             fg="#d1d5db", bg=self.BG_SIDEBAR_BTN_INACTIVE,
             bd=0, width=btn_width, height=btn_height,
-            command=lambda: [self.set_active_sidebar("totalscores"), self.totalscores_page()])
-        self.totalscores_btn.place(x=15, y=200)
+            command=lambda: [self.set_active_sidebar("minmax"), self.minmax_page()])
+        self.minmax_btn.place(x=15, y=200)
 
         # center area displaying the main content
         center_outer = Frame(self.root, bg=self.BG_MAIN, width=900, height=650)
@@ -353,6 +353,171 @@ class StudentManagerApp:
             font=(self.base_font, 10),
             bg="#f8fafc", fg=self.TEXT_MUTED)
         initial_msg.place(relx=0.5, rely=0.5, anchor="center")
+
+    # page to display the highest and lowest scores
+    def minmax_page(self):
+        self.clear_center()
+        self.center_title_var.set("Minimum and Maximum Scores")
+        
+        self.compute_highest_lowest()
+
+        # title
+        title = Label(self.center_frame, text="Performance Overview",
+            font=(self.base_font, 12, "bold"),
+            bg=self.BG_CARD, fg=self.TEXT_PRIMARY)
+        title.place(x=40, y=20)
+
+        # highest score card
+        high_frame = Frame(self.center_frame, bg="#e8f5e8",
+            relief=RAISED, bd=1, width=650, height=150)
+        high_frame.place(x=40, y=60)
+
+        high_title = Label(high_frame, text="🏆 HIGHEST SCORE",
+            font=(self.base_font, 12, "bold"),
+            bg="#e8f5e8", fg="#065f46")
+        high_title.place(x=20, y=15)
+
+        if self.highest_student:
+            high_name = Label(high_frame, text=f"Name: {self.highest_student.name}",
+                font=(self.base_font, 10, "bold"),
+                bg="#e8f5e8", fg=self.TEXT_PRIMARY)
+            high_name.place(x=20, y=45)
+            
+            high_id = Label(high_frame, text=f"ID: {self.highest_student.code}",
+                font=(self.base_font, 10),
+                bg="#e8f5e8", fg=self.TEXT_MUTED)
+            high_id.place(x=20, y=65)
+            
+            # individual marks
+            high_marks = Label(high_frame, text=f"Coursework: {self.highest_student.cw1}, {self.highest_student.cw2}, {self.highest_student.cw3}",
+                font=(self.base_font, 9),
+                bg="#e8f5e8", fg=self.TEXT_MUTED)
+            high_marks.place(x=20, y=85)
+            
+            high_cw_total = Label(high_frame, text=f"CW Total: {self.highest_student.coursework_total}/60",
+                font=(self.base_font, 9),
+                bg="#e8f5e8", fg=self.TEXT_PRIMARY)
+            high_cw_total.place(x=20, y=105)
+            
+            high_exam = Label(high_frame, text=f"Exam: {self.highest_student.exam}/100",
+                font=(self.base_font, 9),
+                bg="#e8f5e8", fg=self.TEXT_PRIMARY)
+            high_exam.place(x=150, y=105)
+            
+            high_score = Label(high_frame, text=f"Total Score: {self.highest_student.overall_total}/160",
+                font=(self.base_font, 10, "bold"),
+                bg="#e8f5e8", fg="#065f46")
+            high_score.place(x=300, y=45)
+            
+            high_percent = Label(high_frame, text=f"Percentage: {self.highest_student.percentage:.1f}%",
+                font=(self.base_font, 10),
+                bg="#e8f5e8", fg=self.TEXT_PRIMARY)
+            high_percent.place(x=300, y=65)
+            
+            high_grade = Label(high_frame, text=f"Grade: {self.highest_student.grade}",
+                font=(self.base_font, 14, "bold"),
+                bg="#10b981", fg="white", width=10)
+            high_grade.place(x=500, y=60)
+
+        # lowest Score Card
+        low_frame = Frame(self.center_frame, bg="#f8e8e8",
+            relief=RAISED, bd=1, width=650, height=150)
+        low_frame.place(x=40, y=230)
+
+        low_title = Label(low_frame, text="📉 LOWEST SCORE",
+            font=(self.base_font, 12, "bold"),
+            bg="#f8e8e8", fg="#7f1d1d")
+        low_title.place(x=20, y=15)
+
+        if self.lowest_student:
+            low_name = Label(low_frame, text=f"Name: {self.lowest_student.name}",
+                font=(self.base_font, 10, "bold"),
+                bg="#f8e8e8", fg=self.TEXT_PRIMARY)
+            low_name.place(x=20, y=45)
+            
+            low_id = Label(low_frame, text=f"ID: {self.lowest_student.code}",
+                font=(self.base_font, 10),
+                bg="#f8e8e8", fg=self.TEXT_MUTED)
+            low_id.place(x=20, y=65)
+            
+            # individual marks
+            low_marks = Label(low_frame, text=f"Coursework: {self.lowest_student.cw1}, {self.lowest_student.cw2}, {self.lowest_student.cw3}",
+                font=(self.base_font, 9),
+                bg="#f8e8e8", fg=self.TEXT_MUTED)
+            low_marks.place(x=20, y=85)
+            
+            low_cw_total = Label(low_frame, text=f"CW Total: {self.lowest_student.coursework_total}/60",
+                font=(self.base_font, 9),
+                bg="#f8e8e8", fg=self.TEXT_PRIMARY)
+            low_cw_total.place(x=20, y=105)
+            
+            low_exam = Label(low_frame, text=f"Exam: {self.lowest_student.exam}/100",
+                font=(self.base_font, 9),
+                bg="#f8e8e8", fg=self.TEXT_PRIMARY)
+            low_exam.place(x=150, y=105)
+            
+            low_score = Label(low_frame, text=f"Total Score: {self.lowest_student.overall_total}/160",
+                font=(self.base_font, 10, "bold"),
+                bg="#f8e8e8", fg="#7f1d1d")
+            low_score.place(x=300, y=45)
+            
+            low_percent = Label(low_frame, text=f"Percentage: {self.lowest_student.percentage:.1f}%",
+                font=(self.base_font, 10),
+                bg="#f8e8e8", fg=self.TEXT_PRIMARY)
+            low_percent.place(x=300, y=65)
+            
+            low_grade = Label(low_frame, text=f"Grade: {self.lowest_student.grade}",
+                font=(self.base_font, 14, "bold"),
+                bg="#ef4444", fg="white", width=10)
+            low_grade.place(x=500, y=60)
+
+        # statistics
+        stats_frame = Frame(self.center_frame, bg="#f0f9ff",
+            relief=RAISED, bd=1, width=650, height=120)
+        stats_frame.place(x=40, y=410)
+
+        stats_title = Label(stats_frame, text="📊 CLASS STATISTICS",
+            font=(self.base_font, 11, "bold"),
+            bg="#f0f9ff", fg="#0369a1")
+        stats_title.place(x=20, y=15)
+
+        if self.students:
+            count = len(self.students)
+            avg_percent = sum(s.percentage for s in self.students) / count
+            grade_counts = {}
+            for s in self.students:
+                grade_counts[s.grade] = grade_counts.get(s.grade, 0) + 1
+            
+            total_label = Label(stats_frame, text=f"Total Students: {count}",
+                font=(self.base_font, 10),
+                bg="#f0f9ff", fg=self.TEXT_PRIMARY)
+            total_label.place(x=20, y=45)
+            
+            avg_label = Label(stats_frame, text=f"Class Average: {avg_percent:.1f}%",
+                font=(self.base_font, 10),
+                bg="#f0f9ff", fg=self.TEXT_PRIMARY)
+            avg_label.place(x=200, y=45)
+            
+            grades_label = Label(stats_frame, text="Grade Distribution:",
+                font=(self.base_font, 10, "bold"),
+                bg="#f0f9ff", fg=self.TEXT_PRIMARY)
+            grades_label.place(x=20, y=75)
+            
+            # grade counts in a row
+            x_pos = 150
+            for grade in "ABCDEF":
+                if grade in grade_counts:
+                    grade_label = Label(
+                        stats_frame,
+                        text=f"{grade}: {grade_counts[grade]}",
+                        font=(self.base_font, 10),
+                        bg="#f0f9ff",
+                        fg=self.TEXT_PRIMARY
+                    )
+                    grade_label.place(x=x_pos, y=75)
+                    x_pos += 60
+
+        
 
 if __name__ == "__main__":
     root = Tk()
