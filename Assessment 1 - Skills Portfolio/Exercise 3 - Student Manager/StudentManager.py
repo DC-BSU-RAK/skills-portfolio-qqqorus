@@ -594,6 +594,15 @@ class StudentManagerApp:
                 bg=grade_color[found.grade], fg="white", width=10)
             grade_label.place(x=230, y=120)
 
+    # computes the highest and lowest grades using min and max
+    def compute_highest_lowest(self):
+        if not self.students:
+            self.highest_student = None
+            self.lowest_student = None
+            return
+        self.highest_student = max(self.students, key=lambda s: s.overall_total)
+        self.lowest_student = min(self.students, key=lambda s: s.overall_total)
+
 if __name__ == "__main__":
     root = Tk()
     app = StudentManagerApp(root)
