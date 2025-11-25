@@ -4,8 +4,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from PIL import ImageTk, Image
 
-# ---------------------- Data Model ---------------------- #
-
+# data model 
 @dataclass
 class Student:
     code: int # int for id number
