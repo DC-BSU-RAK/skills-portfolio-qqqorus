@@ -336,7 +336,7 @@ class StudentManagerApp:
         canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
         canvas.configure(yscrollcommand=scrollbar.set)
 
-        # pPsition canvas and scrollbar properly
+        # position canvas and scrollbar properly
         canvas.place(x=40, y=60, width=650, height=500)
         scrollbar.place(x=690, y=60, height=500)  # Adjusted x position
 
@@ -407,174 +407,111 @@ class StudentManagerApp:
             bg="#f8fafc", relief=RAISED, bd=1)
         self.result_frame.place(x=20, y=90, width=680, height=450)
 
-        # rnitial message beforre showing the result
+        # initial message beforre showing the result
         initial_msg = Label(self.result_frame, text="Enter student ID or name above to search",
             font=(self.base_font, 10),
             bg="#f8fafc", fg=self.TEXT_MUTED)
         initial_msg.place(relx=0.5, rely=0.5, anchor="center")
 
-    # page to display the highest and lowest scores
-    def minmax_page(self):
-        self.clear_center()
-        self.center_title_var.set("Minimum and Maximum Scores")
-        
+    # show highest score in custom dialog
+    def show_highest_score(self):
         self.compute_highest_lowest()
+        if not self.highest_student:
+            messagebox.showinfo("Highest Score", "No student records found.")
+            return
+        
+        student = self.highest_student
+        self.show_student_dialog("HIGHEST SCORE", student)
 
-        # title
-        title = Label(self.center_frame, text="Performance Overview",
-            font=(self.base_font, 12, "bold"),
-            bg=self.BG_CARD, fg=self.TEXT_PRIMARY)
-        title.place(x=40, y=20)
+    # show lowest score in custom dialog
+    def show_lowest_score(self):
+        self.compute_highest_lowest()
+        if not self.lowest_student:
+            messagebox.showinfo("Lowest Score", "No student records found.")
+            return
+        
+        student = self.lowest_student
+        self.show_student_dialog("LOWEST SCORE", student)
 
-        # highest score card
-        high_frame = Frame(self.center_frame, bg="#e8f5e8",
-            relief=RAISED, bd=1, width=650, height=150)
-        high_frame.place(x=40, y=60)
+    # custom dialog to show student information with Century Gothic font
+    def show_student_dialog(self, title, student):
+        dialog = Toplevel(self.root)
+        dialog.title(title)
+        dialog.geometry("400x350")  # slightly larger for better spacing
+        dialog.resizable(0, 0)
+        dialog.configure(bg=self.BG_MAIN)
+        dialog.transient(self.root)
+        dialog.grab_set()
+        dialog.iconbitmap(r'.\img\logo.ico')
 
-        high_title = Label(high_frame, text="🏆 HIGHEST SCORE",
-            font=(self.base_font, 12, "bold"),
-            bg="#e8f5e8", fg="#065f46")
-        high_title.place(x=20, y=15)
+        # center the window
+        dialog.update_idletasks()
+        x = self.root.winfo_x() + (self.root.winfo_width() - dialog.winfo_width()) // 2
+        y = self.root.winfo_y() + (self.root.winfo_height() - dialog.winfo_height()) // 2
+        dialog.geometry(f"+{x}+{y}")
 
-        if self.highest_student:
-            high_name = Label(high_frame, text=f"Name: {self.highest_student.name}",
-                font=(self.base_font, 10, "bold"),
-                bg="#e8f5e8", fg=self.TEXT_PRIMARY)
-            high_name.place(x=20, y=45)
-            
-            high_id = Label(high_frame, text=f"ID: {self.highest_student.code}",
-                font=(self.base_font, 10),
-                bg="#e8f5e8", fg=self.TEXT_MUTED)
-            high_id.place(x=20, y=65)
-            
-            # individual marks
-            high_marks = Label(high_frame, text=f"Coursework: {self.highest_student.cw1}, {self.highest_student.cw2}, {self.highest_student.cw3}",
-                font=(self.base_font, 9),
-                bg="#e8f5e8", fg=self.TEXT_MUTED)
-            high_marks.place(x=20, y=85)
-            
-            high_cw_total = Label(high_frame, text=f"CW Total: {self.highest_student.coursework_total}/60",
-                font=(self.base_font, 9),
-                bg="#e8f5e8", fg=self.TEXT_PRIMARY)
-            high_cw_total.place(x=20, y=105)
-            
-            high_exam = Label(high_frame, text=f"Exam: {self.highest_student.exam}/100",
-                font=(self.base_font, 9),
-                bg="#e8f5e8", fg=self.TEXT_PRIMARY)
-            high_exam.place(x=150, y=105)
-            
-            high_score = Label(high_frame, text=f"Total Score: {self.highest_student.overall_total}/160",
-                font=(self.base_font, 10, "bold"),
-                bg="#e8f5e8", fg="#065f46")
-            high_score.place(x=300, y=45)
-            
-            high_percent = Label(high_frame, text=f"Percentage: {self.highest_student.percentage:.1f}%",
-                font=(self.base_font, 10),
-                bg="#e8f5e8", fg=self.TEXT_PRIMARY)
-            high_percent.place(x=300, y=65)
-            
-            high_grade = Label(high_frame, text=f"Grade: {self.highest_student.grade}",
-                font=(self.base_font, 14, "bold"),
-                bg="#10b981", fg="white", width=10)
-            high_grade.place(x=500, y=60)
+        # header with accent color
+        header_frame = Frame(dialog, bg=self.ACCENT_GREEN_DARK, height=60)
+        header_frame.pack(fill='x')
+        header_frame.pack_propagate(False)
 
-        # lowest Score Card
-        low_frame = Frame(self.center_frame, bg="#f8e8e8",
-            relief=RAISED, bd=1, width=650, height=150)
-        low_frame.place(x=40, y=230)
+        # title in header
+        title_label = Label(header_frame, text=title,
+            font=(self.base_font, 16, "bold"),
+            bg=self.ACCENT_GREEN_DARK, fg="white")
+        title_label.place(relx=0.5, rely=0.5, anchor="center")
 
-        low_title = Label(low_frame, text="📉 LOWEST SCORE",
-            font=(self.base_font, 12, "bold"),
-            bg="#f8e8e8", fg="#7f1d1d")
-        low_title.place(x=20, y=15)
+        # content frame
+        content_frame = Frame(dialog, bg=self.BG_MAIN)
+        content_frame.pack(fill='both', expand=True, padx=20, pady=20)
 
-        if self.lowest_student:
-            low_name = Label(low_frame, text=f"Name: {self.lowest_student.name}",
-                font=(self.base_font, 10, "bold"),
-                bg="#f8e8e8", fg=self.TEXT_PRIMARY)
-            low_name.place(x=20, y=45)
-            
-            low_id = Label(low_frame, text=f"ID: {self.lowest_student.code}",
-                font=(self.base_font, 10),
-                bg="#f8e8e8", fg=self.TEXT_MUTED)
-            low_id.place(x=20, y=65)
-            
-            # individual marks
-            low_marks = Label(low_frame, text=f"Coursework: {self.lowest_student.cw1}, {self.lowest_student.cw2}, {self.lowest_student.cw3}",
-                font=(self.base_font, 9),
-                bg="#f8e8e8", fg=self.TEXT_MUTED)
-            low_marks.place(x=20, y=85)
-            
-            low_cw_total = Label(low_frame, text=f"CW Total: {self.lowest_student.coursework_total}/60",
-                font=(self.base_font, 9),
-                bg="#f8e8e8", fg=self.TEXT_PRIMARY)
-            low_cw_total.place(x=20, y=105)
-            
-            low_exam = Label(low_frame, text=f"Exam: {self.lowest_student.exam}/100",
-                font=(self.base_font, 9),
-                bg="#f8e8e8", fg=self.TEXT_PRIMARY)
-            low_exam.place(x=150, y=105)
-            
-            low_score = Label(low_frame, text=f"Total Score: {self.lowest_student.overall_total}/160",
-                font=(self.base_font, 10, "bold"),
-                bg="#f8e8e8", fg="#7f1d1d")
-            low_score.place(x=300, y=45)
-            
-            low_percent = Label(low_frame, text=f"Percentage: {self.lowest_student.percentage:.1f}%",
-                font=(self.base_font, 10),
-                bg="#f8e8e8", fg=self.TEXT_PRIMARY)
-            low_percent.place(x=300, y=65)
-            
-            low_grade = Label(low_frame, text=f"Grade: {self.lowest_student.grade}",
-                font=(self.base_font, 14, "bold"),
-                bg="#ef4444", fg="white", width=10)
-            low_grade.place(x=500, y=60)
+        # student info with better styling
+        name_label = Label(content_frame, 
+            text=f"{student.name}",
+            font=(self.base_font, 14, "bold"),
+            bg=self.BG_MAIN, fg=self.TEXT_PRIMARY)
+        name_label.place(x=10, y=10)
 
-        # statistics
-        stats_frame = Frame(self.center_frame, bg="#f0f9ff",
-            relief=RAISED, bd=1, width=650, height=120)
-        stats_frame.place(x=40, y=410)
+        id_label = Label(content_frame,
+            text=f"ID: {student.code}",
+            font=(self.base_font, 11),
+            bg=self.BG_MAIN, fg=self.TEXT_MUTED)
+        id_label.place(x=10, y=35)
 
-        stats_title = Label(stats_frame, text="📊 CLASS STATISTICS",
+        # marks in a nicely formatted box
+        marks_frame = Frame(content_frame, bg=self.HIGHLIGHT_COLOR, relief=SOLID, bd=1)
+        marks_frame.place(x=10, y=70, width=340, height=100)
+
+        marks_text = f"Coursework: {student.cw1}, {student.cw2}, {student.cw3}\n" \
+                    f"Coursework Total: {student.coursework_total}/60\n" \
+                    f"Exam: {student.exam}/100\n" \
+                    f"Overall: {student.overall_total}/160 ({student.percentage:.1f}%)"
+
+        marks_label = Label(marks_frame, text=marks_text,
+            font=(self.base_font, 9),
+            bg=self.HIGHLIGHT_COLOR, fg=self.TEXT_PRIMARY, justify=LEFT)
+        marks_label.place(x=10, y=10)
+
+        # grade with prominent display
+        grade_color = {
+            "A": self.SUCCESS_COLOR, "B": "#3b82f6", "C": self.WARNING_COLOR,
+            "D": "#f97316", "F": self.ERROR_COLOR
+        }
+        
+        grade_frame = Frame(content_frame, bg=grade_color[student.grade], relief=RAISED, bd=1)
+        grade_frame.place(x=280, y=10, width=70, height=50)
+        
+        grade_label = Label(grade_frame, text=f"GRADE\n{student.grade}",
             font=(self.base_font, 11, "bold"),
-            bg="#f0f9ff", fg="#0369a1")
-        stats_title.place(x=20, y=15)
+            bg=grade_color[student.grade], fg="white", justify=CENTER)
+        grade_label.place(relx=0.5, rely=0.5, anchor="center")
 
-        if self.students:
-            count = len(self.students)
-            avg_percent = sum(s.percentage for s in self.students) / count
-            grade_counts = {}
-            for s in self.students:
-                grade_counts[s.grade] = grade_counts.get(s.grade, 0) + 1
-            
-            total_label = Label(stats_frame, text=f"Total Students: {count}",
-                font=(self.base_font, 10),
-                bg="#f0f9ff", fg=self.TEXT_PRIMARY)
-            total_label.place(x=20, y=45)
-            
-            avg_label = Label(stats_frame, text=f"Class Average: {avg_percent:.1f}%",
-                font=(self.base_font, 10),
-                bg="#f0f9ff", fg=self.TEXT_PRIMARY)
-            avg_label.place(x=200, y=45)
-            
-            grades_label = Label(stats_frame, text="Grade Distribution:",
-                font=(self.base_font, 10, "bold"),
-                bg="#f0f9ff", fg=self.TEXT_PRIMARY)
-            grades_label.place(x=20, y=75)
-            
-            # grade counts in a row
-            x_pos = 150
-            for grade in "ABCDEF":
-                if grade in grade_counts:
-                    grade_label = Label(
-                        stats_frame,
-                        text=f"{grade}: {grade_counts[grade]}",
-                        font=(self.base_font, 10),
-                        bg="#f0f9ff",
-                        fg=self.TEXT_PRIMARY
-                    )
-                    grade_label.place(x=x_pos, y=75)
-                    x_pos += 60
+        # close button
+        close_btn = Button(content_frame, text="Close",
+            font=(self.base_font, 10, "bold"),
+            bg=self.BG_SIDEBAR_BTN_ACTIVE, fg="white",
+            command=dialog.destroy, width=12, height=1)
+        close_btn.place(x=130, y=190)
 
     # function that activates the searching
     def do_search(self):
