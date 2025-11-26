@@ -936,46 +936,46 @@ class StudentManagerApp:
         else:
             # create a detailed student card for search results
             detailed_card = Frame(self.result_frame, bg="#ffffff",
-                relief=RAISED, bd=1, width=450, height=180)
+                relief=RAISED, bd=1, width=450, height=190)
             detailed_card.place(relx=0.5, rely=0.5, anchor="center")
             
             # student name and ID
             name_label = Label(detailed_card, text=found.name,
-                font=(self.base_font, 12, "bold"),
-                bg="#ffffff", fg='#2a4a3d')
-            name_label.place(x=20, y=20)
+                font=(self.base_font, 14, "bold"),
+                bg=self.ACCENT_GREEN_DARK, fg='#ffffff')
+            name_label.place(x=30, y=25)
             
             id_label = Label(detailed_card, text=f"ID: {found.code}",
                 font=(self.base_font, 10),
                 bg="#ffffff", fg=self.TEXT_MUTED)
-            id_label.place(x=20, y=45)
+            id_label.place(x=30, y=55)
             
             # individual marks
             marks_label = Label(detailed_card, text=f"Coursework Marks: {found.cw1}, {found.cw2}, {found.cw3}",
                 font=(self.base_font, 10),
                 bg="#ffffff", fg=self.TEXT_PRIMARY)
-            marks_label.place(x=20, y=70)
+            marks_label.place(x=30, y=90)
             
             cw_total_label = Label(detailed_card, text=f"Coursework Total: {found.coursework_total}/60",
                 font=(self.base_font, 10),
                 bg="#ffffff", fg=self.TEXT_PRIMARY)
-            cw_total_label.place(x=20, y=95)
+            cw_total_label.place(x=30, y=115)
             
             exam_label = Label(detailed_card, text=f"Exam Mark: {found.exam}/100",
                 font=(self.base_font, 10),
                 bg="#ffffff", fg=self.TEXT_PRIMARY)
-            exam_label.place(x=20, y=120)
+            exam_label.place(x=30, y=140)
             
             # overall performance
             total_label = Label(detailed_card, text=f"Overall Total: {found.overall_total}/160",
                 font=(self.base_font, 10, "bold"),
                 bg="#ffffff", fg=self.TEXT_PRIMARY)
-            total_label.place(x=230, y=70)
+            total_label.place(x=250, y=90)
             
             percent_label = Label(detailed_card, text=f"Percentage: {found.percentage:.1f}%",
                 font=(self.base_font, 10, "bold"),
                 bg="#ffffff", fg=self.TEXT_PRIMARY)
-            percent_label.place(x=230, y=95)
+            percent_label.place(x=250, y=115)
             
             # grade with color
             grade_color = {
@@ -985,7 +985,7 @@ class StudentManagerApp:
             grade_label = Label(detailed_card, text=f"Grade: {found.grade}",
                 font=(self.base_font, 14, "bold"),
                 bg=grade_color[found.grade], fg="white", width=10)
-            grade_label.place(x=230, y=120)
+            grade_label.place(x=250, y=140)
 
     # computes the highest and lowest grades using min and max
     def compute_highest_lowest(self):
