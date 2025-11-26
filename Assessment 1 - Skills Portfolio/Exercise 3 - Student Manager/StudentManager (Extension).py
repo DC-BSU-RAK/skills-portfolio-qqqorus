@@ -77,7 +77,12 @@ class StudentManagerApp:
         self.center_title_var = None
         self.students_btn = None
         self.individual_btn = None
-        self.minmax_btn = None
+        self.highest_btn = None
+        self.lowest_btn = None
+        self.sort_btn = None
+        self.add_btn = None
+        self.delete_btn = None
+        self.update_btn = None
 
         self.load_data()
         self.build_layout()
