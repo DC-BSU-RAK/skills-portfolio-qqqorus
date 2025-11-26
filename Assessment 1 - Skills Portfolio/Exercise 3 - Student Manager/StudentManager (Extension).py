@@ -998,7 +998,8 @@ class StudentManagerApp:
 
     # links the sidebar buttons to tabs they belong to
     def set_active_sidebar(self, which):
-        buttons = [self.students_btn, self.individual_btn, self.minmax_btn]
+        buttons = [self.students_btn, self.individual_btn, self.highest_btn, self.lowest_btn,
+                  self.sort_btn, self.add_btn, self.delete_btn, self.update_btn]
         for btn in buttons:
             btn.configure(bg=self.BG_SIDEBAR_BTN_INACTIVE, fg="#d1d5db")
         
@@ -1006,8 +1007,6 @@ class StudentManagerApp:
             self.students_btn.configure(bg=self.BG_SIDEBAR_BTN_ACTIVE, fg="#ecfdf5")
         elif which == "individual":
             self.individual_btn.configure(bg=self.BG_SIDEBAR_BTN_ACTIVE, fg="#ecfdf5")
-        elif which == "minmax":
-            self.minmax_btn.configure(bg=self.BG_SIDEBAR_BTN_ACTIVE, fg="#ecfdf5")
 
 # root
 if __name__ == "__main__":
