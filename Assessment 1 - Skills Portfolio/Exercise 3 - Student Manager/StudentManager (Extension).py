@@ -758,6 +758,158 @@ class StudentManagerApp:
                bg="#dc2626", fg="white",
                command=delete_student).pack(pady=10)
 
+    # dialog to update student records
+    def update_student_dialog(self):
+        update_window = Toplevel(self.root)
+        update_window.title("Update Student")
+        update_window.geometry("500x500")
+        update_window.resizable(0, 0)
+        update_window.configure(bg=self.BG_MAIN)
+        update_window.transient(self.root)
+        update_window.grab_set()
+        update_window.iconbitmap(r'.\img\logo.ico')
+
+        # center the window
+        update_window.update_idletasks()
+        x = self.root.winfo_x() + (self.root.winfo_width() - update_window.winfo_width()) // 2
+        y = self.root.winfo_y() + (self.root.winfo_height() - update_window.winfo_height()) // 2
+        update_window.geometry(f"+{x}+{y}")
+
+        Label(update_window, text="Update Student Record", 
+              font=(self.base_font, 14, "bold"),
+              bg=self.BG_MAIN, fg=self.TEXT_PRIMARY).pack(pady=10)
+
+        # search frame
+        search_frame = Frame(update_window, bg=self.BG_MAIN)
+        search_frame.pack(pady=10)
+
+        Label(search_frame, text="Student ID or Name:", font=(self.base_font, 10),
+              bg=self.BG_MAIN, fg=self.TEXT_PRIMARY).grid(row=0, column=0, padx=5, pady=5)
+        
+        search_var = StringVar()
+        search_entry = Entry(search_frame, textvariable=search_var, font=(self.base_font, 10), width=20)
+        search_entry.grid(row=0, column=1, padx=5, pady=5)
+
+        result_var = StringVar(value="Enter student ID or name to search")
+        result_label = Label(update_window, textvariable=result_var, font=(self.base_font, 9),
+                           bg=self.BG_MAIN, fg=self.TEXT_MUTED, wraplength=450)
+        result_label.pack(pady=10)
+
+        found_student = None
+        input_frame = None
+
+        def clear_input_frame():
+            nonlocal input_frame
+            if input_frame:
+                input_frame.destroy()
+                input_frame = None
+
+        def search_student():
+            nonlocal found_student, input_frame
+            query = search_var.get().strip().lower()
+            if not query:
+                result_var.set("Please enter a student ID or name")
+                clear_input_frame()
+                return
+
+            found_student = None
+            for s in self.students:
+                if query == str(s.code).lower() or query in s.name.lower():
+                    found_student = s
+                    break
+
+            if found_student:
+                result_var.set(f"Found: {found_student.name} (ID: {found_student.code})\n"
+                             f"Current: CW1={found_student.cw1}, CW2={found_student.cw2}, "
+                             f"CW3={found_student.cw3}, Exam={found_student.exam}")
+                show_update_options()
+            else:
+                result_var.set(f"No student found for: '{query}'")
+                clear_input_frame()
+
+        def show_update_options():
+            nonlocal input_frame
+            clear_input_frame()
+            
+            input_frame = Frame(update_window, bg=self.BG_MAIN)
+            input_frame.pack(pady=10)
+
+            Label(input_frame, text="Select field to update:", font=(self.base_font, 11, "bold"),
+                  bg=self.BG_MAIN, fg=self.TEXT_PRIMARY).grid(row=0, column=0, columnspan=2, pady=10)
+
+            # field selection
+            field_var = StringVar(value="name")
+            
+            fields = [
+                ("Name", "name"),
+                ("Coursework 1", "cw1"),
+                ("Coursework 2", "cw2"), 
+                ("Coursework 3", "cw3"),
+                ("Exam Mark", "exam")
+            ]
+            
+            for i, (text, value) in enumerate(fields):
+                Radiobutton(input_frame, text=text, variable=field_var, value=value,
+                           font=(self.base_font, 10), bg=self.BG_MAIN).grid(row=i+1, column=0, sticky='w', padx=20)
+
+            # new value input
+            Label(input_frame, text="New Value:", font=(self.base_font, 10),
+                  bg=self.BG_MAIN, fg=self.TEXT_PRIMARY).grid(row=1, column=1, padx=5, pady=5)
+            
+            value_var = StringVar()
+            value_entry = Entry(input_frame, textvariable=value_var, font=(self.base_font, 10))
+            value_entry.grid(row=1, column=2, padx=5, pady=5)
+
+            def update_field():
+                if not found_student:
+                    return
+
+                field = field_var.get()
+                new_value = value_var.get().strip()
+
+                if not new_value:
+                    messagebox.showerror("Error", "Please enter a new value!")
+                    return
+
+                try:
+                    if field == "name":
+                        found_student.name = new_value
+                    else:
+                        new_value_int = int(new_value)
+                        if field in ["cw1", "cw2", "cw3"] and not (0 <= new_value_int <= 20):
+                            messagebox.showerror("Error", "Coursework marks must be between 0-20!")
+                            return
+                        if field == "exam" and not (0 <= new_value_int <= 100):
+                            messagebox.showerror("Error", "Exam mark must be between 0-100!")
+                            return
+                        
+                        if field == "cw1":
+                            found_student.cw1 = new_value_int
+                        elif field == "cw2":
+                            found_student.cw2 = new_value_int
+                        elif field == "cw3":
+                            found_student.cw3 = new_value_int
+                        elif field == "exam":
+                            found_student.exam = new_value_int
+
+                    if self.save_data():
+                        messagebox.showinfo("Success", f"Student {field} updated successfully!")
+                        update_window.destroy()
+                        self.students_page()
+
+                except ValueError:
+                    messagebox.showerror("Error", "Please enter a valid number for marks!")
+
+            Button(input_frame, text="Update Field", 
+                   font=(self.base_font, 10, "bold"),
+                   bg=self.BG_SIDEBAR_BTN_ACTIVE, fg="white",
+                   command=update_field).grid(row=6, column=1, columnspan=2, pady=10)
+
+        Button(search_frame, text="Search", 
+               font=(self.base_font, 9, "bold"),
+               bg=self.BG_SIDEBAR_BTN_ACTIVE, fg="white",
+               command=search_student).grid(row=0, column=2, padx=5, pady=5)
+
     # function that activates the searching
     def do_search(self):
         query = self.search_var.get().strip().lower() # gets the keyword close to the names or ids
