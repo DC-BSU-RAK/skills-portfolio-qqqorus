@@ -57,6 +57,13 @@ class StudentManagerApp:
         self.CARD_BORDER = "#e8e8e8" # color of the borders
         self.TEXT_PRIMARY = "#252525" # primary text color
         self.TEXT_MUTED = "#6b7280" # text color if it's muted
+        self.ACCENT_GREEN = "#b6c58c"  # existing accent color
+        self.ACCENT_GREEN_LIGHT = "#d4e0b1"
+        self.ACCENT_GREEN_DARK = "#8a9c5f"
+        self.HIGHLIGHT_COLOR = "#e8f4f1"
+        self.SUCCESS_COLOR = "#10b981"
+        self.WARNING_COLOR = "#f59e0b"
+        self.ERROR_COLOR = "#ef4444"
 
         self.root.configure(bg=self.BG_MAIN)
     
