@@ -569,6 +569,112 @@ class StudentManagerApp:
         if self.save_data():
             messagebox.showinfo("Success", "Students sorted and saved successfully!")
 
+    # dialog to add students
+    def add_student_dialog(self):
+        add_window = Toplevel(self.root)
+        add_window.title("Add Student")
+        add_window.geometry("400x400")
+        add_window.resizable(0, 0)
+        add_window.configure(bg=self.BG_MAIN)
+        add_window.transient(self.root)
+        add_window.grab_set()
+        add_window.iconbitmap(r'.\img\logo.ico')
+
+        # center the window
+        add_window.update_idletasks()
+        x = self.root.winfo_x() + (self.root.winfo_width() - add_window.winfo_width()) // 2
+        y = self.root.winfo_y() + (self.root.winfo_height() - add_window.winfo_height()) // 2
+        add_window.geometry(f"+{x}+{y}")
+
+        Label(add_window, text="Add New Student", 
+              font=(self.base_font, 14, "bold"),
+              bg=self.BG_MAIN, fg=self.TEXT_PRIMARY).pack(pady=10)
+
+        # input fields
+        input_frame = Frame(add_window, bg=self.BG_MAIN)
+        input_frame.pack(pady=10)
+
+        # student ID
+        Label(input_frame, text="Student ID:", font=(self.base_font, 10),
+              bg=self.BG_MAIN, fg=self.TEXT_PRIMARY).grid(row=0, column=0, sticky='e', padx=5, pady=5)
+        id_var = StringVar()
+        id_entry = Entry(input_frame, textvariable=id_var, font=(self.base_font, 10))
+        id_entry.grid(row=0, column=1, padx=5, pady=5)
+
+        # name
+        Label(input_frame, text="Name:", font=(self.base_font, 10),
+              bg=self.BG_MAIN, fg=self.TEXT_PRIMARY).grid(row=1, column=0, sticky='e', padx=5, pady=5)
+        name_var = StringVar()
+        name_entry = Entry(input_frame, textvariable=name_var, font=(self.base_font, 10))
+        name_entry.grid(row=1, column=1, padx=5, pady=5)
+
+        # coursework marks
+        Label(input_frame, text="Coursework 1 (1-20):", font=(self.base_font, 10),
+              bg=self.BG_MAIN, fg=self.TEXT_PRIMARY).grid(row=2, column=0, sticky='e', padx=5, pady=5)
+        cw1_var = StringVar()
+        cw1_entry = Entry(input_frame, textvariable=cw1_var, font=(self.base_font, 10))
+        cw1_entry.grid(row=2, column=1, padx=5, pady=5)
+
+        Label(input_frame, text="Coursework 2 (1-20):", font=(self.base_font, 10),
+              bg=self.BG_MAIN, fg=self.TEXT_PRIMARY).grid(row=3, column=0, sticky='e', padx=5, pady=5)
+        cw2_var = StringVar()
+        cw2_entry = Entry(input_frame, textvariable=cw2_var, font=(self.base_font, 10))
+        cw2_entry.grid(row=3, column=1, padx=5, pady=5)
+
+        Label(input_frame, text="Coursework 3 (1-20):", font=(self.base_font, 10),
+              bg=self.BG_MAIN, fg=self.TEXT_PRIMARY).grid(row=4, column=0, sticky='e', padx=5, pady=5)
+        cw3_var = StringVar()
+        cw3_entry = Entry(input_frame, textvariable=cw3_var, font=(self.base_font, 10))
+        cw3_entry.grid(row=4, column=1, padx=5, pady=5)
+
+        # exam mark
+        Label(input_frame, text="Exam Mark (1-100):", font=(self.base_font, 10),
+              bg=self.BG_MAIN, fg=self.TEXT_PRIMARY).grid(row=5, column=0, sticky='e', padx=5, pady=5)
+        exam_var = StringVar()
+        exam_entry = Entry(input_frame, textvariable=exam_var, font=(self.base_font, 10))
+        exam_entry.grid(row=5, column=1, padx=5, pady=5)
+
+        def add_student():
+            try:
+                # validate inputs
+                if not all([id_var.get(), name_var.get(), cw1_var.get(), cw2_var.get(), cw3_var.get(), exam_var.get()]):
+                    messagebox.showerror("Error", "All fields are required!")
+                    return
+
+                code = int(id_var.get())
+                name = name_var.get().strip()
+                cw1 = int(cw1_var.get())
+                cw2 = int(cw2_var.get())
+                cw3 = int(cw3_var.get())
+                exam = int(exam_var.get())
+
+                # check if student ID already exists
+                if any(s.code == code for s in self.students):
+                    messagebox.showerror("Error", f"Student ID {code} already exists!")
+                    return
+
+                # validate mark ranges
+                if not (0 <= cw1 <= 20 and 0 <= cw2 <= 20 and 0 <= cw3 <= 20 and 0 <= exam <= 100):
+                    messagebox.showerror("Error", "Marks must be: CW1-3 (0-20), Exam (0-100)")
+                    return
+
+                # add student
+                new_student = Student(code, name, cw1, cw2, cw3, exam)
+                self.students.append(new_student)
+
+                if self.save_data():
+                    messagebox.showinfo("Success", f"Student {name} added successfully!")
+                    add_window.destroy()
+                    self.students_page()
+
+            except ValueError:
+                messagebox.showerror("Error", "Please enter valid numbers for marks!")
+
+        Button(add_window, text="Add Student", 
+               font=(self.base_font, 10, "bold"),
+               bg=self.BG_SIDEBAR_BTN_ACTIVE, fg="white",
+               command=add_student).pack(pady=10)
+
     # function that activates the searching
     def do_search(self):
         query = self.search_var.get().strip().lower() # gets the keyword close to the names or ids
