@@ -177,13 +177,53 @@ class StudentManagerApp:
             command=lambda: [self.set_active_sidebar("individual"), self.individual_page()])
         self.individual_btn.place(x=15, y=150)
 
-        # minimum and maximum scores button (frame for the highest and lowest score) is inactive
-        self.minmax_btn = Button(sidebar, text="Min-Max Scores     ",
+        # highest score button
+        self.highest_btn = Button(sidebar, text="Highest Score     ",
             font=(self.base_font, 10, "bold"), anchor='e',
             fg="#d1d5db", bg=self.BG_SIDEBAR_BTN_INACTIVE,
             bd=0, width=btn_width, height=btn_height,
-            command=lambda: [self.set_active_sidebar("minmax"), self.minmax_page()])
-        self.minmax_btn.place(x=15, y=200)
+            command=self.show_highest_score)
+        self.highest_btn.place(x=15, y=200)
+
+        # lowest score button
+        self.lowest_btn = Button(sidebar, text="Lowest Score     ",
+            font=(self.base_font, 10, "bold"), anchor='e',
+            fg="#d1d5db", bg=self.BG_SIDEBAR_BTN_INACTIVE,
+            bd=0, width=btn_width, height=btn_height,
+            command=self.show_lowest_score)
+        self.lowest_btn.place(x=15, y=250)
+
+        # sort button
+        self.sort_btn = Button(sidebar, text="Sort Records     ",
+            font=(self.base_font, 10, "bold"), anchor='e',
+            fg="#d1d5db", bg=self.BG_SIDEBAR_BTN_INACTIVE,
+            bd=0, width=btn_width, height=btn_height,
+            command=self.sort_students_dialog)
+        self.sort_btn.place(x=15, y=300)
+
+        # add button
+        self.add_btn = Button(sidebar, text="Add Student     ",
+            font=(self.base_font, 10, "bold"), anchor='e',
+            fg="#d1d5db", bg=self.BG_SIDEBAR_BTN_INACTIVE,
+            bd=0, width=btn_width, height=btn_height,
+            command=self.add_student_dialog)
+        self.add_btn.place(x=15, y=350)
+
+        # delete button
+        self.delete_btn = Button(sidebar, text="Delete Student     ",
+            font=(self.base_font, 10, "bold"), anchor='e',
+            fg="#d1d5db", bg=self.BG_SIDEBAR_BTN_INACTIVE,
+            bd=0, width=btn_width, height=btn_height,
+            command=self.delete_student_dialog)
+        self.delete_btn.place(x=15, y=400)
+
+        # update button
+        self.update_btn = Button(sidebar, text="Update Student     ",
+            font=(self.base_font, 10, "bold"), anchor='e',
+            fg="#d1d5db", bg=self.BG_SIDEBAR_BTN_INACTIVE,
+            bd=0, width=btn_width, height=btn_height,
+            command=self.update_student_dialog)
+        self.update_btn.place(x=15, y=450)
 
         # center area displaying the main content
         center_outer = Frame(self.root, bg=self.BG_MAIN, width=900, height=650)
@@ -207,7 +247,6 @@ class StudentManagerApp:
     def clear_center(self):
         for widget in self.center_frame.winfo_children():
             widget.destroy()
-
 
     def format_student_card(self, student, parent_frame=None):
         # format student info as a compact card with individual marks
