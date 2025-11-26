@@ -513,6 +513,62 @@ class StudentManagerApp:
             command=dialog.destroy, width=12, height=1)
         close_btn.place(x=130, y=190)
 
+    # sort students dialog
+    def sort_students_dialog(self):
+        sort_window = Toplevel(self.root)
+        sort_window.title("Sort Students")
+        sort_window.geometry("300x250")
+        sort_window.resizable(0, 0)
+        sort_window.configure(bg=self.BG_MAIN)
+        sort_window.transient(self.root)
+        sort_window.grab_set()
+        sort_window.iconbitmap(r'.\img\logo.ico')
+
+        # center the window
+        sort_window.update_idletasks()
+        x = self.root.winfo_x() + (self.root.winfo_width() - sort_window.winfo_width()) // 2
+        y = self.root.winfo_y() + (self.root.winfo_height() - sort_window.winfo_height()) // 2
+        sort_window.geometry(f"+{x}+{y}")
+
+        Label(sort_window, text="Sort Students By:", 
+              font=(self.base_font, 12, "bold"),
+              bg=self.BG_MAIN, fg=self.TEXT_PRIMARY).pack(pady=20)
+
+        # sort options
+        sort_var = StringVar(value="name_asc")
+
+        Radiobutton(sort_window, text="Name (A-Z)", variable=sort_var, value="name_asc",
+                   font=(self.base_font, 10), bg=self.BG_MAIN).pack(anchor='w', padx=50)
+        Radiobutton(sort_window, text="Name (Z-A)", variable=sort_var, value="name_desc",
+                   font=(self.base_font, 10), bg=self.BG_MAIN).pack(anchor='w', padx=50)
+        Radiobutton(sort_window, text="Total Score (High-Low)", variable=sort_var, value="score_desc",
+                   font=(self.base_font, 10), bg=self.BG_MAIN).pack(anchor='w', padx=50)
+        Radiobutton(sort_window, text="Total Score (Low-High)", variable=sort_var, value="score_asc",
+                   font=(self.base_font, 10), bg=self.BG_MAIN).pack(anchor='w', padx=50)
+
+        def apply_sort():
+            self.sort_students(sort_var.get())
+            sort_window.destroy()
+            self.students_page()
+
+        Button(sort_window, text="Apply Sort", 
+               font=(self.base_font, 10, "bold"),
+               bg=self.BG_SIDEBAR_BTN_ACTIVE, fg="white",
+               command=apply_sort).pack(pady=10)
+
+    def sort_students(self, sort_type):
+        if sort_type == "name_asc":
+            self.students.sort(key=lambda s: s.name.lower())
+        elif sort_type == "name_desc":
+            self.students.sort(key=lambda s: s.name.lower(), reverse=True)
+        elif sort_type == "score_desc":
+            self.students.sort(key=lambda s: s.overall_total, reverse=True)
+        elif sort_type == "score_asc":
+            self.students.sort(key=lambda s: s.overall_total)
+        
+        if self.save_data():
+            messagebox.showinfo("Success", "Students sorted and saved successfully!")
+
     # function that activates the searching
     def do_search(self):
         query = self.search_var.get().strip().lower() # gets the keyword close to the names or ids
