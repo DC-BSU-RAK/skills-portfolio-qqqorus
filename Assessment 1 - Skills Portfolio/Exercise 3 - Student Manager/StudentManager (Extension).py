@@ -118,6 +118,15 @@ class StudentManagerApp:
 
         self.students = students
 
+    # function to save data to studentMarks.txt
+    def save_data(self):
+        path = Path("studentMarks.txt")
+        with path.open("w", encoding="utf-8") as f:
+            f.write(f"{len(self.students)}\n")
+            for student in self.students:
+                f.write(f"{student.code},{student.name},{student.cw1},{student.cw2},{student.cw3},{student.exam}\n")
+        return True
+
     # function to build the main layout which will be applied to all frames
     def build_layout(self):
         # sidebar
